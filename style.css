@@ -68,18 +68,16 @@ h1, h2, h3 {
 }
 .intro .status { color: var(--muted); }
 
-/* Pixel-art game titles used as headings */
+/* Pixel-art game titles used as headings.
+   Each title's size is the width="..." number on its <img> tag in the HTML. */
 .title-art {
   display: block;
-  height: clamp(5rem, 9vw, 7.5rem);
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  object-position: left;
-  image-rendering: pixelated; /* keeps pixel art crisp when scaled up */
+  height: auto;
+  max-width: 100%;              /* shrinks on phones instead of overflowing */
+  image-rendering: pixelated;   /* keeps pixel art crisp when scaled */
   border-radius: 4px;
+  margin-bottom: 0.75rem;
 }
-.detail-title .title-art { height: clamp(6rem, 12vw, 10rem); }
 
 /* ---------- Game sections ---------- */
 .game {
