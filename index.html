@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alex Weiswasser | Gameplay Programmer</title>
+  <meta name="description" content="Portfolio of Alex Weiswasser, a gameplay programmer working in Unity and C#. Lead programmer on MAGE and Fish Party at FunRug Studio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="intro">
+  <h1>Alex Weiswasser</h1>
+  <p class="role">Gameplay programmer</p>
+  <p>I build games on small teams of three to five, and I'm at my best making a game feel good to play: getting a mechanic on screen quickly, then iterating on it with designers and artists until it's fun.</p>
+  <p class="status">Game Programming student at Champlain College, class of 2028. Co-founder of FunRug Studio. Looking for a game programming internship.</p>
+</header>
+
+<main>
+
+  <!-- ============ MAGE ============ -->
+  <section class="game" id="mage">
+    <div class="text">
+      <h2>MAGE: Mega Awesome Gregarious Encounters</h2>
+      <p class="pitch">A 2D projectile party fighter for 2 to 4 players, shipped on Steam with 700+ sales and 5,000+ wishlists.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Lead programmer, product owner</dd>
+        <dt>Team</dt><dd>4 people</dd>
+        <dt>Built with</dt><dd>Unity, C#</dd>
+        <dt>When</dt><dd>Sep 2024 to Jun 2026</dd>
+      </dl>
+      <ul>
+        <li>Led programming for a game with 21 characters, 200+ maps and a set of gameplay modifiers, from first prototype to Steam release.</li>
+        <li>Built a modular character system on scriptable objects, so designers could change existing Mages and create new ones without touching code.</li>
+        <li>Added persisting "ghost" projectiles that make counter timing more forgiving for every character without changing how the game feels.</li>
+      </ul>
+      <div class="links">
+        <a class="button primary" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/">View on Steam</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/MAGE_V2.2">View the code</a>
+      </div>
+    </div>
+    <figure class="media" data-file="media/mage.gif">
+      <img src="media/mage.gif" alt="MAGE gameplay: four mages trading projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </figure>
+  </section>
+
+  <!-- ============ FISH PARTY ============ -->
+  <section class="game" id="fish-party">
+    <div class="text">
+      <h2>Fish Party</h2>
+      <p class="pitch">A one-button party game for up to 12 players sharing one chaotic underwater ecosystem. In development for Steam.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Lead programmer</dd>
+        <dt>Team</dt><dd>4 people</dd>
+        <dt>Built with</dt><dd>Unity, C#</dd>
+        <dt>When</dt><dd>Jul 2026 to now</dd>
+      </dl>
+      <ul>
+        <li>Built local multiplayer for up to 12 simultaneous players and bots, with 16+ fish that each behave differently.</li>
+        <li>Wrote bot AI that reads the game state, scores each possible direction and picks a move, with difficulty scaling for new players.</li>
+        <li>Designed the one-button movement: fish rotate constantly and a press changes direction. Holding the button dashes, which adds skill without adding controls.</li>
+      </ul>
+      <div class="links">
+        <a class="button primary" href="https://store.steampowered.com/app/5170080/Fish_Party/">View on Steam</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/FishGame">View the code</a>
+      </div>
+    </div>
+    <figure class="media" data-file="media/fish-party.gif">
+      <img src="media/fish-party.gif" alt="Fish Party gameplay: a dozen fish chasing each other" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </figure>
+  </section>
+
+  <!-- ============ LITTLE COWBOY ============ -->
+  <section class="game" id="little-cowboy">
+    <div class="text">
+      <h2>Little Cowboy</h2>
+      <p class="pitch">A revolver deck-building roguelike where every run loads a different chamber of bullets. 48th most played of 10,500 games in GMTK Game Jam 2026.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Lead programmer</dd>
+        <dt>Team</dt><dd>5 people</dd>
+        <dt>Built with</dt><dd>Unity, C#</dd>
+        <dt>When</dt><dd>Jul 2026, GMTK Game Jam</dd>
+      </dl>
+      <ul>
+        <li>Programmed the player and enemy systems, including movement, health and the AI for all 6 enemy types.</li>
+        <li>Built one system that drives every elemental effect, plus the tool that tracks each player's unique set of bullets.</li>
+        <li>Created bullet interactions such as fire with oil and water with lightning, so several playstyles are viable.</li>
+      </ul>
+      <div class="links">
+        <a class="button primary" href="https://funrug-studio.itch.io/little-cowboy">Play on itch.io</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/GMTKGameJam2026">View the code</a>
+      </div>
+    </div>
+    <figure class="media" data-file="media/little-cowboy.gif">
+      <img src="media/little-cowboy.gif" alt="Little Cowboy gameplay: firing elemental bullets at enemies" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </figure>
+  </section>
+
+  <!-- ============ LIGHTHOUSE TIME MACHINE ============ -->
+  <section class="game" id="lighthouse">
+    <div class="text">
+      <h2>Lighthouse Time Machine</h2>
+      <p class="pitch">A real-time strategy action game about managing what you can see, made in under 24 hours. Second place at Wolfjam 2026.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Lead programmer</dd>
+        <dt>Team</dt><dd>5 people</dd>
+        <dt>Built with</dt><dd>Unity, C#</dd>
+        <dt>When</dt><dd>Nov 2026, Wolfjam</dd>
+      </dl>
+      <ul>
+        <li>Used sprite masking to build sight-based gameplay around the jam theme of visibility.</li>
+        <li>Built mouse-drag ship controls, then added a small movement boost on each drag to make ships feel responsive without losing the strategy.</li>
+        <li>Four hours in, our first concept still wasn't working, so we pivoted to a better-scoped idea and finished on time.</li>
+      </ul>
+      <div class="links">
+        <a class="button primary" href="https://funrug-studio.itch.io/lighthouse-game">Play on itch.io</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/WolfJam_2026">View the code</a>
+      </div>
+    </div>
+    <figure class="media" data-file="media/lighthouse.gif">
+      <img src="media/lighthouse.gif" alt="Lighthouse Time Machine gameplay: dragging ships through a lit area" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </figure>
+  </section>
+
+  <!-- ============ SMALLER JAM GAMES ============ -->
+  <section class="more" id="more">
+    <h2>More jam games</h2>
+    <div class="more-list">
+      <div>
+        <h3>All Lawyers Go To Hell</h3>
+        <!-- TODO: replace with one sentence on the game and what you built -->
+        <p>Made for Champ Jam 2025.</p>
+        <p class="text-links">
+          <a href="https://funrug-studio.itch.io/all-lawyers-go-to-hell">Play on itch.io</a>
+          <a href="https://github.com/AlexWeiswasser/ChampJam_2025">View the code</a>
+        </p>
+      </div>
+      <div>
+        <h3>Perfect Princess Plan</h3>
+        <!-- TODO: replace with one sentence on the game and what you built -->
+        <p>Made for Global Game Jam 2026.</p>
+        <p class="text-links">
+          <a href="https://funrug-studio.itch.io/perfect-princess-plan">Play on itch.io</a>
+          <a href="https://github.com/AlexWeiswasser/GlobalGameJam2026">View the code</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <h2>Get in touch</h2>
+  <p>Based in Burlington, VT, and open to relocation.</p>
+  <div class="links">
+    <a class="button primary" href="resume.pdf">Download resume</a>
+    <a class="button" href="mailto:amweiswasser@gmail.com">Email me</a>
+    <a class="button" href="https://www.linkedin.com/in/alexweiswasser">LinkedIn</a>
+    <a class="button" href="https://github.com/AlexWeiswasser">GitHub</a>
+    <a class="button" href="https://funrug-studio.itch.io">FunRug Studio on itch.io</a>
+  </div>
+</footer>
+
+</body>
+</html>
