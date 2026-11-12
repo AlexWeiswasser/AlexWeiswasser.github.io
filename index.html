@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- ============ INTRO (edit the text between the tags) ============ -->
 <header class="intro">
   <h1>Alex Weiswasser</h1>
   <p class="role">Gameplay programmer</p>
@@ -22,7 +23,8 @@
 <main>
 
   <!-- ============ MAGE ============ -->
-  <section class="game" id="mage">
+  <!-- The color after --game: is this game's button color. Swap it for a color from the game's art. -->
+  <section class="game" id="mage" style="--game: #c3a1f7">
     <div class="text">
       <h2>MAGE: Mega Awesome Gregarious Encounters</h2>
       <p class="pitch">A 2D projectile party fighter for 2 to 4 players, shipped on Steam with 700+ sales and 5,000+ wishlists.</p>
@@ -38,9 +40,10 @@
         <li>Added persisting "ghost" projectiles that make counter timing more forgiving for every character without changing how the game feels.</li>
       </ul>
       <div class="links">
-        <a class="button primary" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/">View on Steam</a>
-        <a class="button" href="https://github.com/AlexWeiswasser/MAGE_V2.2">View the code</a>
+        <a class="button primary" href="mage.html">More about this game</a>
+        <a class="button" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/" target="_blank" rel="noopener">View on Steam</a>
       </div>
+      <p class="source-note">The source is private because MAGE is sold on Steam. Code samples are on the game's page, and I'm happy to walk through more on request.</p>
     </div>
     <figure class="media" data-file="media/mage.gif">
       <img src="media/mage.gif" alt="MAGE gameplay: four mages trading projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
@@ -48,7 +51,7 @@
   </section>
 
   <!-- ============ FISH PARTY ============ -->
-  <section class="game" id="fish-party">
+  <section class="game" id="fish-party" style="--game: #6fd0d8">
     <div class="text">
       <h2>Fish Party</h2>
       <p class="pitch">A one-button party game for up to 12 players sharing one chaotic underwater ecosystem. In development for Steam.</p>
@@ -64,9 +67,10 @@
         <li>Designed the one-button movement: fish rotate constantly and a press changes direction. Holding the button dashes, which adds skill without adding controls.</li>
       </ul>
       <div class="links">
-        <a class="button primary" href="https://store.steampowered.com/app/5170080/Fish_Party/">View on Steam</a>
-        <a class="button" href="https://github.com/AlexWeiswasser/FishGame">View the code</a>
+        <a class="button primary" href="fish-party.html">More about this game</a>
+        <a class="button" href="https://store.steampowered.com/app/5170080/Fish_Party/" target="_blank" rel="noopener">View on Steam</a>
       </div>
+      <p class="source-note">The source is private because Fish Party is headed to Steam as a paid game. Code samples are on the game's page, and I'm happy to walk through more on request.</p>
     </div>
     <figure class="media" data-file="media/fish-party.gif">
       <img src="media/fish-party.gif" alt="Fish Party gameplay: a dozen fish chasing each other" onerror="this.parentNode.classList.add('missing'); this.remove()">
@@ -74,7 +78,7 @@
   </section>
 
   <!-- ============ LITTLE COWBOY ============ -->
-  <section class="game" id="little-cowboy">
+  <section class="game" id="little-cowboy" style="--game: #ef9b63">
     <div class="text">
       <h2>Little Cowboy</h2>
       <p class="pitch">A revolver deck-building roguelike where every run loads a different chamber of bullets. 48th most played of 10,500 games in GMTK Game Jam 2026.</p>
@@ -90,8 +94,9 @@
         <li>Created bullet interactions such as fire with oil and water with lightning, so several playstyles are viable.</li>
       </ul>
       <div class="links">
-        <a class="button primary" href="https://funrug-studio.itch.io/little-cowboy">Play on itch.io</a>
-        <a class="button" href="https://github.com/AlexWeiswasser/GMTKGameJam2026">View the code</a>
+        <a class="button primary" href="little-cowboy.html">More about this game</a>
+        <a class="button" href="https://funrug-studio.itch.io/little-cowboy" target="_blank" rel="noopener">Play on itch.io</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/GMTKGameJam2026" target="_blank" rel="noopener">View the code</a>
       </div>
     </div>
     <figure class="media" data-file="media/little-cowboy.gif">
@@ -100,7 +105,7 @@
   </section>
 
   <!-- ============ LIGHTHOUSE TIME MACHINE ============ -->
-  <section class="game" id="lighthouse">
+  <section class="game" id="lighthouse" style="--game: #f3d36b">
     <div class="text">
       <h2>Lighthouse Time Machine</h2>
       <p class="pitch">A real-time strategy action game about managing what you can see, made in under 24 hours. Second place at Wolfjam 2026.</p>
@@ -116,8 +121,9 @@
         <li>Four hours in, our first concept still wasn't working, so we pivoted to a better-scoped idea and finished on time.</li>
       </ul>
       <div class="links">
-        <a class="button primary" href="https://funrug-studio.itch.io/lighthouse-game">Play on itch.io</a>
-        <a class="button" href="https://github.com/AlexWeiswasser/WolfJam_2026">View the code</a>
+        <a class="button primary" href="lighthouse.html">More about this game</a>
+        <a class="button" href="https://funrug-studio.itch.io/lighthouse-game" target="_blank" rel="noopener">Play on itch.io</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/WolfJam_2026" target="_blank" rel="noopener">View the code</a>
       </div>
     </div>
     <figure class="media" data-file="media/lighthouse.gif">
@@ -134,8 +140,8 @@
         <!-- TODO: replace with one sentence on the game and what you built -->
         <p>Made for Champ Jam 2025.</p>
         <p class="text-links">
-          <a href="https://funrug-studio.itch.io/all-lawyers-go-to-hell">Play on itch.io</a>
-          <a href="https://github.com/AlexWeiswasser/ChampJam_2025">View the code</a>
+          <a href="https://funrug-studio.itch.io/all-lawyers-go-to-hell" target="_blank" rel="noopener">Play on itch.io</a>
+          <a href="https://github.com/AlexWeiswasser/ChampJam_2025" target="_blank" rel="noopener">View the code</a>
         </p>
       </div>
       <div>
@@ -143,8 +149,8 @@
         <!-- TODO: replace with one sentence on the game and what you built -->
         <p>Made for Global Game Jam 2026.</p>
         <p class="text-links">
-          <a href="https://funrug-studio.itch.io/perfect-princess-plan">Play on itch.io</a>
-          <a href="https://github.com/AlexWeiswasser/GlobalGameJam2026">View the code</a>
+          <a href="https://funrug-studio.itch.io/perfect-princess-plan" target="_blank" rel="noopener">Play on itch.io</a>
+          <a href="https://github.com/AlexWeiswasser/GlobalGameJam2026" target="_blank" rel="noopener">View the code</a>
         </p>
       </div>
     </div>
@@ -152,15 +158,16 @@
 
 </main>
 
+<!-- ============ CONTACT LINKS ============ -->
 <footer id="contact">
   <h2>Get in touch</h2>
   <p>Based in Burlington, VT, and open to relocation.</p>
   <div class="links">
-    <a class="button primary" href="resume.pdf">Download resume</a>
+    <a class="button primary" href="resume.pdf" target="_blank" rel="noopener">Download resume</a>
     <a class="button" href="mailto:amweiswasser@gmail.com">Email me</a>
-    <a class="button" href="https://www.linkedin.com/in/alexweiswasser">LinkedIn</a>
-    <a class="button" href="https://github.com/AlexWeiswasser">GitHub</a>
-    <a class="button" href="https://funrug-studio.itch.io">FunRug Studio on itch.io</a>
+    <a class="button" href="https://www.linkedin.com/in/alexweiswasser" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="button" href="https://github.com/AlexWeiswasser" target="_blank" rel="noopener">GitHub</a>
+    <a class="button" href="https://funrug-studio.itch.io" target="_blank" rel="noopener">FunRug Studio on itch.io</a>
   </div>
 </footer>
 
