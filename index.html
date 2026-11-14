@@ -18,46 +18,19 @@
     <h1>Alex Weiswasser</h1>
     <p class="role">Gameplay Programmer</p>
     <p>I'm a Game Programming student, making games on the side with my close friends. The theory I learn in class is defined and understood through completing and releasing games, whether on Steam, or during game jams.</p>
-    <p class="status">I specialize on the gameplay: functionality, feel, feedback, and fluidity. My goal is to find and emphasize the fun, and make sure everyone who plays has a blast.</p>
+    <p class="status">I specialize in the gameplay: functionality, feel, feedback, and fluidity. My goal is to find and emphasize the fun, and make sure everyone who plays has a blast.</p>
   </div>
   <!-- FunRug Studio block on the right -->
   <div class="studio">
     <a href="https://www.funrugstudio.com/" target="_blank" rel="noopener"><img src="media/funrug-logo.png" width="240" alt="FunRug Studio logo"></a>
-    <p><strong>Co-founder and co-owner of FunRug Studio LLC.</strong><br> So far, we've comercially released one game, MAGE, and our second, Fish Party, comes out in January.</p>
+    <p><strong>Co-founder and co-owner of FunRug Studio LLC.</strong><br> So far, we've commercially released one game, MAGE, and our second, Fish Party, comes out in January.</p>
   </div>
 </header>
 
 <main>
 
-  <!-- ============ MAGE ============ -->
-  <!-- The color after --game: is this game's button color. Swap it for a color from the game's art. -->
-  <section class="game" id="mage" style="--game: #22d664">
-    <div class="text">
-      <h2><img class="title-art" width="480" src="media/mage-title.png" alt="MAGE: Mega Awesome Gregarious Encounters"></h2>
-      <p class="pitch">Mega Awesome Gregarious Encounters. A 2D projectile party fighter for 2 to 4 players, shipped on Steam with 700+ sales and 5,000+ wishlists.</p>
-      <dl class="facts">
-        <dt>Role</dt><dd>Lead programmer, product owner</dd>
-        <dt>Team</dt><dd>4 people</dd>
-        <dt>Built with</dt><dd>Unity, C#</dd>
-        <dt>When</dt><dd>Sep 2024 to Jun 2026</dd>
-      </dl>
-      <ul>
-        <li>Led programming for a game with 21 characters, 200+ maps and a set of gameplay modifiers, from first prototype to Steam release.</li>
-        <li>Built a modular character system on scriptable objects, so designers could change existing Mages and create new ones without touching code.</li>
-        <li>Added persisting "ghost" projectiles that make counter timing more forgiving for every character without changing how the game feels.</li>
-      </ul>
-      <div class="links">
-        <a class="button primary" href="mage.html">More about this game</a>
-        <a class="button" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/" target="_blank" rel="noopener">View on Steam</a>
-      </div>
-      <p class="source-note">The repo is private because MAGE is sold on Steam. Relavent code samples are on the game's page.</p>
-    </div>
-    <figure class="media" data-file="media/mage.gif">
-      <img src="media/mage.gif" alt="MAGE gameplay: four mages trading projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </figure>
-  </section>
-
   <!-- ============ FISH PARTY ============ -->
+  <!-- The color after --game: is this game's button color. Swap it for a color from the game's art. -->
   <section class="game" id="fish-party" style="--game: #2fa8ec">
     <div class="text">
       <h2><img class="title-art" width="300" src="media/fish-party-title.png" alt="Fish Party"></h2>
@@ -69,45 +42,45 @@
         <dt>When</dt><dd>Jul 2026 to now</dd>
       </dl>
       <ul>
-        <li>Built local multiplayer for up to 12 simultaneous players and bots, with 16+ fish that each behave differently.</li>
-        <li>Wrote bot AI that reads the game state, scores each possible direction and picks a move, with difficulty scaling for new players.</li>
-        <li>Designed the one-button movement: fish rotate constantly and a press changes direction. Holding the button dashes, which adds skill without adding controls.</li>
+        <li>Built local multiplayer for up to 12 simultaneous players and bots, with 16+ fish that each behave differently, and multiple related stage objects.</li>
+        <li>Wrote bot AI that reads the game state, scores each possible direction and picks one, with difficulty scaling for new players, wall navigation, and dash usage.</li>
+        <li>Created one-button movement: fish rotate constantly and a press changes direction. Holding the button dashes, which adds skill expression without adding additional controls.</li>
       </ul>
       <div class="links">
         <a class="button primary" href="fish-party.html">More about this game</a>
         <a class="button" href="https://store.steampowered.com/app/5170080/Fish_Party/" target="_blank" rel="noopener">View on Steam</a>
       </div>
-      <p class="source-note">The repo is private because Fish Party is to be released on Steam as a paid game. Relavent code samples are on the game's page.</p>
+      <p class="source-note">The repo is private because Fish Party is to be released on Steam as a paid game. Relevant code samples are on the game's page.</p>
     </div>
     <figure class="media" data-file="media/fish-party.gif">
       <img src="media/fish-party.gif" alt="Fish Party gameplay: a dozen fish chasing each other" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </figure>
   </section>
 
-  <!-- ============ LITTLE COWBOY ============ -->
-  <section class="game" id="little-cowboy" style="--game: #fdd835">
+  <!-- ============ MAGE ============ -->
+  <section class="game" id="mage" style="--game: #22d664">
     <div class="text">
-      <h2><img class="title-art" width="540" src="media/little-cowboy-title.png" alt="Little Cowboy"></h2>
-      <p class="pitch">A revolver deck-building roguelike where every run loads a different chamber of bullets. 48th most played of 10,500 games in GMTK Game Jam 2026.</p>
+      <h2><img class="title-art" width="480" src="media/mage-title.png" alt="MAGE: Mega Awesome Gregarious Encounters"></h2>
+      <p class="pitch">Mega Awesome Gregarious Encounters. A 2D projectile party fighter for 2 to 4 players, shipped on Steam with 700+ sales and 5,000+ wishlists.</p>
       <dl class="facts">
-        <dt>Role</dt><dd>Lead programmer</dd>
-        <dt>Team</dt><dd>5 people</dd>
+        <dt>Role</dt><dd>Lead programmer, product owner</dd>
+        <dt>Team</dt><dd>4 people</dd>
         <dt>Built with</dt><dd>Unity, C#</dd>
-        <dt>When</dt><dd>Jul 2026, GMTK Game Jam</dd>
+        <dt>When</dt><dd>Sep 2024 to Jun 2026</dd>
       </dl>
       <ul>
-        <li>Programmed the player and enemy systems, including movement, health and the AI for all 6 enemy types.</li>
-        <li>Built one system that drives every elemental effect, plus the tool that tracks each player's unique set of bullets.</li>
-        <li>Created bullet interactions such as fire with oil and water with lightning, so several playstyles are viable.</li>
+        <li>Led programming for a game with 21 characters, 200+ maps and a set of gameplay modifiers, from side project all the way to Steam release.</li>
+        <li>Built a modular character system on scriptable objects, so designers could change existing Mages and create new ones without touching code.</li>
+        <li>Added persisting "ghost" projectiles that make counter timing more forgiving for every character without changing how the game feels.</li>
       </ul>
       <div class="links">
-        <a class="button primary" href="little-cowboy.html">More about this game</a>
-        <a class="button" href="https://funrug-studio.itch.io/little-cowboy" target="_blank" rel="noopener">Play on itch.io</a>
-        <a class="button" href="https://github.com/AlexWeiswasser/GMTKGameJam2026" target="_blank" rel="noopener">View the code</a>
+        <a class="button primary" href="mage.html">More about this game</a>
+        <a class="button" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/" target="_blank" rel="noopener">View on Steam</a>
       </div>
+      <p class="source-note">The repo is private because MAGE is sold on Steam. Relevant code samples are on the game's page.</p>
     </div>
-    <figure class="media" data-file="media/little-cowboy.gif">
-      <img src="media/little-cowboy.gif" alt="Little Cowboy gameplay: firing elemental bullets at enemies" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    <figure class="media" data-file="media/mage.gif">
+      <img src="media/mage.gif" alt="MAGE gameplay: four mages trading projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </figure>
   </section>
 
@@ -138,14 +111,41 @@
     </figure>
   </section>
 
-  <!-- ============ SMALLER JAM GAMES ============ -->
+  <!-- ============ LITTLE COWBOY ============ -->
+  <section class="game" id="little-cowboy" style="--game: #fdd835">
+    <div class="text">
+      <h2><img class="title-art" width="540" src="media/little-cowboy-title.png" alt="Little Cowboy"></h2>
+      <p class="pitch">A revolver deck-building roguelike where every run loads a different chamber of bullets. 48th most played of 10,500 games in GMTK Game Jam 2026.</p>
+      <dl class="facts">
+        <dt>Role</dt><dd>Lead programmer</dd>
+        <dt>Team</dt><dd>5 people</dd>
+        <dt>Built with</dt><dd>Unity, C#</dd>
+        <dt>When</dt><dd>Jul 2026, GMTK Game Jam</dd>
+      </dl>
+      <ul>
+        <li>Programmed the player and enemy systems, including movement, health and the AI for all 6 enemy types.</li>
+        <li>Built one system that drives every elemental effect, plus the tool that tracks each player's unique set of bullets.</li>
+        <li>Created bullet interactions such as fire with oil and water with lightning, so several playstyles are viable.</li>
+      </ul>
+      <div class="links">
+        <a class="button primary" href="little-cowboy.html">More about this game</a>
+        <a class="button" href="https://funrug-studio.itch.io/little-cowboy" target="_blank" rel="noopener">Play on itch.io</a>
+        <a class="button" href="https://github.com/AlexWeiswasser/GMTKGameJam2026" target="_blank" rel="noopener">View the code</a>
+      </div>
+    </div>
+    <figure class="media" data-file="media/little-cowboy.gif">
+      <img src="media/little-cowboy.gif" alt="Little Cowboy gameplay: firing elemental bullets at enemies" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </figure>
+  </section>
+
+  <!-- ============ ADDITIONAL GAMES ============ -->
   <section class="more" id="more">
-    <h2>More Jam Games</h2>
+    <h2>Additional Games</h2>
     <div class="more-list">
       <div>
         <h3>All Lawyers Go To Hell</h3>
         <!-- TODO: replace with one sentence on the game and what you built -->
-        <p>Made for Champ Jam 2025. Implimented a system in Unity's inspector to allow designers to implement text choices, along with those choices' point values.</p>
+        <p>Made for Champ Jam 2025. Implemented a system in Unity's inspector to allow designers to implement text choices, along with those choices' point values.</p>
         <p class="text-links">
           <a href="https://funrug-studio.itch.io/all-lawyers-go-to-hell" target="_blank" rel="noopener">Play on itch.io</a>
           <a href="https://github.com/AlexWeiswasser/ChampJam_2025" target="_blank" rel="noopener">View the code</a>
@@ -158,6 +158,14 @@
         <p class="text-links">
           <a href="https://funrug-studio.itch.io/perfect-princess-plan" target="_blank" rel="noopener">Play on itch.io</a>
           <a href="https://github.com/AlexWeiswasser/GlobalGameJam2026" target="_blank" rel="noopener">View the code</a>
+        </p>
+      </div>
+      <div>
+        <h3>DDR Detective</h3>
+        <!-- TODO: replace with one sentence on the game and what you built -->
+        <p>Made for my class, Game Studio 1. Lined up enemy spawning with the beat of the music, additionally adjusted to provide a break during bounty swap.</p>
+        <p class="text-links">
+          <a href="https://xavier-maczko.itch.io/ddr-detective" target="_blank" rel="noopener">Play on itch.io</a>
         </p>
       </div>
     </div>
