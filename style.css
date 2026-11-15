@@ -287,12 +287,35 @@ pre {
   color: var(--muted);
 }
 
-/* Two images with captions, in the right column of a game page */
-.shots {
-  display: grid;
-  gap: 3.5rem; /* space between the two images */
+/* ---------- Game page layout ---------- */
+body:has(> .detail) { padding: 0 var(--pad-x) var(--pad-y); }
+body:has(> .detail) .detail-top { padding: 1.5rem 0 0; }
+body:has(> .detail) .detail-title { padding: clamp(2rem, 5vw, 3.5rem) 0 0; max-width: 62rem; }
+body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 0 0; }
+
+/* The preface paragraph at the top of a game page */
+.detail .preface {
+  font-size: 1.15rem;
+  margin-bottom: 0;
 }
-.shot { margin: 0; }
+
+/* One section: text and code on the left, that section's image on the right */
+.part {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+.part-text h2 { margin-top: 0; }
+
+/* The image lines up with its section's heading and stays in view
+   while a long code sample scrolls past */
+.shot {
+  margin: 0;
+  position: sticky;
+  top: 1.5rem;
+}
 .shot figcaption {
   text-align: center;
   margin-top: 0.75rem;
@@ -300,44 +323,16 @@ pre {
   color: var(--muted);
 }
 /* Game page images keep their own shape (no cropping) */
-.shots .media { aspect-ratio: auto; }
-.shots .media.missing { aspect-ratio: 16 / 9; }
-.shots .media img { height: auto; object-fit: contain; }
-
-/* The preface paragraph at the top of a game page */
-.detail .preface {
-  font-size: 1.15rem;
-  margin-bottom: 2.5rem;
-}
-
-/* Game page layout: the screenshot column starts level with the title,
-   so the top right of the page is filled. */
-body:has(> .detail) {
-  display: grid;
-  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  grid-template-rows: auto auto 1fr;
-  column-gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
-  padding: 0 var(--pad-x) var(--pad-y);
-}
-body:has(> .detail) .detail-top { grid-column: 1 / -1; padding: 1.5rem 0 0; }
-body:has(> .detail) .detail-title { grid-column: 1; padding: clamp(2rem, 5vw, 3.5rem) 0 0; }
-body:has(> .detail) .detail { display: contents; }
-body:has(> .detail) .writeup { grid-column: 1; padding-top: clamp(2rem, 5vw, 3.5rem); }
-body:has(> .detail) .shots {
-  grid-column: 2;
-  grid-row: 2 / span 2;
-  margin-top: clamp(2rem, 5vw, 3.5rem);
-}
+.shot .media { aspect-ratio: auto; }
+.shot .media.missing { aspect-ratio: 16 / 9; }
+.shot .media img { height: auto; object-fit: contain; }
 
 /* ---------- Phones and narrow windows ---------- */
 @media (max-width: 820px) {
-  .intro, .game, .detail { grid-template-columns: minmax(0, 1fr); }
+  .intro, .game, .part { grid-template-columns: minmax(0, 1fr); }
   .studio { align-items: flex-start; text-align: left; }
   .game .media { order: -1; } /* GIF above the text on small screens */
-  body:has(> .detail) { grid-template-columns: minmax(0, 1fr); }
-  body:has(> .detail) .shots { grid-column: 1; grid-row: auto; }
-  body:has(> .detail) .writeup { padding-bottom: 1rem; }
+  .shot { position: static; }
 }
 
 @media (prefers-reduced-motion: reduce) {

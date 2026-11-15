@@ -20,6 +20,7 @@
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
   - Code goes between the two "script" lines in each CODE block. Paste it exactly
     as it is in Unity; you don't need to change any < or > characters.
+  - Each section has its own image, at the bottom of that section's block.
   - To delete a section, remove everything from its banner down to the next banner.
 -->
 
@@ -45,8 +46,6 @@
 </header>
 
 <main class="detail">
-<div class="writeup">
-
   <!-- ==============================================================
        PREFACE: your short intro to the project
        ============================================================== -->
@@ -57,6 +56,8 @@
   <!-- ==============================================================
        SECTION 1: The bullet system and its interactions
        ============================================================== -->
+  <section class="part">
+  <div class="part-text">
 
     <!-- Heading -->
     <h2>The bullet system and its interactions</h2>
@@ -79,9 +80,25 @@
       [A sentence or two on the interesting lines above.]
     </p>
 
+  </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-1.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/little-cowboy-1.png">
+      <img src="media/little-cowboy-1.png" alt="Little Cowboy screenshot 1" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: what this image shows]
+    </figcaption>
+  </figure>
+  </section>
+
   <!-- ==============================================================
        SECTION 2: Enemy AI
        ============================================================== -->
+  <section class="part">
+  <div class="part-text">
 
     <!-- Heading -->
     <h2>Enemy AI</h2>
@@ -104,25 +121,9 @@
       [A sentence or two on the interesting lines above.]
     </p>
 
-</div>
+  </div>
 
-<!-- ==============================================================
-     IMAGES: two images on the right, each with a caption
-     ============================================================== -->
-<aside class="shots">
-
-  <!-- IMAGE 1: put the file in the media folder as little-cowboy-1.png
-       (if it isn't a .png, change the ending in both places below) -->
-  <figure class="shot">
-    <div class="media" data-file="media/little-cowboy-1.png">
-      <img src="media/little-cowboy-1.png" alt="Little Cowboy screenshot 1" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
-  </figure>
-
-  <!-- IMAGE 2: put the file in the media folder as little-cowboy-2.png
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-2.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-2.png">
@@ -132,8 +133,7 @@
       [Caption: what this image shows]
     </figcaption>
   </figure>
-
-</aside>
+  </section>
 
 </main>
 

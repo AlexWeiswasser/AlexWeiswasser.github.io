@@ -20,6 +20,7 @@
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
   - Code goes between the two "script" lines in each CODE block. Paste it exactly
     as it is in Unity; you don't need to change any < or > characters.
+  - Each section has its own image, at the bottom of that section's block.
   - To delete a section, remove everything from its banner down to the next banner.
 -->
 
@@ -45,8 +46,6 @@
 </header>
 
 <main class="detail">
-<div class="writeup">
-
   <!-- ==============================================================
        PREFACE: your short intro to the project
        ============================================================== -->
@@ -57,6 +56,8 @@
   <!-- ==============================================================
        SECTION 1: Moving pieces with interfaces
        ============================================================== -->
+  <section class="part">
+  <div class="part-text">
 
     <!-- Heading -->
     <h2>Moving pieces with interfaces</h2>
@@ -79,9 +80,25 @@
       [A sentence or two on the interesting lines above.]
     </p>
 
+  </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-1.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/perfect-princess-plan-1.png">
+      <img src="media/perfect-princess-plan-1.png" alt="Perfect Princess Plan puzzle setup in the Unity inspector" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: the puzzle setup in the inspector]
+    </figcaption>
+  </figure>
+  </section>
+
   <!-- ==============================================================
        SECTION 2: The puzzle setup system
        ============================================================== -->
+  <section class="part">
+  <div class="part-text">
 
     <!-- Heading -->
     <h2>The puzzle setup system</h2>
@@ -104,25 +121,9 @@
       [A sentence or two on the interesting lines above.]
     </p>
 
-</div>
+  </div>
 
-<!-- ==============================================================
-     IMAGES: two images on the right, each with a caption
-     ============================================================== -->
-<aside class="shots">
-
-  <!-- IMAGE 1: put the file in the media folder as perfect-princess-plan-1.png
-       (if it isn't a .png, change the ending in both places below) -->
-  <figure class="shot">
-    <div class="media" data-file="media/perfect-princess-plan-1.png">
-      <img src="media/perfect-princess-plan-1.png" alt="Perfect Princess Plan puzzle setup in the Unity inspector" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </div>
-    <figcaption>
-      [Caption: the puzzle setup in the inspector]
-    </figcaption>
-  </figure>
-
-  <!-- IMAGE 2: put the file in the media folder as perfect-princess-plan-2.png
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-2.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/perfect-princess-plan-2.png">
@@ -132,8 +133,7 @@
       [Caption: a puzzle fully set up and ready to go]
     </figcaption>
   </figure>
-
-</aside>
+  </section>
 
 </main>
 
