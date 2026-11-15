@@ -29,37 +29,38 @@
   <!-- ============ LEFT: your writing and code ============ -->
   <div class="writeup">
 
-    <h2>Bots that score every direction</h2>
-    <p>[Write this in your own words. What does a bot look at each frame? How does it score a direction? How does difficulty change the scoring, and what did early versions get wrong?]</p>
-    <p class="code-file">FishBot.cs</p>
-<pre><code>// Paste 15 to 40 lines of the real code here.
+    <!-- Preface: a short intro to the project in your own words -->
+    <p class="preface">[Preface. What Fish Party is, where it stands, and what your part in it has been.]</p>
+
+    <h2>Twelve separate inputs, bots included</h2>
+    <p>[How 12 players and bots each run as their own input. Touch on the dash here.]</p>
+    <p class="code-file">PlayerInput.cs</p>
+<pre><code>// Paste the real code here.
 // Replace every &lt; with &amp;lt; and every &gt; with &amp;gt; or the page will break.</code></pre>
-    <p>[One or two sentences pointing at the interesting lines above.]</p>
+    <p>[A sentence or two on the interesting lines above.]</p>
 
-    <h2>One-button movement</h2>
-    <p>[Why one button? How did constant rotation plus a press come about, and what did adding the hold-to-dash change for skilled players? What did you try that didn't work?]</p>
-    <p class="code-file">FishMovement.cs</p>
+    <h2>The bots</h2>
+    <p>[How a bot reads the game, scores directions and picks one. Difficulty, wall navigation, dash usage.]</p>
+    <p class="code-file">FishBot.cs</p>
 <pre><code>// Paste the real code here.</code></pre>
-    <p>[One or two sentences pointing at the interesting lines above.]</p>
-
-    <h2>Twelve players at once</h2>
-    <p>[Two or three sentences. What was hard about supporting 12 players and bots together, and 16+ fish that each behave differently?]</p>
+    <p>[A sentence or two on the interesting lines above.]</p>
 
   </div>
 
-  <!-- ============ RIGHT: four screenshots, stacked ============ -->
+  <!-- ============ RIGHT: two images, each with a caption ============ -->
+  <!-- If an image isn't a .png, change the ending in BOTH places on its line. -->
   <aside class="shots">
-    <figure class="media" data-file="media/fish-party-1.png">
-      <img src="media/fish-party-1.png" alt="Fish Party screenshot 1" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    <figure class="shot">
+      <div class="media" data-file="media/fish-party-1.png">
+        <img src="media/fish-party-1.png" alt="Fish Party character joining screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      </div>
+      <figcaption>[Caption: the character joining screen]</figcaption>
     </figure>
-    <figure class="media" data-file="media/fish-party-2.png">
-      <img src="media/fish-party-2.png" alt="Fish Party screenshot 2" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </figure>
-    <figure class="media" data-file="media/fish-party-3.png">
-      <img src="media/fish-party-3.png" alt="Fish Party screenshot 3" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </figure>
-    <figure class="media" data-file="media/fish-party-4.png">
-      <img src="media/fish-party-4.png" alt="Fish Party screenshot 4" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    <figure class="shot">
+      <div class="media" data-file="media/fish-party-2.png">
+        <img src="media/fish-party-2.png" alt="Fish Party bot debug visuals" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      </div>
+      <figcaption>[Caption: the bots' debug visuals]</figcaption>
     </figure>
   </aside>
 

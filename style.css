@@ -102,6 +102,7 @@ h1, h2, h3 {
   border-radius: 4px;
   margin-bottom: 0.75rem;
 }
+.title-art.smooth { image-rendering: auto; } /* for titles that aren't pixel art */
 
 /* ---------- Game sections ---------- */
 .game {
@@ -262,6 +263,7 @@ footer .links { margin-bottom: 0; }
   margin: 2.75rem 0 0.75rem;
 }
 .detail .writeup > h2:first-child { margin-top: 0; }
+.detail .preface + h2 { margin-top: 0; }
 .detail p, .detail ul { max-width: 62ch; margin: 0 0 1rem; }
 .detail ul { padding-left: 1.15rem; }
 .detail li { margin-bottom: 0.5rem; }
@@ -285,16 +287,27 @@ pre {
   color: var(--muted);
 }
 
-/* Four screenshots joined into one column */
+/* Two images with captions, in the right column of a game page */
 .shots {
   display: grid;
-  gap: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #171c26;
+  gap: 2.25rem;
 }
-.shots .media { border-radius: 0; }
-.shots .media.missing + .media.missing { border-top: 0; }
+.shot { margin: 0; }
+.shot figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+/* Game page images keep their own shape (no cropping) */
+.shots .media { aspect-ratio: auto; }
+.shots .media.missing { aspect-ratio: 16 / 9; }
+.shots .media img { height: auto; object-fit: contain; }
+
+/* The preface paragraph at the top of a game page */
+.detail .preface {
+  font-size: 1.15rem;
+  margin-bottom: 2.5rem;
+}
 
 /* Game page layout: the screenshot column starts level with the title,
    so the top right of the page is filled. */
