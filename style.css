@@ -287,6 +287,37 @@ pre {
   color: var(--muted);
 }
 
+/* Code selector: a row of buttons that switch which code sample is shown */
+.tab-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+}
+.tab-bar button {
+  padding: 0.4rem 0.8rem;
+  border: 1.5px solid #4a556b;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-family: ui-monospace, "Cascadia Code", Consolas, Menlo, monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.tab-bar button:hover { border-color: var(--game); color: var(--text); }
+.tab-bar button[aria-selected="true"] {
+  background: var(--game);
+  border-color: var(--game);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+.tab-bar button:focus-visible { outline: 2px solid var(--game); outline-offset: 3px; }
+.code-tabs pre {
+  margin-top: 0.75rem;
+  max-height: 34rem;  /* long functions scroll inside the box, so the page stays short */
+  overflow: auto;
+}
+
 /* ---------- Game page layout ---------- */
 body:has(> .detail) { padding: 0 var(--pad-x) var(--pad-y); }
 body:has(> .detail) .detail-top { padding: 1.5rem 0 0; }

@@ -18,8 +18,10 @@
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - Code goes between the two "script" lines in each CODE block. Paste it exactly
-    as it is in Unity; you don't need to change any < or > characters.
+  - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
+    you don't need to change any < or > characters.
+  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION
+    has a name (data-name), its code, and its own description.
   - Each section has its own image, at the bottom of that section's block.
   - To delete a section, remove everything from its banner down to the next banner.
 -->
@@ -58,13 +60,19 @@
 
     <!-- Your description -->
     <p>
-      Each player gets one button. That button is how you move, how you dash, how you ready up, and change your name. An input system was required that could work for up to 12 players, be effecient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input managment.
+      Each player gets one button. That button is how you move, how you dash, how you ready up, and change your name. An input system was required that could work for up to 12 players, be efficient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input management.
     </p>
 
     <!-- File name shown above the code -->
     <p class="code-file">PlayerHandler.cs</p>
 
-    <!-- CODE: paste between the two script lines -->
+    <!-- CODE SELECTOR: one option per button. The button's label is the data-name.
+         Each option has its own code (between the script lines) and its own description.
+         To add an option, copy a whole OPTION block; to remove one, delete its block. -->
+    <div class="code-tabs">
+
+      <!-- ---------- OPTION 1: Setting up players ---------- -->
+      <div class="tab" data-name="Setting up players">
 <script type="text/plain" class="code">
 // Setting up players
 private void Start()
@@ -102,7 +110,15 @@ private void Start()
 		}
 	}
 }
+</script>
+        <p>
+          In the playerHandler, each local player creates a dictionary key on creation, comprised of their device ID and control path. This allows lookup times for all local inputs to be O(1), making sure that even with the maximum 12 players, efficiency is guaranteed.
+        </p>
+      </div>
 
+      <!-- ---------- OPTION 2: Reading input ---------- -->
+      <div class="tab" data-name="Reading input">
+<script type="text/plain" class="code">
 // Activating player input 
 private void HandleInput(InputControl control)
 {
@@ -112,11 +128,12 @@ private void HandleInput(InputControl control)
 	EventBus<LocalButtonPressed>.Call(new LocalButtonPressed { playerIndex = playerIndex });
 }
 </script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
 
-    <!-- What to notice in the code -->
-    <p>
-      In the playerHandler, each local player creates a dictionary key on creation, comprised of their device ID and control path. This allows lookup times for all local inputs to be O(1), making sure that even with the maximum 12 players, effeciency is guarenteed. 
-    </p>
+    </div>
 
   </div>
 
@@ -143,21 +160,285 @@ private void HandleInput(InputControl control)
 
     <!-- Your description -->
     <p>
-      [How a bot reads the game, scores directions and picks one. Difficulty, wall navigation, dash usage.]
+      The bots in Fish Party have an array of 18 floats in a circle around them. They analyze the surrounding area around them, depending on their goals and fears, and score those directions. Each score spreads to the entire circle, diminishing along the way. Any spotted walls close enough will set that direction to negative 5. This setup automatically lets fish navigate around walls, as the leaking high point values will point the correct path around the wall.  
     </p>
 
     <!-- File name shown above the code -->
     <p class="code-file">FishBot.cs</p>
 
-    <!-- CODE: paste between the two script lines -->
-<script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+    <!-- CODE SELECTOR: one option per button. The button's label is the data-name.
+         Each option has its own code (between the script lines) and its own description.
+         To add an option, copy a whole OPTION block; to remove one, delete its block. -->
+    <div class="code-tabs">
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+      <!-- ---------- OPTION 1: Update ---------- -->
+      <div class="tab" data-name="Update">
+<script type="text/plain" class="code">
+private void Update()
+{
+	if (!myMovement.GetCanMove()) return;
+	if(!smartsAssigned)
+	{
+		SetStats();
+		smartsAssigned = true;
+	}
+	if(circleTimer == null) return;
+
+	// Fill out our data
+	circleTimer.Tick(Time.deltaTime);
+	if (circleTimer.Finished)
+	{
+		circleTimer.Reset();
+		ResetCircle();
+
+		if (preyControllers != null && preyControllers.Count > 0)
+			UpdateCircleByPrey(preyControllers);
+		if (friendControllers != null && friendControllers.Count > 0)
+			UpdateCircleByFriend(friendControllers);
+		if (goalTransforms != null && goalTransforms.Count > 0)
+			UpdateCircleByTransform(goalTransforms);
+		if (dangerousGoalTransforms != null && dangerousGoalTransforms.Count > 0)
+			UpdateCircleByDangerousTransform(dangerousGoalTransforms);
+		if (dangerControllers != null && dangerControllers.Count > 0)
+			UpdateCircleByDangerNew(dangerControllers);
+		if (sideGoalControllers != null && sideGoalControllers.Count > 0)
+			UpdateCircleBySideGoal(sideGoalControllers);
+		if (mediumGoalControllers != null && mediumGoalControllers.Count > 0)
+			UpdateCircleByMediumGoal(mediumGoalControllers);
+		if (mediumDangerControllers != null && mediumDangerControllers.Count > 0)
+			UpdateCircleByMediumDanger(mediumDangerControllers);
+
+		// All things wall
+		bool spotWalls = true;
+		if (detectAlgaeWalls && SpotAlgaeWalls()) spotWalls = false;
+		if (spotWalls)
+		{
+			SpotWalls();
+
+			// Only check positions to be if not detecting an algae wall, so parrotfish don't bias towards the middle of an algae wall
+			if (positionsToBe != null && positionsToBe.Count > 0)
+				UpdateCircleByPositions(positionsToBe);
+		}
+
+		// All things rotation
+		currentCourse = DetermineCourse();
+		Steer();
+	}
+
+	// Debug
+	DrawDebugCircleBad();
+	DrawDebugCircleGood();
+	DebugStats();
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Steer ---------- -->
+      <div class="tab" data-name="Steer">
+<script type="text/plain" class="code">
+private void Steer()
+{
+	if (currentCourse < 0) return;
+
+	Vector2 targetDir = CourseToDirection(currentCourse);
+	float angle = Vector2.SignedAngle(-transform.right, targetDir);
+
+	RotationDirection intended = angle < 0f
+		? RotationDirection.Clockwise
+		: RotationDirection.CounterClockwise;
+
+	if (Mathf.Abs(angle) > angleCap)
+	{
+		if (myMovement.GetRotationDirection() != intended)
+			myMovement.FlipRotation();
+	}
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: DetermineCourse ---------- -->
+      <div class="tab" data-name="DetermineCourse">
+<script type="text/plain" class="code">
+private int DetermineCourse()
+{
+	float highest = Mathf.NegativeInfinity;
+	int position = -1;
+
+	if (smarts == IntelligenceLevel.Mastermind || smartOverride)
+	{
+		for (int i = 0; i < circleScores.Length; i++)
+		{
+			if (circleScores[i] > highest)
+			{
+				highest = circleScores[i];
+				position = i;
+			}
+		}
+	}
+	else
+	{
+		int intelLevel = 1;
+
+		IntelligenceLevel tempSmarts = smarts;
+		if (smarts == IntelligenceLevel.Randomize) tempSmarts = intellegenceLevels[myMovement.GetPlayerIndex];
+
+		switch (tempSmarts)
+		{
+			case IntelligenceLevel.Genius:
+				{
+					intelLevel = Random.Range(2, 4);
+				}
+				break;
+			case IntelligenceLevel.Smart:
+				{
+					intelLevel = Random.Range(4, 6);
+				}
+				break;
+			case IntelligenceLevel.Average:
+				{
+					intelLevel = Random.Range(6, 8);
+				}
+				break;
+			case IntelligenceLevel.Dumb:
+				{
+					intelLevel = Random.Range(8, 10);
+				}
+				break;
+		}
+
+		int[] positions = new int[circleScores.Length];
+		for (int i = 0; i < positions.Length; i++) positions[i] = i;
+		System.Array.Sort(positions, (a, b) => circleScores[b].CompareTo(circleScores[a]));
+
+		// positions[0] = index of highest score, positions[1] = index of second highest score, etc
+
+		int choice = Random.Range(0, intelLevel - 1);
+		position = positions[choice];
+	}
+
+	return position;
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 4: IncrementPointsWholeCircle ---------- -->
+      <div class="tab" data-name="IncrementPointsWholeCircle">
+<script type="text/plain" class="code">
+private void IncrementPointsWholeCircle(float angle, float pointAmount)
+{
+	int circleArraySize = circleScores.Length;
+	int half = circleArraySize / 2;
+	int positionInCircle = Mathf.FloorToInt(angle / (360f / circleArraySize)) % circleArraySize;
+
+	circleScores[positionInCircle] += pointAmount; 
+	for (int offset = 1; offset < half; offset++) 
+	{
+		float share = pointAmount / (offset + 1);
+		circleScores[(positionInCircle + offset) % circleArraySize] += share;
+		circleScores[(positionInCircle - offset + circleArraySize) % circleArraySize] += share;
+	}
+	circleScores[(positionInCircle + half) % circleArraySize] += pointAmount / (half + 1); 
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 5: UpdateCircleByPrey ---------- -->
+      <div class="tab" data-name="UpdateCircleByPrey">
+<script type="text/plain" class="code">
+private void UpdateCircleByPrey(HashSet<FishController> goalControllers)
+{
+	foreach (FishController fish in goalControllers)
+	{
+		if (fish == null) continue;
+		if(!fish.GetInIframes() && fish.GetCanBehavior())
+		{
+			float distance = (fish.transform.position - transform.position).magnitude;
+			float falloff = GoalFalloff(distance);
+			if (falloff <= 0f) continue;
+
+			Vector2 direction = (fish.transform.position - transform.position).normalized;
+			float angle = Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg;
+			if (angle < 0f) angle += 360f;
+
+			IncrementPointsWholeCircle(angle, goalWeight * falloff);
+			if (distance < predatorAttentionLength) SetAttention(angle);
+
+			GoalDetermineDash(fish.transform.position);
+		}
+	}
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 6: SpotWalls ---------- -->
+      <div class="tab" data-name="SpotWalls">
+<script type="text/plain" class="code">
+private void SpotWalls()
+{
+	Vector2 forward = -transform.right;
+	int arr = circleScores.Length;
+
+	for (int i = 0; i < arr; i++)
+	{
+		Vector2 dir = CourseToDirection(i);
+
+		RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, wallDetectDistance, obstacleMask);
+		if (hit.collider == null) continue;
+
+		if(circleScores[i] != Mathf.Infinity)
+			circleScores[i] = wallWeight; 
+	}
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 7: Dash decisions ---------- -->
+      <div class="tab" data-name="Dash decisions">
+<script type="text/plain" class="code">
+private void GoalDetermineDash(Vector3 goalPos)
+{
+	float distance = Vector3.Distance(goalPos, transform.position);
+
+	Vector2 direction = (goalPos - transform.position).normalized;
+	float angle = Vector2.Angle(direction, -transform.right);
+
+	if (distance < minGoalDashDistance && angle < 40) Dash();
+}
+
+private void DangerDetermineDash(Vector3 dangerPos)
+{
+	float distance = Vector3.Distance(dangerPos, transform.position);
+
+	Vector2 direction = (transform.position - dangerPos).normalized;
+	float angle = Vector2.Angle(direction, -transform.right);
+
+	if (distance < minDangerDashDistance && angle < 40f) Dash();
+}
+</script>
+        <p>
+          [What this function does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
