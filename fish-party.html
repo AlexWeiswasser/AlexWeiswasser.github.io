@@ -12,59 +12,174 @@
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
 <body style="--game: #2fa8ec">
 
+<!--
+  HOW TO EDIT THIS PAGE
+  - Everything you need to write is marked [in square brackets]. Replace the
+    brackets and the text inside them with your own words.
+  - Each part of the page sits under a banner made of ===== lines.
+  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
+  - Code goes between the two "script" lines in each CODE block. Paste it exactly
+    as it is in Unity; you don't need to change any < or > characters.
+  - To delete a section, remove everything from its banner down to the next banner.
+-->
+
+<!-- ==============================================================
+     TOP OF PAGE: back button, title, summary line, buttons
+     ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#fish-party">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
   <h1><img class="title-art" width="300" src="media/fish-party-title.png" alt="Fish Party"></h1>
-  <p>A one-button party game for up to 12 players. Lead programmer on a team of 4, Jul 2026 to now. In development for Steam.</p>
+
+  <!-- One or two lines under the title -->
+  <p>
+    A one-button party game for up to 12 players. Lead programmer on a team of 4, Jul 2026 to now. In development for Steam.
+  </p>
+
   <div class="links">
     <a class="button" href="https://store.steampowered.com/app/5170080/Fish_Party/" target="_blank" rel="noopener">View on Steam</a>
   </div>
 </header>
 
 <main class="detail">
+<div class="writeup">
 
-  <!-- ============ LEFT: your writing and code ============ -->
-  <div class="writeup">
+  <!-- ==============================================================
+       PREFACE: your short intro to the project
+       ============================================================== -->
+    <p class="preface">
+      [Preface. What Fish Party is, where it stands, and what your part in it has been.]
+    </p>
 
-    <!-- Preface: a short intro to the project in your own words -->
-    <p class="preface">[Preface. What Fish Party is, where it stands, and what your part in it has been.]</p>
+  <!-- ==============================================================
+       SECTION 1: Twelve separate inputs, bots included
+       ============================================================== -->
 
+    <!-- Heading -->
     <h2>Twelve separate inputs, bots included</h2>
-    <p>[How 12 players and bots each run as their own input. Touch on the dash here.]</p>
-    <p class="code-file">PlayerInput.cs</p>
-<pre><code>// Paste the real code here.
-// Replace every &lt; with &amp;lt; and every &gt; with &amp;gt; or the page will break.</code></pre>
-    <p>[A sentence or two on the interesting lines above.]</p>
 
+    <!-- Your description -->
+    <p>
+      [How 12 players and bots each run as their own input. Touch on the dash here.]
+    </p>
+
+    <!-- File name shown above the code -->
+    <p class="code-file">PlayerHandler.cs</p>
+
+    <!-- CODE: paste between the two script lines -->
+<script type="text/plain" class="code">
+// Setting up players
+private void Start()
+{
+	for (int i = 0; i < MAX_PLAYER_COUNT; i++)
+	{
+		if (GetPlayerExists(i))
+		{
+			if (GetPlayerType(i) == PlayerType.Local)
+			{
+				players.Add(new Player
+				{
+					playerIndex = GetPlayerId(i),
+					color = playerColorsToColor[GetPlayerColor(i)],
+					type = GetPlayerType(i),
+					deviceId = GetPlayerDeviceId(i),
+					actionControlPath = GetPlayerControlPath(i)
+				});
+
+				string playerKey = CreatePlayerKey(i);
+				inputToPlayer.Add(playerKey, GetPlayerId(i));
+			}
+			else if (GetPlayerType(i) == PlayerType.Bot)
+			{
+				players.Add(new Player
+				{
+					playerIndex = GetPlayerId(i),
+					color = playerColorsToColor[GetPlayerColor(i)],
+					type = GetPlayerType(i),
+					deviceId = -1,
+					actionControlPath = null,
+					readied = true
+				});
+			}
+		}
+	}
+
+
+// Activating player input 
+private void HandleInput(InputControl control)
+{
+	string potentialPlayerKey = control.device.deviceId + control.path;
+	int playerIndex = inputToPlayer.ContainsKey(potentialPlayerKey) ? inputToPlayer[potentialPlayerKey] : -1;
+
+	EventBus<LocalButtonPressed>.Call(new LocalButtonPressed { playerIndex = playerIndex });
+}
+</script>
+
+    <!-- What to notice in the code -->
+    <p>
+      [A sentence or two on the interesting lines above.]
+    </p>
+
+  <!-- ==============================================================
+       SECTION 2: The bots
+       ============================================================== -->
+
+    <!-- Heading -->
     <h2>The bots</h2>
-    <p>[How a bot reads the game, scores directions and picks one. Difficulty, wall navigation, dash usage.]</p>
+
+    <!-- Your description -->
+    <p>
+      [How a bot reads the game, scores directions and picks one. Difficulty, wall navigation, dash usage.]
+    </p>
+
+    <!-- File name shown above the code -->
     <p class="code-file">FishBot.cs</p>
-<pre><code>// Paste the real code here.</code></pre>
-    <p>[A sentence or two on the interesting lines above.]</p>
 
-  </div>
+    <!-- CODE: paste between the two script lines -->
+<script type="text/plain" class="code">
+// Paste the real code here.
+</script>
 
-  <!-- ============ RIGHT: two images, each with a caption ============ -->
-  <!-- If an image isn't a .png, change the ending in BOTH places on its line. -->
-  <aside class="shots">
-    <figure class="shot">
-      <div class="media" data-file="media/fish-party-1.png">
-        <img src="media/fish-party-1.png" alt="Fish Party character joining screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
-      </div>
-      <figcaption>[Caption: the character joining screen]</figcaption>
-    </figure>
-    <figure class="shot">
-      <div class="media" data-file="media/fish-party-2.png">
-        <img src="media/fish-party-2.png" alt="Fish Party bot debug visuals" onerror="this.parentNode.classList.add('missing'); this.remove()">
-      </div>
-      <figcaption>[Caption: the bots' debug visuals]</figcaption>
-    </figure>
-  </aside>
+    <!-- What to notice in the code -->
+    <p>
+      [A sentence or two on the interesting lines above.]
+    </p>
+
+</div>
+
+<!-- ==============================================================
+     IMAGES: two images on the right, each with a caption
+     ============================================================== -->
+<aside class="shots">
+
+  <!-- IMAGE 1: put the file in the media folder as fish-party-1.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/fish-party-1.png">
+      <img src="media/fish-party-1.png" alt="Fish Party character joining screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: the character joining screen]
+    </figcaption>
+  </figure>
+
+  <!-- IMAGE 2: put the file in the media folder as fish-party-2.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/fish-party-2.png">
+      <img src="media/fish-party-2.png" alt="Fish Party bot debug visuals" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: the bots' debug visuals]
+    </figcaption>
+  </figure>
+
+</aside>
 
 </main>
 
+<script src="code.js"></script>
 </body>
 </html>

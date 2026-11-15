@@ -290,11 +290,12 @@ pre {
 /* Two images with captions, in the right column of a game page */
 .shots {
   display: grid;
-  gap: 2.25rem;
+  gap: 3.5rem; /* space between the two images */
 }
 .shot { margin: 0; }
 .shot figcaption {
-  margin-top: 0.6rem;
+  text-align: center;
+  margin-top: 0.75rem;
   font-size: 0.95rem;
   color: var(--muted);
 }

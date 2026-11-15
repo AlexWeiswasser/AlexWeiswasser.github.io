@@ -12,59 +12,130 @@
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
 <body style="--game: #22d664">
 
+<!--
+  HOW TO EDIT THIS PAGE
+  - Everything you need to write is marked [in square brackets]. Replace the
+    brackets and the text inside them with your own words.
+  - Each part of the page sits under a banner made of ===== lines.
+  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
+  - Code goes between the two "script" lines in each CODE block. Paste it exactly
+    as it is in Unity; you don't need to change any < or > characters.
+  - To delete a section, remove everything from its banner down to the next banner.
+-->
+
+<!-- ==============================================================
+     TOP OF PAGE: back button, title, summary line, buttons
+     ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#mage">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
   <h1><img class="title-art" width="480" src="media/mage-title.png" alt="MAGE: Mega Awesome Gregarious Encounters"></h1>
-  <p>Mega Awesome Gregarious Encounters. A 2D projectile party fighter for 2 to 4 players. Lead programmer and product owner on a team of 4, Sep 2024 to Jun 2026.</p>
+
+  <!-- One or two lines under the title -->
+  <p>
+    Mega Awesome Gregarious Encounters. A 2D projectile party fighter for 2 to 4 players. Lead programmer and product owner on a team of 4, Sep 2024 to Jun 2026.
+  </p>
+
   <div class="links">
     <a class="button" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/" target="_blank" rel="noopener">View on Steam</a>
   </div>
 </header>
 
 <main class="detail">
+<div class="writeup">
 
-  <!-- ============ LEFT: your writing and code ============ -->
-  <div class="writeup">
+  <!-- ==============================================================
+       PREFACE: your short intro to the project
+       ============================================================== -->
+    <p class="preface">
+      [Preface. MAGE is older work. What it taught you, and what you would do differently now.]
+    </p>
 
-    <!-- Preface: a short intro to the project in your own words -->
-    <p class="preface">[Preface. MAGE is older work. What it taught you, and what you would do differently now.]</p>
+  <!-- ==============================================================
+       SECTION 1: Modular characters
+       ============================================================== -->
 
+    <!-- Heading -->
     <h2>Modular characters</h2>
-    <p>[How the scriptable-object character system works and what it let designers do.]</p>
+
+    <!-- Your description -->
+    <p>
+      [How the scriptable-object character system works and what it let designers do.]
+    </p>
+
+    <!-- File name shown above the code -->
     <p class="code-file">MageData.cs</p>
-<pre><code>// Paste the real code here.
-// Replace every &lt; with &amp;lt; and every &gt; with &amp;gt; or the page will break.</code></pre>
-    <p>[A sentence or two on the interesting lines above.]</p>
 
+    <!-- CODE: paste between the two script lines -->
+<script type="text/plain" class="code">
+// Paste the real code here.
+</script>
+
+    <!-- What to notice in the code -->
+    <p>
+      [A sentence or two on the interesting lines above.]
+    </p>
+
+  <!-- ==============================================================
+       SECTION 2: Ghost projectiles
+       ============================================================== -->
+
+    <!-- Heading -->
     <h2>Ghost projectiles</h2>
-    <p>[What felt wrong about counter timing, and how ghost projectiles fixed it.]</p>
+
+    <!-- Your description -->
+    <p>
+      [What felt wrong about counter timing, and how ghost projectiles fixed it.]
+    </p>
+
+    <!-- File name shown above the code -->
     <p class="code-file">Projectile.cs</p>
-<pre><code>// Paste the real code here.</code></pre>
-    <p>[A sentence or two on the interesting lines above.]</p>
 
-  </div>
+    <!-- CODE: paste between the two script lines -->
+<script type="text/plain" class="code">
+// Paste the real code here.
+</script>
 
-  <!-- ============ RIGHT: two images, each with a caption ============ -->
-  <!-- If an image isn't a .png, change the ending in BOTH places on its line. -->
-  <aside class="shots">
-    <figure class="shot">
-      <div class="media" data-file="media/mage-1.png">
-        <img src="media/mage-1.png" alt="MAGE modular character setup" onerror="this.parentNode.classList.add('missing'); this.remove()">
-      </div>
-      <figcaption>[Caption: the modular characters]</figcaption>
-    </figure>
-    <figure class="shot">
-      <div class="media" data-file="media/mage-2.png">
-        <img src="media/mage-2.png" alt="MAGE ghost projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
-      </div>
-      <figcaption>[Caption: ghost projectiles in action]</figcaption>
-    </figure>
-  </aside>
+    <!-- What to notice in the code -->
+    <p>
+      [A sentence or two on the interesting lines above.]
+    </p>
+
+</div>
+
+<!-- ==============================================================
+     IMAGES: two images on the right, each with a caption
+     ============================================================== -->
+<aside class="shots">
+
+  <!-- IMAGE 1: put the file in the media folder as mage-1.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/mage-1.png">
+      <img src="media/mage-1.png" alt="MAGE modular character setup" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: the modular characters]
+    </figcaption>
+  </figure>
+
+  <!-- IMAGE 2: put the file in the media folder as mage-2.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/mage-2.png">
+      <img src="media/mage-2.png" alt="MAGE ghost projectiles" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: ghost projectiles in action]
+    </figcaption>
+  </figure>
+
+</aside>
 
 </main>
 
+<script src="code.js"></script>
 </body>
 </html>
