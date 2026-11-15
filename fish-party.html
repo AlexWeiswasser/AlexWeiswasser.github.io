@@ -34,12 +34,7 @@
 <header class="detail-title">
   <h1><img class="title-art" width="300" src="media/fish-party-title.png" alt="Fish Party"></h1>
 
-  <!-- One or two lines under the title -->
-  <p>
-    A one-button party game for up to 12 players. Lead programmer on a team of 4, Jul 2026 to now. In development for Steam.
-  </p>
-
-  <div class="links">
+ <div class="links">
     <a class="button" href="https://store.steampowered.com/app/5170080/Fish_Party/" target="_blank" rel="noopener">View on Steam</a>
   </div>
 </header>
@@ -49,7 +44,7 @@
        PREFACE: your short intro to the project
        ============================================================== -->
     <p class="preface">
-      [Preface. What Fish Party is, where it stands, and what your part in it has been.]
+      Fish Party is FunRug Studio's second game, slated to release in March. It's a large capacity, single button, local multiplayer game, with plans of online play as well. Our first game, MAGE, had a long development and learning process, and in comparison, Fish Party is a much more focused, better executed project.  
     </p>
 
   <!-- ==============================================================
@@ -63,7 +58,7 @@
 
     <!-- Your description -->
     <p>
-      [How 12 players and bots each run as their own input. Touch on the dash here.]
+      Each player gets one button. That button is how you move, how you dash, how you ready up, and change your name. An input system was required that could work for up to 12 players, be effecient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input managment.
     </p>
 
     <!-- File name shown above the code -->
@@ -120,7 +115,7 @@ private void HandleInput(InputControl control)
 
     <!-- What to notice in the code -->
     <p>
-      [A sentence or two on the interesting lines above.]
+      In the playerHandler, each local player creates a dictionary key on creation, comprised of their device ID and control path. This allows lookup times for all local inputs to be O(1), making sure that even with the maximum 12 players, effeciency is guarenteed. 
     </p>
 
   </div>
