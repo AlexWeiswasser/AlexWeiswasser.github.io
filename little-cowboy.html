@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
 <body style="--game: #fdd835" data-page="little-cowboy">
@@ -46,186 +46,6 @@
 </header>
 
 <main class="detail">
-
-  <!-- ==============================================================
-       SECTION 1: Game feel
-       ============================================================== -->
-  <section class="part">
-  <div class="part-text">
-    <!-- heading and description: game-text.js, SECTION 1 -->
-    <h2 data-text="s1.title">Game feel</h2>
-    <div class="copy" data-text="s1"></div>
-  </div>
-
-    <!-- CODE SELECTOR: one OPTION per tab -->
-    <div class="code-tabs">
-
-      <!-- ---------- OPTION 1: Camera ---------- -->
-      <div class="tab" data-name="Camera" data-text-label="s1.o1.title">
-        <p class="code-file">CameraScript.cs</p>
-<script type="text/plain" class="code">
-void CameraUpdate()
-{
-    Vector3 targetPos;
-    if (BulletSelectController.PlayerBusy())
-    {
-        targetPos = MovementScript.playerTransform.position;
-        targetPos.z = -0.5f;
-        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
-        return;
-    }
-
-    switch (BulletTrackerScript.currentMode)
-    {
-        case BulletTrackerScript.TrackerMode.EditingMode:
-            targetPos = MovementScript.playerTransform.position;
-            targetPos.z = -0.5f;
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
-            break;
-
-        default:
-            Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
-            Vector2 cursorWorldPos = (Vector2)Camera.main.ScreenToWorldPoint(mouseScreenPos);
-
-            Vector3 playerPos = MovementScript.playerTransform.position;
-            targetPos = ((Vector3)cursorWorldPos + playerPos + playerPos) / 3f;
-
-            // Clamp how far the target can be from the player
-            Vector3 offset = targetPos - playerPos;
-            offset = Vector3.ClampMagnitude(offset, maxDistanceFromPlayer);
-            targetPos = playerPos + offset;
-
-            targetPos.z = -0.5f;
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
-            break;
-    }
-}
-
-public static void ScreenShake(Transform cameraTransform, float strength, float duration = 0.1f)
-{
-    strength /= 10;
-
-    cameraTransform.DOShakePosition(
-        duration,
-        new Vector3(strength, strength, 0f))
-        .SetUpdate(true);
-}
-</script>
-        <!-- description: game-text.js, SECTION 1, OPTION 1 -->
-        <div class="copy" data-text="s1.o1"></div>
-      </div>
-
-      <!-- ---------- OPTION 2: Movement ---------- -->
-      <div class="tab" data-name="Movement" data-text-label="s1.o2.title">
-        <p class="code-file">MovementScript.cs</p>
-<script type="text/plain" class="code">
-public void Knockback(Vector2 direction, float strength)
-{
-    CameraScript.ScreenShake(Camera.main.transform, strength);
-    strength *= 50;
-
-    externalVelocity = Vector2.MoveTowards(
-        externalVelocity,
-        direction * strength,
-        strength * Time.fixedDeltaTime);
-}
-
-private void FixedUpdate()
-{
-    rb.linearDamping = damping;
-    if (canMove)
-    {
-        if (BulletSelectController.PlayerBusy()) return;
-
-        float currentMaxSpeed = maxSpeed;
-        if (isWet)
-        {
-            if(this.gameObject.CompareTag("Player"))
-                currentMaxSpeed *= .8f;
-            else
-                currentMaxSpeed *= .5f;
-        }
-
-        Vector2 input = Vector2.zero;
-        if (heldDown[0]) input.x -= 1;
-        if (heldDown[1]) input.x += 1;
-        if (heldDown[2]) input.y -= 1;
-        if (heldDown[3]) input.y += 1;
-        input = input.normalized;
-
-        movementVelocity = Vector2.MoveTowards(
-            movementVelocity,
-            input * currentMaxSpeed,
-            acceleration * Time.fixedDeltaTime);
-
-        if (!animating && input != Vector2.zero)
-        {
-            animating = true;
-            spriteObject.DOLocalJump(Vector2.zero, hopStrength, 1, hopDuration)
-                .SetEase(hopEasing)
-                .OnComplete(() => 
-                { 
-                    animating = false;
-                    landParticles.Play();
-
-                    int choice = 0;
-                    choice = UnityEngine.Random.Range(0, walkSounds.Length);
-                    SoundManager.Instance.PlaySound(walkSounds[choice], .9f, 1.1f, .25f);
-                });
-        }
-    }
-    externalVelocity *= 0.9f;
-    rb.linearVelocity = movementVelocity + externalVelocity;
-}
-</script>
-        <!-- description: game-text.js, SECTION 1, OPTION 2 -->
-        <div class="copy" data-text="s1.o2"></div>
-      </div>
-
-      <!-- ---------- OPTION 3: Shooting ---------- -->
-      <div class="tab" data-name="Shooting" data-text-label="s1.o3.title">
-        <p class="code-file">ShootScript.cs</p>
-<script type="text/plain" class="code">
-public void Shoot(InputAction.CallbackContext context)
-{
-    if(context.performed)
-    {
-        if (!canShoot) return;
-        if (BulletSelectController.PlayerBusy()) return;
-
-        Bullet bullet = FireBullet();
-        if (bullet != null)
-        {
-            CameraScript.ScreenShake(Camera.main.transform, 1);
-
-            Vector2 direction = (bulletSpawnPos.position - transform.position).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-            BulletScript bulletScript = Instantiate(bullet.bulletData.bulletPrefab, bulletSpawnPos.position, Quaternion.identity).GetComponent<BulletScript>();
-            bulletScript.Init(createdByPlayer: true);
-            int choice = -1;
-            choice = UnityEngine.Random.Range(0, gunshot.Length);
-            SoundManager.Instance.PlaySound(gunshot[choice]);
-        }
-    }
-}
-</script>
-        <!-- description: game-text.js, SECTION 1, OPTION 3 -->
-        <div class="copy" data-text="s1.o3"></div>
-      </div>
-
-    </div>
-
-  <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-3.png
-       (if it isn't a .png, change the ending in both places below).
-       Its caption: game-text.js, SECTION 1, CAPTION -->
-  <figure class="shot">
-    <div class="media" data-file="media/little-cowboy-3.png">
-      <img src="media/little-cowboy-3.png" alt="Little Cowboy game feel" onerror="this.parentNode.classList.add('missing'); this.remove()">
-    </div>
-    <figcaption data-text="s1.caption"></figcaption>
-  </figure>
-  </section>
 
   <!-- ==============================================================
        SECTION 2: The bullet system and its interactions
@@ -776,9 +596,189 @@ public void Explode()
   </figure>
   </section>
 
+  <!-- ==============================================================
+       SECTION 1: Game feel
+       ============================================================== -->
+  <section class="part">
+  <div class="part-text">
+    <!-- heading and description: game-text.js, SECTION 1 -->
+    <h2 data-text="s1.title">Game feel</h2>
+    <div class="copy" data-text="s1"></div>
+  </div>
+
+    <!-- CODE SELECTOR: one OPTION per tab -->
+    <div class="code-tabs">
+
+      <!-- ---------- OPTION 1: Camera ---------- -->
+      <div class="tab" data-name="Camera" data-text-label="s1.o1.title">
+        <p class="code-file">CameraScript.cs</p>
+<script type="text/plain" class="code">
+void CameraUpdate()
+{
+    Vector3 targetPos;
+    if (BulletSelectController.PlayerBusy())
+    {
+        targetPos = MovementScript.playerTransform.position;
+        targetPos.z = -0.5f;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+        return;
+    }
+
+    switch (BulletTrackerScript.currentMode)
+    {
+        case BulletTrackerScript.TrackerMode.EditingMode:
+            targetPos = MovementScript.playerTransform.position;
+            targetPos.z = -0.5f;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+            break;
+
+        default:
+            Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+            Vector2 cursorWorldPos = (Vector2)Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+            Vector3 playerPos = MovementScript.playerTransform.position;
+            targetPos = ((Vector3)cursorWorldPos + playerPos + playerPos) / 3f;
+
+            // Clamp how far the target can be from the player
+            Vector3 offset = targetPos - playerPos;
+            offset = Vector3.ClampMagnitude(offset, maxDistanceFromPlayer);
+            targetPos = playerPos + offset;
+
+            targetPos.z = -0.5f;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+            break;
+    }
+}
+
+public static void ScreenShake(Transform cameraTransform, float strength, float duration = 0.1f)
+{
+    strength /= 10;
+
+    cameraTransform.DOShakePosition(
+        duration,
+        new Vector3(strength, strength, 0f))
+        .SetUpdate(true);
+}
+</script>
+        <!-- description: game-text.js, SECTION 1, OPTION 1 -->
+        <div class="copy" data-text="s1.o1"></div>
+      </div>
+
+      <!-- ---------- OPTION 2: Movement ---------- -->
+      <div class="tab" data-name="Movement" data-text-label="s1.o2.title">
+        <p class="code-file">MovementScript.cs</p>
+<script type="text/plain" class="code">
+public void Knockback(Vector2 direction, float strength)
+{
+    CameraScript.ScreenShake(Camera.main.transform, strength);
+    strength *= 50;
+
+    externalVelocity = Vector2.MoveTowards(
+        externalVelocity,
+        direction * strength,
+        strength * Time.fixedDeltaTime);
+}
+
+private void FixedUpdate()
+{
+    rb.linearDamping = damping;
+    if (canMove)
+    {
+        if (BulletSelectController.PlayerBusy()) return;
+
+        float currentMaxSpeed = maxSpeed;
+        if (isWet)
+        {
+            if(this.gameObject.CompareTag("Player"))
+                currentMaxSpeed *= .8f;
+            else
+                currentMaxSpeed *= .5f;
+        }
+
+        Vector2 input = Vector2.zero;
+        if (heldDown[0]) input.x -= 1;
+        if (heldDown[1]) input.x += 1;
+        if (heldDown[2]) input.y -= 1;
+        if (heldDown[3]) input.y += 1;
+        input = input.normalized;
+
+        movementVelocity = Vector2.MoveTowards(
+            movementVelocity,
+            input * currentMaxSpeed,
+            acceleration * Time.fixedDeltaTime);
+
+        if (!animating && input != Vector2.zero)
+        {
+            animating = true;
+            spriteObject.DOLocalJump(Vector2.zero, hopStrength, 1, hopDuration)
+                .SetEase(hopEasing)
+                .OnComplete(() => 
+                { 
+                    animating = false;
+                    landParticles.Play();
+
+                    int choice = 0;
+                    choice = UnityEngine.Random.Range(0, walkSounds.Length);
+                    SoundManager.Instance.PlaySound(walkSounds[choice], .9f, 1.1f, .25f);
+                });
+        }
+    }
+    externalVelocity *= 0.9f;
+    rb.linearVelocity = movementVelocity + externalVelocity;
+}
+</script>
+        <!-- description: game-text.js, SECTION 1, OPTION 2 -->
+        <div class="copy" data-text="s1.o2"></div>
+      </div>
+
+      <!-- ---------- OPTION 3: Shooting ---------- -->
+      <div class="tab" data-name="Shooting" data-text-label="s1.o3.title">
+        <p class="code-file">ShootScript.cs</p>
+<script type="text/plain" class="code">
+public void Shoot(InputAction.CallbackContext context)
+{
+    if(context.performed)
+    {
+        if (!canShoot) return;
+        if (BulletSelectController.PlayerBusy()) return;
+
+        Bullet bullet = FireBullet();
+        if (bullet != null)
+        {
+            CameraScript.ScreenShake(Camera.main.transform, 1);
+
+            Vector2 direction = (bulletSpawnPos.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            BulletScript bulletScript = Instantiate(bullet.bulletData.bulletPrefab, bulletSpawnPos.position, Quaternion.identity).GetComponent<BulletScript>();
+            bulletScript.Init(createdByPlayer: true);
+            int choice = -1;
+            choice = UnityEngine.Random.Range(0, gunshot.Length);
+            SoundManager.Instance.PlaySound(gunshot[choice]);
+        }
+    }
+}
+</script>
+        <!-- description: game-text.js, SECTION 1, OPTION 3 -->
+        <div class="copy" data-text="s1.o3"></div>
+      </div>
+
+    </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-3.png
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 1, CAPTION -->
+  <figure class="shot">
+    <div class="media" data-file="media/little-cowboy-3.png">
+      <img src="media/little-cowboy-3.png" alt="Little Cowboy game feel" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption data-text="s1.caption"></figcaption>
+  </figure>
+  </section>
+
 </main>
 
 <script src="game-text.js"></script>
-<script src="code.js"></script>
+<script src="code.js?v=5"></script>
 </body>
 </html>
