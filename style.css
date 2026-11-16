@@ -373,7 +373,7 @@ body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 30rem;
+  max-height: 38rem;
   object-fit: contain;
   border-radius: 8px;
 }

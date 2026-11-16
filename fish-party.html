@@ -466,7 +466,67 @@ private void DangerDetermineDash(Vector3 dangerPos)
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
 
-      <!-- ---------- OPTION 1: Squish ---------- -->
+      <!-- ---------- OPTION 1: The dash ---------- -->
+      <div class="tab" data-name="The dash">
+        <p class="code-file">FishMovement.cs</p>
+<script type="text/plain" class="code">
+private void Update()
+{
+    // Timers
+    if (dashTimer != null)
+    {
+        dashTimer.Tick(Time.deltaTime);
+        if (dashTimer.timeElapsed > timeTilRotationSlow) SetRotationSpeed(baseRotationSpeed / amountRotationDividedBy);
+        if (dashTimer.Finished) // Essentaially dash being called
+        {
+            dashTimer = null;
+            isDashing = true;
+
+            currrentDistanceToMove = distanceToMove;
+
+            SetRotationSpeed(baseRotationSpeed / 2); 
+            Invoke("PostDash", timeToMoveDistance);
+
+            dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            dashParticles.Play();
+
+            EventBus<PlayerDashToggled>.Call(new PlayerDashToggled { playerIndex = playerIndex, canDash = false });
+            EventBus<FishDashed>.Call(new FishDashed { fishType = fishType });
+        }
+    }
+
+    // ...
+}
+
+private void Dash()
+{
+    float bestSpeed = 1;
+    foreach (SpeedBoost boost in speedBoosts)
+    {
+        if (boost.speed > bestSpeed)
+            bestSpeed = boost.speed;
+    }
+
+    DashVelocity = -transform.right * currrentDistanceToMove * bestSpeed;
+    currrentDistanceToMove -= distanceToMove / 50 * timeToMoveDistance; // 50 is the amount of frames in a fixed update second
+}
+
+private void PostDash()
+{
+    ResetRotationSpeed();
+    DashVelocity = Vector2.zero;
+
+    isDashing = false;
+    canDash = false;
+    dashCooldownTimer = new Timer(dashCooldown);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Squish ---------- -->
       <div class="tab" data-name="Squish">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
@@ -516,7 +576,134 @@ private bool SquishCheck()
         </p>
       </div>
 
-      <!-- ---------- OPTION 2: Hit stop ---------- -->
+      <!-- ---------- OPTION 3: Wall dust ---------- -->
+      <div class="tab" data-name="Wall dust">
+        <p class="code-file">FishController.cs</p>
+<script type="text/plain" class="code">
+private bool IsDustLayer(int layer) => (dustLayer.value & (1 << layer)) != 0;
+
+private void OnCollisionStay2D(Collision2D collision)
+{
+    if(IsDustLayer(collision.gameObject.layer))
+    {
+        dustParticles.transform.position = collision.GetContact(0).point;
+        ParticleSystem.EmissionModule emmision = dustParticles.emission;
+        emmision.enabled = true; 
+    }
+}
+
+private void OnCollisionExit2D(Collision2D collision)
+{
+    if (IsDustLayer(collision.gameObject.layer))
+    {
+        ParticleSystem.EmissionModule emmision = dustParticles.emission;
+        emmision.enabled = false;
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 4: Speed and turn particles ---------- -->
+      <div class="tab" data-name="Speed and turn particles">
+        <p class="code-file">FishMovement.cs</p>
+<script type="text/plain" class="code">
+// Particle Related
+ParticleSystem.MainModule speedMain;
+ParticleSystem.EmissionModule speedEmmision;
+float lowestParticleSpeed = 5f;
+float highestParticleSpeed = 15f;
+float highestPossibleBoostPercentage = .5f;
+
+private void Update()
+{
+    // ...
+
+    // Speed particles
+    if (activeSpeed <= baseSpeed)
+    {
+        speedMain.startSpeed = lowestParticleSpeed; 
+        speedEmmision.enabled = false;
+    }
+    else
+    {
+        float speedBoostPercentage = (activeSpeed/baseSpeed) - 1;
+        float boostOutOfMax = speedBoostPercentage / highestPossibleBoostPercentage;
+
+        speedMain.startSpeed = Mathf.Lerp(lowestParticleSpeed, highestParticleSpeed, boostOutOfMax);
+        speedEmmision.enabled = true; 
+    }
+}
+
+public void FlipRotation() 
+{
+    rotationDirection = rotationDirection == RotationDirection.Clockwise ? RotationDirection.CounterClockwise : RotationDirection.Clockwise;
+
+    if (rotationDirection == RotationDirection.Clockwise)
+    {
+        northTurnBurst.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        northTurnBurst.Play();
+    }
+    else
+    {
+        southTurnBurst.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        southTurnBurst.Play();
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 5: Point tracers ---------- -->
+      <div class="tab" data-name="Point tracers">
+        <p class="code-file">PointTracerScript.cs</p>
+<script type="text/plain" class="code">
+// Stats
+float speed = 25;
+float accel = 15;
+bool attached = false;
+
+private void FixedUpdate()
+{
+    // ... re-targets if the player's fish was swapped
+
+    // If already reached player, stop manually moving
+    if (attached)
+    {
+        transform.position = target.position;
+        return;
+    }
+
+    // Movement
+    Vector3 dir = (target.position - transform.position).normalized;
+    float distance = Vector2.Distance(transform.position, target.position);
+    float amountToMove = speed * Time.deltaTime;
+
+    if (distance < amountToMove) amountToMove = distance;
+    transform.position += dir * amountToMove;
+
+    speed += accel * Time.fixedDeltaTime;
+    if (speed > 100) speed = 100;
+
+    // Once reached the target
+    if (Vector2.Distance(target.position, transform.position) < .1)
+    {
+        attached = true;
+        trailRend.DOTime(0, 0.5f).OnComplete(() => { DOTween.Kill(this); Destroy(gameObject);});
+        receiver.CreatePointVisual(pointAmount);
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 6: Hit stop ---------- -->
       <div class="tab" data-name="Hit stop">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
@@ -536,7 +723,7 @@ private IEnumerator HitStopCo()
         </p>
       </div>
 
-      <!-- ---------- OPTION 3: Spawn protection ---------- -->
+      <!-- ---------- OPTION 7: Spawn protection ---------- -->
       <div class="tab" data-name="Spawn protection">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
@@ -557,6 +744,83 @@ public void ActivateIframes(float length)
     fishOutline.DOColor(outlineTransparent, iframeLength / 16f).SetLoops(16, LoopType.Yoyo);
 
     iframeTimer = new Timer(iframeLength);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 8: Background fish ---------- -->
+      <div class="tab" data-name="Background fish">
+        <p class="code-file">BackgroundFishHandler.cs</p>
+<script type="text/plain" class="code">
+private void TweenRotUp()
+{
+    transform.DORotate(new Vector3(0, 0, currentRotationChange), .25f).SetEase(Ease.InOutSine).OnComplete(TweenRotDown);
+}
+
+private void TweenRotDown()
+{
+    transform.DORotate(new Vector3(0, 0, -currentRotationChange), .25f).SetEase(Ease.InOutSine).OnComplete(TweenRotUp);
+}
+
+private void TweenMoveUp()
+{
+    transform.DOMoveY(startY + currentHeightChange, 2).SetEase(Ease.InOutSine).OnComplete(TweenMoveDown);
+}
+
+private void TweenMoveDown()
+{
+    transform.DOMoveY(startY - currentHeightChange, 2).SetEase(Ease.InOutSine).OnComplete(TweenMoveUp);
+}
+
+private void StartUp()
+{
+    active = true; 
+
+    left = Random.Range(0, 2) == 0;
+    height = Random.Range(corners[2].position.y, corners[0].position.y);
+    velocity = Random.Range(lowVelocity, highVelocity);
+
+    startY = height;
+
+    currentRotationChange = Random.Range(1.5f, rotationChange);
+    currentHeightChange = Random.Range(0, heightChange);
+
+    transform.localScale = Vector2.one;
+    transform.localScale *= Random.Range(lowScale, highScale);
+
+    float distance = Random.Range(0, maxDistance);
+    if (left)
+    {
+        transform.position = new Vector3(corners[0].position.x - distance, height, 0);
+        rend.flipX = true;
+
+        TweenRotUp();
+        TweenMoveUp();
+    }
+    else
+    {
+        transform.position = new Vector3(corners[1].position.x + distance, height, 0);
+        rend.flipX = false;
+
+        TweenRotDown();
+        TweenMoveUp();
+    }
+}
+
+private void Update()
+{
+    if (active)
+    {
+        transform.position += new Vector3(left ? velocity : -velocity, 0, 0) * Time.deltaTime;
+
+        if (left && transform.position.x > corners[1].position.x)
+            StartUp();
+        if (!left && transform.position.x < corners[0].position.x)
+            StartUp();
+    }
 }
 </script>
         <p>
