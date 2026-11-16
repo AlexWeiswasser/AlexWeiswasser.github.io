@@ -14,14 +14,16 @@
 
 <!--
   HOW TO EDIT THIS PAGE
-  - Everything you need to write is marked [in square brackets]. Replace the
+  - Everything you still need to write is marked [in square brackets]. Replace the
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
+  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
+    a button label (data-name), a file name, its code, and its own description.
+  - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
+    you don't need to change any < or > characters.
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - Code goes between the two "script" lines in each CODE block. Paste it exactly
-    as it is in Unity; you don't need to change any < or > characters.
-  - Each section has its own image, at the bottom of that section's block.
-  - To delete a section, remove everything from its banner down to the next banner.
+  - To add an option, copy a whole OPTION block. To remove one, delete its block.
 -->
 
 <!-- ==============================================================
@@ -68,6 +70,17 @@
     </p>
 
   </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-3.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/lighthouse-3.png">
+      <img src="media/lighthouse-3.png" alt="Lighthouse Time Machine: the pivot" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: what this image shows]
+    </figcaption>
+  </figure>
   </section>
 
   <!-- ==============================================================
@@ -84,18 +97,105 @@
       [How a drag becomes ship movement, and the boost you added on each drag.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">ShipController.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Reading the drag ---------- -->
+      <div class="tab" data-name="Reading the drag">
+        <p class="code-file">[File name].cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
+public void MousePress(InputAction.CallbackContext context)
+{
+    if (GameOverCanvas.GameOver) return;
+    if (context.performed)
+    {
+        if (PauseCanvas.Paused) return;
+        circleTracks = false;
+        mouseStart = currentMousePos;
+        draggingCircle.ToggleArrow(true);
+    }
+    else if (context.canceled)
+    {
+        mouseEnd = currentMousePos;
+        DirectShips();
+        circleTracks = true; 
+        draggingCircle.ToggleArrow(false);
+    }
+}
 </script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+      <!-- ---------- OPTION 2: Directing ships ---------- -->
+      <div class="tab" data-name="Directing ships">
+        <p class="code-file">[File name].cs</p>
+<script type="text/plain" class="code">
+private bool ObtainShips()
+{
+    float radius = draggingCircle.GetScale().x / 2;
+
+    if (Vector2.Distance(currentMousePos, draggingCircle.GetPosition()) < radius)
+        return false;
+
+    currentBoats = Physics2D.OverlapCircleAll(draggingCircle.GetPosition(), radius, boatLayer);
+    return true;
+}
+
+private void DirectShips()
+{
+    Vector2 dir = (mouseEnd - mouseStart).normalized;
+    float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+    if (!ObtainShips()) return;
+
+    foreach (Collider2D boat in currentBoats)
+    {
+        BoatScript bScript = boat.GetComponentInParent<BoatScript>();
+        if (bScript)
+        {
+            bScript.RotateBoat(angle);
+            bScript.StartCoroutine(bScript.BoostBoat());
+        }
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: The boost ---------- -->
+      <div class="tab" data-name="The boost">
+        <p class="code-file">BoatScript.cs</p>
+<script type="text/plain" class="code">
+private void FixedUpdate()
+{
+    currentBoostVelocity *= boostDamping;
+    currentVelocity = rb.position + (Vector2)transform.right * speed * Time.fixedDeltaTime;
+    currentVelocity += currentBoostVelocity * Time.fixedDeltaTime;
+
+    rb.MovePosition(currentVelocity);
+}
+
+public void RotateBoat(float angle) { rb.MoveRotation(angle); }
+
+public virtual IEnumerator BoostBoat() 
+{
+    yield return new WaitForFixedUpdate(); 
+    currentBoostVelocity += (Vector2)transform.right * boostForce;
+
+    burstParticles.Clear();
+    burstParticles.Play();
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -103,7 +203,7 @@
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/lighthouse-1.png">
-      <img src="media/lighthouse-1.png" alt="Lighthouse Time Machine screenshot 1" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      <img src="media/lighthouse-1.png" alt="Lighthouse Time Machine mouse-drag controls" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
     <figcaption>
       [Caption: what this image shows]
@@ -122,21 +222,162 @@
 
     <!-- Your description -->
     <p>
-      [How the spawning system works. Delete this whole section if you decide not to cover it.]
+      [How the spawning system works.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">BoatSpawner.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Spawn zones ---------- -->
+      <div class="tab" data-name="Spawn zones">
+        <p class="code-file">BoatSpawner.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+class Spawn
+{
+    Vector2 minPos;
+    Vector2 maxPos;
+    float minRot;
+    float maxRot;
+    public bool sideWays = false; 
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+    public void SetMin(Transform min)
+    {
+        minPos = min.position;
+        minRot = SignedAngle(min.eulerAngles.z);
+    }
+    public void SetMax(Transform max)
+    {
+        maxPos = max.position;
+        maxRot = SignedAngle(max.eulerAngles.z);
+    }
+    public Vector2 GetSpawnPos()
+    {
+        if (sideWays)
+        {
+            return new Vector2(minPos.x, Random.Range(minPos.y, maxPos.y));
+        }
+        else
+        {
+            return new Vector2(Random.Range(minPos.x, maxPos.x), minPos.y);
+        }
+    }
+    public Vector3 GetSpawnRot()
+    {
+        float delta = Mathf.DeltaAngle(minRot, maxRot);
+        return new Vector3(0, 0, minRot + delta * Random.value);
+    }
+}
+
+private void Awake()
+{
+    Spawn topSpawn = new Spawn();
+    topSpawn.SetMin(topSpawnParent.GetChild(0));
+    topSpawn.SetMax(topSpawnParent.GetChild(1));
+    spawns.Add(topSpawn);
+
+    Spawn bottomSpawn = new Spawn();
+    bottomSpawn.SetMin(bottomSpawnParent.GetChild(0));
+    bottomSpawn.SetMax(bottomSpawnParent.GetChild(1));
+    spawns.Add(bottomSpawn);
+
+    Spawn rightSpawn = new Spawn();
+    rightSpawn.SetMin(RightSpawnParent.GetChild(0));
+    rightSpawn.SetMax(RightSpawnParent.GetChild(1));
+    rightSpawn.sideWays = true;
+    spawns.Add(rightSpawn);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Finding a free spot ---------- -->
+      <div class="tab" data-name="Finding a free spot">
+        <p class="code-file">BoatSpawner.cs</p>
+<script type="text/plain" class="code">
+private void Update()
+{
+    if (!TutorialCanvas.TutorialCompleted) return;
+
+    overallTime += Time.deltaTime;
+    if (overallTime > timeTilIceberg && !spawnIcebergs) spawnIcebergs = true;
+
+    currentTime += Time.deltaTime;
+    if (currentTime >= timeTilSpawn)
+    {
+        if (TrySpawnBoat())
+        {
+            currentTime -= timeTilSpawn;
+        }
+        else
+        {
+            currentTime = timeTilSpawn - retryDelay;
+        }
+    }
+}
+
+private bool TrySpawnBoat()
+{
+    if (!TryGetSpawnPoint(out Vector2 spawnPos, out Quaternion spawnRot))
+        return false;
+
+    if (currentTimesSpawned >= amountTilBergSpawn)
+    {
+        Instantiate(iceBergPrefab, spawnPos, spawnRot);
+        currentTimesSpawned = 0;
+    }
+    else
+    {
+        int boatType = Random.Range(0, boatPrefabs.Length);
+        Instantiate(boatPrefabs[boatType], spawnPos, spawnRot);
+        if(spawnIcebergs) currentTimesSpawned++;
+    }
+    return true;
+}
+
+private bool TryGetSpawnPoint(out Vector2 spawnPos, out Quaternion spawnRot)
+{
+    for (int i = 0; i < maxSpawnAttempts; i++)
+    {
+        Spawn spawn = spawns[Random.Range(0, spawns.Count)];
+        Vector2 candidate = spawn.GetSpawnPos();
+
+        if (Physics2D.OverlapCircle(candidate, distanceBetweenSpawnsRadius, boatLayer) == null)
+        {
+            spawnPos = candidate;
+            spawnRot = Quaternion.Euler(spawn.GetSpawnRot());
+            return true;
+        }
+    }
+
+    spawnPos = default;
+    spawnRot = default;
+    return false;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: Speeding up ---------- -->
+      <div class="tab" data-name="Speeding up">
+        <p class="code-file">BoatSpawner.cs</p>
+<script type="text/plain" class="code">
+void UpdatePoints(int pointsGained, Vector2Int range)
+{
+    int mult = range.y / 500;
+    float tempTimeToSpawn = 10 - (mult * .5f);
+    timeTilSpawn = Mathf.Clamp(tempTimeToSpawn, 3.5f, 10);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -144,7 +385,7 @@
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/lighthouse-2.png">
-      <img src="media/lighthouse-2.png" alt="Lighthouse Time Machine screenshot 2" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      <img src="media/lighthouse-2.png" alt="Lighthouse Time Machine boat spawning" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
     <figcaption>
       [Caption: what this image shows]

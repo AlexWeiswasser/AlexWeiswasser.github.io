@@ -14,14 +14,16 @@
 
 <!--
   HOW TO EDIT THIS PAGE
-  - Everything you need to write is marked [in square brackets]. Replace the
+  - Everything you still need to write is marked [in square brackets]. Replace the
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
+  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
+    a button label (data-name), a file name, its code, and its own description.
+  - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
+    you don't need to change any < or > characters.
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - Code goes between the two "script" lines in each CODE block. Paste it exactly
-    as it is in Unity; you don't need to change any < or > characters.
-  - Each section has its own image, at the bottom of that section's block.
-  - To delete a section, remove everything from its banner down to the next banner.
+  - To add an option, copy a whole OPTION block. To remove one, delete its block.
 -->
 
 <!-- ==============================================================
@@ -54,7 +56,197 @@
     </p>
 
   <!-- ==============================================================
-       SECTION 1: The bullet system and its interactions
+       SECTION 1: Game feel
+       ============================================================== -->
+  <section class="part">
+  <div class="part-text">
+
+    <!-- Heading -->
+    <h2>Game feel</h2>
+
+    <!-- Your description -->
+    <p>
+      [What makes moving and shooting feel good: the camera, the screen shake, the hop.]
+    </p>
+
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
+
+      <!-- ---------- OPTION 1: Camera ---------- -->
+      <div class="tab" data-name="Camera">
+        <p class="code-file">CameraScript.cs</p>
+<script type="text/plain" class="code">
+void CameraUpdate()
+{
+    Vector3 targetPos;
+    if (BulletSelectController.PlayerBusy())
+    {
+        targetPos = MovementScript.playerTransform.position;
+        targetPos.z = -0.5f;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+        return;
+    }
+
+    switch (BulletTrackerScript.currentMode)
+    {
+        case BulletTrackerScript.TrackerMode.EditingMode:
+            targetPos = MovementScript.playerTransform.position;
+            targetPos.z = -0.5f;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+            break;
+
+        default:
+            Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+            Vector2 cursorWorldPos = (Vector2)Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+            Vector3 playerPos = MovementScript.playerTransform.position;
+            targetPos = ((Vector3)cursorWorldPos + playerPos + playerPos) / 3f;
+
+            // Clamp how far the target can be from the player
+            Vector3 offset = targetPos - playerPos;
+            offset = Vector3.ClampMagnitude(offset, maxDistanceFromPlayer);
+            targetPos = playerPos + offset;
+
+            targetPos.z = -0.5f;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
+            break;
+    }
+}
+
+public static void ScreenShake(Transform cameraTransform, float strength, float duration = 0.1f)
+{
+    strength /= 10;
+
+    cameraTransform.DOShakePosition(
+        duration,
+        new Vector3(strength, strength, 0f))
+        .SetUpdate(true);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Movement ---------- -->
+      <div class="tab" data-name="Movement">
+        <p class="code-file">MovementScript.cs</p>
+<script type="text/plain" class="code">
+public void Knockback(Vector2 direction, float strength)
+{
+    CameraScript.ScreenShake(Camera.main.transform, strength);
+    strength *= 50;
+
+    externalVelocity = Vector2.MoveTowards(
+        externalVelocity,
+        direction * strength,
+        strength * Time.fixedDeltaTime);
+}
+
+private void FixedUpdate()
+{
+    rb.linearDamping = damping;
+    if (canMove)
+    {
+        if (BulletSelectController.PlayerBusy()) return;
+
+        float currentMaxSpeed = maxSpeed;
+        if (isWet)
+        {
+            if(this.gameObject.CompareTag("Player"))
+                currentMaxSpeed *= .8f;
+            else
+                currentMaxSpeed *= .5f;
+        }
+
+        Vector2 input = Vector2.zero;
+        if (heldDown[0]) input.x -= 1;
+        if (heldDown[1]) input.x += 1;
+        if (heldDown[2]) input.y -= 1;
+        if (heldDown[3]) input.y += 1;
+        input = input.normalized;
+
+        movementVelocity = Vector2.MoveTowards(
+            movementVelocity,
+            input * currentMaxSpeed,
+            acceleration * Time.fixedDeltaTime);
+
+        if (!animating && input != Vector2.zero)
+        {
+            animating = true;
+            spriteObject.DOLocalJump(Vector2.zero, hopStrength, 1, hopDuration)
+                .SetEase(hopEasing)
+                .OnComplete(() => 
+                { 
+                    animating = false;
+                    landParticles.Play();
+
+                    int choice = 0;
+                    choice = UnityEngine.Random.Range(0, walkSounds.Length);
+                    SoundManager.Instance.PlaySound(walkSounds[choice], .9f, 1.1f, .25f);
+                });
+        }
+    }
+    externalVelocity *= 0.9f;
+    rb.linearVelocity = movementVelocity + externalVelocity;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: Shooting ---------- -->
+      <div class="tab" data-name="Shooting">
+        <p class="code-file">ShootScript.cs</p>
+<script type="text/plain" class="code">
+public void Shoot(InputAction.CallbackContext context)
+{
+    if(context.performed)
+    {
+        if (!canShoot) return;
+        if (BulletSelectController.PlayerBusy()) return;
+
+        Bullet bullet = FireBullet();
+        if (bullet != null)
+        {
+            CameraScript.ScreenShake(Camera.main.transform, 1);
+
+            Vector2 direction = (bulletSpawnPos.position - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+            BulletScript bulletScript = Instantiate(bullet.bulletData.bulletPrefab, bulletSpawnPos.position, Quaternion.identity).GetComponent<BulletScript>();
+            bulletScript.Init(createdByPlayer: true);
+            int choice = -1;
+            choice = UnityEngine.Random.Range(0, gunshot.Length);
+            SoundManager.Instance.PlaySound(gunshot[choice]);
+        }
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-3.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="shot">
+    <div class="media" data-file="media/little-cowboy-3.png">
+      <img src="media/little-cowboy-3.png" alt="Little Cowboy game feel" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption>
+      [Caption: what this image shows]
+    </figcaption>
+  </figure>
+  </section>
+
+  <!-- ==============================================================
+       SECTION 2: The bullet system and its interactions
        ============================================================== -->
   <section class="part">
   <div class="part-text">
@@ -67,18 +259,238 @@
       [How bullets and elemental effects share one system, and how interactions like fire with oil are resolved.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">Bullet.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Bullet hooks ---------- -->
+      <div class="tab" data-name="Bullet hooks">
+        <p class="code-file">BulletScript.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+private void OnTriggerEnter2D(Collider2D collision)
+{
+    if (collision.gameObject.layer == LayerMask.NameToLayer("Effect"))
+        OnEffectEnter(collision);
+    else if (collision.gameObject.layer == LayerMask.NameToLayer("Character"))
+    {
+        if (collision.CompareTag("Player") != playerCreated)
+        {
+            OnCharacterEnter(collision);
+            if (collision.TryGetComponent<ICharInterface>(out var face))
+            {
+                Vector2 direction = (collision.transform.position - transform.position).normalized;
+                face.Knockback(direction, knockback);
+                face.Damage(damage);
+            }
+            SoundManager.Instance.PlaySound(bulletImpact);
+            OnBulletDeath();
+            Instantiate(hitSpark, transform.position, Quaternion.identity);
+            tr.transform.parent = null;
+            tr.autodestruct = true;
+            tr.time = 0.1f;
+            Destroy(gameObject);
+        }
+    }
+    else 
+    {
+        OnBulletDeath();
+        SoundManager.Instance.PlaySound(bulletImpact, .9f, 1.1f, .3f);
+        Instantiate(hitSpark, transform.position, Quaternion.identity);
+        tr.transform.parent = null;
+        tr.autodestruct = true;
+        tr.time = 0.1f;
+        Destroy(gameObject);
+    }
+}
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+protected virtual void OnEffectEnter(Collider2D collision) { }
+protected virtual void OnCharacterEnter(Collider2D collision) { }
+protected virtual void OnBulletDeath() { }
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Oil and fire ---------- -->
+      <div class="tab" data-name="Oil and fire">
+        <p class="code-file">BulletScript.cs</p>
+<script type="text/plain" class="code">
+public class OilBullet : BulletScript
+{
+    // Timer
+    Timer oilTimer = new Timer(.015f, startFinished: false);
+
+    // Prefabs
+    [SerializeField] GameObject oilSpill;
+
+    private void Update()
+    {
+        oilTimer.Tick(Time.deltaTime);
+        if(oilTimer.Finished)
+        {
+            oilTimer.Reset();
+            Instantiate(oilSpill, transform.position, Quaternion.identity);
+        }
+    }
+
+    protected override void OnBulletDeath()
+    {
+        Instantiate(oilSpill, transform.position, Quaternion.identity);
+    }
+}
+
+public class FireBullet : BulletScript
+{
+    // Prefabs
+    [SerializeField] GameObject fire;
+
+    protected override void OnBulletDeath()
+    {
+        Transform oil = Instantiate(fire, transform.position, Quaternion.identity).transform;
+    }
+
+    protected override void OnEffectEnter(Collider2D collision)
+    {
+        if(collision.CompareTag("Oil"))
+        {
+            if(collision.TryGetComponent<OilPatchScript>(out var oilScript))
+            {
+                oilScript.SetOnFire();
+            }
+        }
+    }
+
+    protected override void OnCharacterEnter(Collider2D collision)
+    {
+        if (collision.TryGetComponent<ICharInterface>(out var character))
+        {
+            character.SetOnFire();
+        }
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: The character interface ---------- -->
+      <div class="tab" data-name="The character interface">
+        <p class="code-file">ICharInterface.cs</p>
+<script type="text/plain" class="code">
+public interface ICharInterface
+{
+    public void Damage(int amount);
+    public void Knockback(Vector2 direction, float amount);
+    public void SetOnFire();
+    public void SetOnOilFire();
+    public bool GetOnFire();
+    public void SetStunned(HashSet<Collider2D> alreadyHit = null);
+    public void SetMetalMarked();
+    public void SetWet();
+    public bool GetWet();
+    public bool GetMetalMarked();
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 4: Status effects ---------- -->
+      <div class="tab" data-name="Status effects">
+        <p class="code-file">EnemyScript.cs</p>
+<script type="text/plain" class="code">
+public void SetOnFire()
+{
+    if (TryGetComponent<DynamanScript>(out var dScript)) dScript.Explode();
+
+    isWet = false;
+    behaviorScript.isWet = false;
+
+    if (fireTimer == null)
+    {
+        onFireParticlesObject = Instantiate(onFireParticles, transform).gameObject;
+        fireTimer = new Timer(.5f);
+    }
+    timesFireDamaged = 0;
+}
+
+public void SetWet()
+{
+    isWet = true;
+    behaviorScript.isWet = true;
+    fireTimer = null;
+
+    if (onFireParticlesObject != null)
+    {
+        Destroy(onFireParticlesObject);
+        onFireParticlesObject = null;
+    }
+
+    waterTimer = new Timer(5);
+
+    if (wetParticlesObject != null) Destroy(wetParticlesObject);
+    wetParticlesObject = Instantiate(wetParticles, transform).gameObject;
+}
+
+public void SetMetalMarked()
+{
+    isMetalMarked = true;
+    metalTimer = new Timer(5);
+
+    if (metalParticlesObject != null) Destroy(metalParticlesObject);
+    metalParticlesObject = Instantiate(metalParticles, transform).gameObject;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 5: Chain lightning ---------- -->
+      <div class="tab" data-name="Chain lightning">
+        <p class="code-file">EnemyScript.cs</p>
+<script type="text/plain" class="code">
+public void SetStunned(HashSet<Collider2D> alreadyHit = null)
+{
+    if (isWet || isMetalMarked) Damage(5);
+
+    behaviorScript.canBehavior = false;
+    stunTimer = new Timer(2f);
+    if (stunnedParticlesObject != null) Destroy(stunnedParticlesObject);
+    stunnedParticlesObject = Instantiate(stunnedParticles, transform).gameObject;
+
+    // Sha-lightning 
+    alreadyHit ??= new HashSet<Collider2D>();
+
+    foreach (Collider2D own in GetComponentsInChildren<Collider2D>())
+        alreadyHit.Add(own);
+
+    List<ICharInterface> toZap = new List<ICharInterface>();
+
+    LayerMask hurtMask = LayerMask.GetMask("Character");
+    Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, 7.5f, hurtMask);
+    foreach (Collider2D col in nearby)
+    {
+        if (alreadyHit.Contains(col)) continue;
+        if (!col.TryGetComponent<ICharInterface>(out var cFace)) continue;
+        if (!cFace.GetWet() && !cFace.GetMetalMarked()) continue;
+
+        alreadyHit.Add(col);   
+        toZap.Add(cFace);
+    }
+
+    foreach (ICharInterface zapped in toZap)
+        zapped.SetStunned(alreadyHit);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -86,7 +498,7 @@
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-1.png">
-      <img src="media/little-cowboy-1.png" alt="Little Cowboy screenshot 1" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      <img src="media/little-cowboy-1.png" alt="Little Cowboy bullets and elements" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
     <figcaption>
       [Caption: what this image shows]
@@ -95,7 +507,7 @@
   </section>
 
   <!-- ==============================================================
-       SECTION 2: Enemy AI
+       SECTION 3: Enemy AI
        ============================================================== -->
   <section class="part">
   <div class="part-text">
@@ -108,18 +520,288 @@
       [How the AI for all 6 enemy types is structured.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">EnemyAI.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Shared behavior ---------- -->
+      <div class="tab" data-name="Shared behavior">
+        <p class="code-file">BehaviorScript.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+protected virtual void FixedUpdate()
+{
+    // Looking at the player
+    if (MovementScript.playerTransform.position.x < transform.position.x)
+    {
+        foreach (SpriteRenderer spr in rend)
+        {
+            spr.flipX = true;
+        }
+    }        
+    else
+    {
+        foreach (SpriteRenderer spr in rend)
+        {
+            spr.flipX = false;
+        }
+    }
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+    // Don't do anything if outside detection range
+    if (Vector2.Distance(transform.position, MovementScript.playerTransform.position) > detectionRange) return;
+    if (BulletSelectController.PlayerBusy()) return;
+
+    if (canBehavior)
+    {
+        // Lunge movement
+        if (lunging)
+        {
+            lungeTimer -= Time.fixedDeltaTime;
+
+            if (lungeTimer <= 0f)
+            {
+                lunging = false;
+                movementVelocity = Vector2.zero;
+            }
+        }
+        else
+        {
+            // Base movement
+            rb.linearDamping = damping;
+            if (canBehavior && canMove)
+            {
+                float currentMaxSpeed = maxSpeed;
+                if (isWet) currentMaxSpeed *= .5f;
+
+                if (givenDirection != Vector2.zero)
+                {
+                    movementVelocity = Vector2.MoveTowards(
+                        movementVelocity,
+                        givenDirection * currentMaxSpeed,
+                        acceleration * Time.fixedDeltaTime);
+                }
+                else
+                {
+                    Vector2 direction = (targetPos.position - transform.position).normalized;
+                    movementVelocity = Vector2.MoveTowards(
+                        movementVelocity,
+                        direction * currentMaxSpeed,
+                        acceleration * Time.fixedDeltaTime);
+                }
+            }
+        }
+    }
+    else
+    {
+        movementVelocity = Vector2.zero;
+    }
+
+    externalVelocity *= 0.9f;
+    rb.linearVelocity = movementVelocity + externalVelocity;
+}
+
+public float Lunge(Vector2 targetPos, float speed)
+{
+    if (!canBehavior) return -1;
+
+    Vector2 toTarget = targetPos - rb.position;
+
+    float distance = toTarget.magnitude;
+    float duration = distance / speed;
+
+    movementVelocity = toTarget.normalized * speed;
+
+    lungeTimer = duration;
+    lunging = true;
+    return duration;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Snake ---------- -->
+      <div class="tab" data-name="Snake">
+        <p class="code-file">SnakeScript.cs</p>
+<script type="text/plain" class="code">
+private void Update()
+{
+    if (BulletSelectController.PlayerBusy() || !canBehavior) return;
+
+    if (rattleTimer != null)
+    {
+        if (playerIsCloseEnough)
+        {
+            int firstDigit = (int)(rattleTimer.Progress * 10) % 10;
+            if (firstDigit % 2 == 0)
+                rend[0].sprite = rattleSprites[0];
+            else
+                rend[0].sprite = rattleSprites[1];
+
+            rattleTimer.Tick(Time.deltaTime);
+            if (rattleTimer.Finished)
+            {
+                attackTimer = new Timer(.5f, startFinished: true);
+                attacking = true;
+                rend[0].sprite = madSprite;
+                rattleTimer = null;
+            }
+        }
+        else
+        {
+            rend[0].sprite = baseSprite;
+            rattleTimer.Reset();
+        }
+    }
+
+    if(attacking)
+    {
+        attackTimer.Tick(Time.deltaTime);
+        if(attackTimer.Finished)
+        {
+            attackTimer.Reset();
+            SoundManager.Instance.PlaySound(getAngry, .9f, 1.1f, .5f);
+            float time = base.Lunge(MovementScript.playerTransform.position, 20f);
+            lungeTimer = new Timer(time);
+        }
+    }
+
+    if(lungeTimer != null)
+    {
+        lungeTimer.Tick(Time.deltaTime);
+        if(lungeTimer.Finished)
+        {
+            base.DamageCheck(damageCircle, contactDamage);
+            lungeTimer = null;
+        }
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: Shooter ---------- -->
+      <div class="tab" data-name="Shooter">
+        <p class="code-file">ShooterScript.cs</p>
+<script type="text/plain" class="code">
+private void Update()
+{
+    if (BulletSelectController.PlayerBusy() || !canBehavior) return;
+    if (Vector2.Distance(transform.position, MovementScript.playerTransform.position) > detectionRange) return;
+
+    // Moving
+    walkTimer.Tick(Time.deltaTime);
+    if (walkTimer.Finished)
+    {
+        if (!walking)
+        {
+            Strafe();
+            canMove = true;
+            walking = true;
+        }
+        else
+        {
+            canMove = false;
+            walking = false;
+        }
+        walkTimer.Reset();   
+    }
+
+    // Shooting
+    shootTimer.Tick(Time.deltaTime);
+    if(shootTimer.Finished)
+    {
+        Shoot();
+        Recoil();
+        shootTimer.Reset();
+    }
+
+    // Aiming
+    Vector2 direction = (MovementScript.playerTransform.position - transform.position).normalized;
+
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    gunTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+    bool flip = angle < -90 || angle > 90 ? true : false;
+    gunSprite.flipY = flip;
+    OnGunFlip?.Invoke(flip);
+
+    Vector2 offset = direction * radius;
+    gunTransform.position = (Vector2)transform.position + offset;
+
+    if (!animating && rb.linearVelocity.magnitude > 0.2f)
+    {
+        animating = true;
+        spriteObject.DOLocalJump(Vector2.zero, hopStrength, 1, hopDuration)
+            .SetEase(hopEasing)
+            .OnComplete(() => { animating = false; landParticles.Play();});
+    }
+}
+
+private void Recoil()
+{
+    DOVirtual.Float(MIN_RADIUS, MAX_RADIUS, 0.2f, (float value) =>
+    {
+        radius = value;
+    });
+}
+
+private void Shoot()
+{
+    if (BulletSelectController.PlayerBusy()) return;
+    Vector2 direction = (bulletSpawnPos.position - transform.position).normalized;
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+    SoundManager.Instance.PlaySound(shootSound, .9f, 1.1f, .5f);
+
+    BulletScript bulletScript = Instantiate(bullet, bulletSpawnPos.position, Quaternion.identity).GetComponent<BulletScript>();
+    bulletScript.Init(createdByPlayer: false);
+}
+
+private void Strafe()
+{
+    givenDirection = UnityEngine.Random.insideUnitCircle.normalized;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 4: Dynaman ---------- -->
+      <div class="tab" data-name="Dynaman">
+        <p class="code-file">DynamanScript.cs</p>
+<script type="text/plain" class="code">
+private void OnCollisionEnter2D(Collision2D collision)
+{
+    if (TryGetComponent<EnemyScript>(out var eScript)) if (eScript.isWet) return;
+
+    if (collision.transform.CompareTag("Player"))
+    {
+        if (collision.transform.TryGetComponent<ICharInterface>(out var face))
+        {
+            Vector2 direction = (collision.transform.position - transform.position).normalized;
+            Explode();
+            Destroy(gameObject);
+        }
+    }
+}
+
+public void Explode()
+{
+    if (TryGetComponent<EnemyScript>(out var eScript)) if (eScript.isWet) return;
+    SoundManager.Instance.PlaySound(explodes, .9f, 1.1f, .7f);
+    Instantiate(explosionParticles, transform.position, Quaternion.identity);
+    Instantiate(explosion, transform.position, Quaternion.identity); 
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -127,7 +809,7 @@
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-2.png">
-      <img src="media/little-cowboy-2.png" alt="Little Cowboy screenshot 2" onerror="this.parentNode.classList.add('missing'); this.remove()">
+      <img src="media/little-cowboy-2.png" alt="Little Cowboy enemies" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
     <figcaption>
       [Caption: what this image shows]

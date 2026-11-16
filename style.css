@@ -312,8 +312,9 @@ pre {
   font-weight: 700;
 }
 .tab-bar button:focus-visible { outline: 2px solid var(--game); outline-offset: 3px; }
+.code-tabs .code-file { margin: 1rem 0 0; }
 .code-tabs pre {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   max-height: 34rem;  /* long functions scroll inside the box, so the page stays short */
   overflow: auto;
 }

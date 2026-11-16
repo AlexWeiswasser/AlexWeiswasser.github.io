@@ -14,14 +14,16 @@
 
 <!--
   HOW TO EDIT THIS PAGE
-  - Everything you need to write is marked [in square brackets]. Replace the
+  - Everything you still need to write is marked [in square brackets]. Replace the
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
+  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
+    a button label (data-name), a file name, its code, and its own description.
+  - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
+    you don't need to change any < or > characters.
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - Code goes between the two "script" lines in each CODE block. Paste it exactly
-    as it is in Unity; you don't need to change any < or > characters.
-  - Each section has its own image, at the bottom of that section's block.
-  - To delete a section, remove everything from its banner down to the next banner.
+  - To add an option, copy a whole OPTION block. To remove one, delete its block.
 -->
 
 <!-- ==============================================================
@@ -66,18 +68,68 @@
       [How the scriptable-object character system works and what it let designers do.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">MageData.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: The Ability base class ---------- -->
+      <div class="tab" data-name="The Ability base class">
+        <p class="code-file">Ability.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+public abstract class Ability : ScriptableObject 
+{
+    // The main Ability class. Holds everything base about an ability: Its name, its cooldown, and its main function. 
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+    [Header("Base Ability Variables")]
+    public string abilityName;
+    public float cooldown;
+    public bool isCharged;
+    public float waterCost;
+    [HideInInspector] public float timeSinceAction; // Time since last action, for music
+
+
+    public abstract void Activate(GameObject user, MageScript userScript);
+    public virtual void Activate(GameObject user, MageScript userScript, float time) { }
+
+    public virtual void Activate(GameObject user, MageScript userScript, Vector3 spawnPos, Quaternion rotation, float LifeTime, bool fromPlayer = false, Collider2D ignored = null, int prefabNumber = -1, float speedMult = 1) { }
+
+    public virtual AudioClip[] GetAudio() { return null; }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Loading a Mage's kit ---------- -->
+      <div class="tab" data-name="Loading a Mage's kit">
+        <p class="code-file">MageScript.cs</p>
+<script type="text/plain" class="code">
+private void SetAbilities()
+{
+    MageResources data = GameManager.Instance.GetMageData((int)mageChoice);
+    attack = data.attack;
+    movement = data.movement;
+    special = data.counterSpell;
+    passive = data.passive;
+    extraHats = data.extraHats;
+    hurtSounds = data.hurtSounds;
+    deathSounds = data.deathSounds;
+    extraSounds = data.extraSounds;
+    alternateAttack = data.counterShot;
+    movementNumber = (int)mageChoice;
+    attackNumber = (int)mageChoice;
+    specialNumber = (int)mageChoice;
+    _passiveNumber = (int)mageChoice - 1;
+
+    ActivatePassive();
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -107,18 +159,109 @@
       [What felt wrong about counter timing, and how ghost projectiles fixed it.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">Projectile.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Becoming a ghost ---------- -->
+      <div class="tab" data-name="Becoming a ghost">
+        <p class="code-file">SchrodingerProjectile.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+public void Init(GameObject creator, GameObject player, Vector3 velocity, float knockback, GameObject spellExplosionEffect, AudioClip[] sounds, float speedIncrease = -1, GameObject counterspell = null)
+{
+    // Caching
+    _playerInDanger = player;
+    _spellExplosionEffect = spellExplosionEffect;
+    _explosionSounds = sounds;
+    thisCreator = creator;
+    counterSpellParent = counterspell;
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+    // Setup
+    _initalPosition = transform.position;
+
+    _initalPlayerPos = player.transform.position;
+
+    velocityDirection = velocity;
+    knockbackValue = knockback;
+    newSpeed = speedIncrease;
+
+    ChangeIntoShrodinger();
+
+    // During runtime
+    StartCoroutine(Actions());
+    StartCoroutine(Lifetime());
+}
+
+private void ChangeIntoShrodinger()
+{
+    ToggleSprite(false);
+    Destroy(GetComponent<Rigidbody2D>());
+    Destroy(GetComponent<ScreenWrap>());
+
+    if (gameObject.layer == LayerMask.NameToLayer("CounterSpell"))
+    {
+        if(!transform.CompareTag("Piercing"))
+            MoveBack();
+        SetVictim();
+    }
+
+    gameObject.layer = LayerMask.NameToLayer("Schrodinger");
+}
+
+private void MoveBack()
+{
+    CircleCollider2D spellCol = GetComponent<CircleCollider2D>();
+    _specialCounterOffset = -velocityDirection * (spellCol.radius / 1.5f);
+}
+
+private void SetVictim()
+{
+    if(_playerInDanger.TryGetComponent<MageScript>(out MageScript mScript))
+    {
+        mScript.lastHitBy = counterSpellParent;
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Following the player ---------- -->
+      <div class="tab" data-name="Following the player">
+        <p class="code-file">SchrodingerProjectile.cs</p>
+<script type="text/plain" class="code">
+private IEnumerator Actions()
+{
+    Vector3 changeInPos;
+
+    while (!_timesUp)
+    {
+        if (_playerInDanger != null)
+        {
+            changeInPos = _playerInDanger.transform.position - _initalPlayerPos;
+            transform.position = _initalPosition + changeInPos + _specialCounterOffset;
+        }
+        yield return null;
+    }
+
+    if (_playerInDanger.TryGetComponent<MageScript>(out MageScript mScript))
+        mScript.StartCoroutine(mScript.HandleSpellCollision(gameObject.GetComponent<Collider2D>()));
+
+    // ... explosion sound and VFX, then the ghost removes itself
+}
+
+private IEnumerator Lifetime()
+{
+    yield return new WaitForSeconds(GameManager.schrodingerLength);
+    _timesUp = true;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 

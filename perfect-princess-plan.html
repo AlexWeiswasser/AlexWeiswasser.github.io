@@ -14,14 +14,16 @@
 
 <!--
   HOW TO EDIT THIS PAGE
-  - Everything you need to write is marked [in square brackets]. Replace the
+  - Everything you still need to write is marked [in square brackets]. Replace the
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
+  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
+    a button label (data-name), a file name, its code, and its own description.
+  - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
+    you don't need to change any < or > characters.
   - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - Code goes between the two "script" lines in each CODE block. Paste it exactly
-    as it is in Unity; you don't need to change any < or > characters.
-  - Each section has its own image, at the bottom of that section's block.
-  - To delete a section, remove everything from its banner down to the next banner.
+  - To add an option, copy a whole OPTION block. To remove one, delete its block.
 -->
 
 <!-- ==============================================================
@@ -64,21 +66,242 @@
 
     <!-- Your description -->
     <p>
-      [How interfaces let different pieces move around the board through the same code.]
+      [How interfaces let different pieces move around the board through the same code, and how masks act in the order they were placed.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">IMovable.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: The two interfaces ---------- -->
+      <div class="tab" data-name="The two interfaces">
+        <p class="code-file">IDummyFace.cs, IMoveableFace.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+public interface IDummyFace
+{
+    public void DummyAction(int actionNum, GridManager grid);
+    public void SetBackToStart(Vector3 pos);
+}
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+public interface IMoveableFace
+{
+    public void RemoveGridPos();
+    public void AddPosToGrid();
+    public int GetOrder();
+    public int GetMask();
+    public Vector3 GetPosition();
+    public void AddToPosition(Vector3 addtion, bool finalMove = false);
+    public void SetPosition(Vector3 pos, bool finalMove = false);
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: The turn loop ---------- -->
+      <div class="tab" data-name="The turn loop">
+        <p class="code-file">GameplayManager.cs</p>
+<script type="text/plain" class="code">
+private void StartNewTurn()
+{
+    _measureCount++;
+    turnsTaken++;
+    if (turnsTaken > allowedTurns)
+    {
+        turnsText.color = Color.red;
+        StopDance();
+        return;
+    }
+    danceCo = StartCoroutine(DoTurn());
+}
+
+private IEnumerator DoTurn()
+{
+    turnsText.text = $"Turns left: {allowedTurns - turnsTaken}";
+
+    // Animation One
+    ActivateDummies(1);
+    yield return new WaitForSeconds(segmentTime);
+
+    // Animation Two
+    ActivateDummies(2);
+    yield return new WaitForSeconds(segmentTime);
+
+    // Animation three
+    ActivateDummies(3);
+    yield return new WaitForSeconds(segmentTime);
+
+    StartNewTurn();
+}
+
+private void ActivateDummies(int currentAction)
+{
+    if (currentDummy < orderList.Count)
+    {
+        if (orderList[currentDummy].TryGetComponent<IDummyFace>(out IDummyFace dummyInterface))
+        {
+            dummyInterface.DummyAction(currentAction, gridManager);
+            orderList[currentDummy].transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+
+        if (currentAction == 3)
+        {
+            orderList[currentDummy].transform.GetChild(0).GetChild(0).GetComponent<SpriteRenderer>().color = Color.white;
+            currentDummy++;
+            if (currentDummy >= orderList.Count)
+            {
+                currentDummy = 0;
+            }
+        }
+    }
+
+    if (danceCo == null) return;
+
+    for (int i = 0; i < dummies.Length; i++)
+    {
+        ChangeSpriteOfAnimation((currentAction - 1) + (3 * ((_measureCount + 1) % 2)), dummies[i], false);
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: A mask in action ---------- -->
+      <div class="tab" data-name="A mask in action">
+        <p class="code-file">FlipScript.cs</p>
+<script type="text/plain" class="code">
+public void DummyAction(int actionNum, GridManager grid)
+{
+    if (actionNum == 1)
+    {
+        firstFace = grid.CheckCross(transform.position);
+
+        if (firstFace != null)
+        {
+            firstFace.RemoveGridPos();
+        }
+    }
+    else if (actionNum == 2)
+    {
+        if (firstFace != null)
+        {
+            if (firstFace.GetOrder() >= 99) // Can't move the prince or table!
+            {
+                firstFace.AddPosToGrid();
+                firstFace = null;
+                vectorOfTransform = Vector2.zero;
+            }
+            else
+            {
+                vectorOfTransform = transform.position - firstFace.GetPosition();
+
+                if (CanMoveObject(firstFace.GetPosition() + vectorOfTransform + vectorOfTransform, grid))
+                {
+                    firstFace.SetPosition(transform.position);
+                }
+                else
+                {
+                    if(TryGetComponent<DummyScript>(out DummyScript dummyScript))
+                    {
+                        dummyScript.PlayBump();
+                    }
+
+                    firstFace.AddPosToGrid();
+                    firstFace = null;
+                    vectorOfTransform = Vector2.zero;
+                }
+            }
+        }
+    }
+    else if (actionNum == 3)
+    {
+        if (firstFace != null)
+        {
+            firstFace.AddToPosition(vectorOfTransform, true);
+            firstFace.AddPosToGrid();
+
+            firstFace = null;
+            vectorOfTransform = Vector2.zero;
+        }
+
+        firstFace = null;
+        vectorOfTransform = Vector3.zero;
+    }
+}
+
+private bool CanMoveObject(Vector2 spaceToCheck, GridManager grid)
+{
+    if (firstFace.GetMask() != 3) // If not princess, check the position square of what you're moving to
+    {
+        if (grid.CheckPosition(spaceToCheck) != null)
+        {
+            return false;
+        }
+    }
+    return (!grid.CheckForWall(spaceToCheck));
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 4: Who moves first ---------- -->
+      <div class="tab" data-name="Who moves first">
+        <p class="code-file">GridManager.cs</p>
+<script type="text/plain" class="code">
+public IMoveableFace CheckCross(Vector2 pos)
+{
+    IMoveableFace moveableFace = null;
+
+    GameObject[] temps = new GameObject[4];
+
+    temps[0] = CheckPosition(pos + new Vector2(1, 0));
+    temps[1] = CheckPosition(pos + new Vector2(-1, 0));
+    temps[2] = CheckPosition(pos + new Vector2(0, 1));
+    temps[3] = CheckPosition(pos + new Vector2(0, -1));
+
+    moveableFace = WhosOnFirst(temps);
+
+    return moveableFace;
+}
+
+private IMoveableFace WhosOnFirst(GameObject[] possibleObjects)
+{
+    IMoveableFace moveableFace = null;
+
+    for(int i = 0; i < possibleObjects.Length; i++)
+    {
+        if (possibleObjects[i] != null)
+        {
+            if (possibleObjects[i].TryGetComponent<IMoveableFace>(out IMoveableFace tempFace))
+            {
+                if (moveableFace == null)
+                {
+                    moveableFace = tempFace;
+                }
+                else
+                {
+                    if (tempFace.GetOrder() < moveableFace.GetOrder())
+                    {
+                        moveableFace = tempFace;
+                    }
+                }
+            }
+        }
+    }
+
+    return moveableFace;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
@@ -108,18 +331,174 @@
       [How designers build a puzzle in the inspector, and how that let the team make 33 levels.]
     </p>
 
-    <!-- File name shown above the code -->
-    <p class="code-file">PuzzleSetup.cs</p>
+    <!-- CODE SELECTOR: one OPTION per button -->
+    <div class="code-tabs">
 
-    <!-- CODE: paste between the two script lines -->
+      <!-- ---------- OPTION 1: Inspector data ---------- -->
+      <div class="tab" data-name="Inspector data">
+        <p class="code-file">GameplayManager.cs</p>
 <script type="text/plain" class="code">
-// Paste the real code here.
-</script>
+[Serializable]
+private struct Dummy
+{
+    public Vector2 position;
+    public DummyTypes type;
+}
 
-    <!-- What to notice in the code -->
-    <p>
-      [A sentence or two on the interesting lines above.]
-    </p>
+[Serializable]
+private struct MaskChoice
+{
+    public DummyTypes type;
+    public int amount;
+}
+
+[SerializeField] private Dummy[] dummyArray;
+[SerializeField] private MaskChoice[] maskChoices;
+[SerializeField] private int allowedTurns;
+
+public enum DummyTypes
+{
+    None,
+    Prince,
+    Table,
+    Princess,
+    Flip,
+    Hori,
+    Vert,
+    Nintey,
+    Pull,
+    xFlip
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 2: Building the level ---------- -->
+      <div class="tab" data-name="Building the level">
+        <p class="code-file">GameplayManager.cs</p>
+<script type="text/plain" class="code">
+private void Start()
+{
+    turnsText.text = $"Turns left: {allowedTurns - turnsTaken}";
+
+    SpawnMasks();
+    CreateDummies();
+
+    segmentTime = turnSpeed / 3;
+}
+
+private void CreateDummies()
+{
+    gridManager = GetComponent<GridManager>();
+    dummies = new GameObject[dummyArray.Length];
+
+    for (int i = 0; i < dummyArray.Length; i++)
+    {
+        Vector2 offsetPosition = new Vector2(dummyArray[i].position.x + xOffset, dummyArray[i].position.y + yOffset);
+
+        dummies[i] = Instantiate(dummyPrefab, transform.position, Quaternion.identity);
+        dummies[i].name = "Dummy" + i;
+
+        if (dummies[i].TryGetComponent<DummyScript>(out DummyScript dummyScript))
+        {
+            dummyScript.Init(offsetPosition, gridManager, this, (int)dummyArray[i].type);
+        }
+
+        ChangeSpriteOfAnimation(0, dummies[i], true);
+    }
+}
+
+private void SpawnMasks()
+{
+    int currentMaskSpot = 0;
+
+    for (int i = 0; i < maskChoices.Length; i++)
+    {
+        for (int j = 0; j < maskChoices[i].amount; j++)
+        {
+            if (currentMaskSpot >= maskPositions.Length) return;
+
+            GameObject newMask = Instantiate(
+                maskPrefabs[(int)maskChoices[i].type - 4], 
+                canvas.transform, 
+                false
+            );
+
+            if (newMask.TryGetComponent<RectTransform>(out RectTransform rTrans))
+            {
+                rTrans.position = maskPositions[currentMaskSpot].position;
+            }
+
+            currentMaskSpot++;
+        }
+    }
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+      <!-- ---------- OPTION 3: The grid ---------- -->
+      <div class="tab" data-name="The grid">
+        <p class="code-file">GridManager.cs</p>
+<script type="text/plain" class="code">
+private void Awake()
+{
+    float additionToCamHorizontal = ((size.x - 4) * .1f);
+    float additionToCamHeight = ((size.y - 4) * .5f);
+    Vector3 newCamPos = scaleCam.transform.position;
+    newCamPos.x += additionToCamHorizontal;
+    newCamPos.y += additionToCamHeight;
+    scaleCam.transform.position = newCamPos;
+
+    gridArray = new GameObject[(int)size.x, (int)size.y];
+    gridObject.ChangeGridSize((int)size.x, (int)size.y);
+}
+
+public bool CheckForWall(Vector2 pos)
+{
+    pos += CorrectiveOffset;
+
+    if (pos.x >= size.x || pos.y >= size.y || pos.x < 0 || pos.y < 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+public GameObject CheckPosition(Vector2 pos)
+{
+    pos += CorrectiveOffset;
+
+    if (pos.x >= size.x || pos.y >= size.y || pos.x < 0 || pos.y < 0) return null;
+    return gridArray[(int)pos.x, (int)pos.y];
+}
+
+public void ClearPos(Vector2 pos)
+{
+    pos += CorrectiveOffset;
+
+    if (pos.x >= size.x || pos.y >= size.y || pos.x < 0 || pos.y < 0) return;
+    gridArray[(int)pos.x, (int)pos.y] = null;
+}
+
+public void AddToGrid(GameObject addition)
+{
+    Vector2 pos = (Vector2)addition.transform.position + CorrectiveOffset;
+
+    if (pos.x >= size.x || pos.y >= size.y || pos.x < 0 || pos.y < 0) return;
+    gridArray[(int)pos.x, (int)pos.y] = addition;
+}
+</script>
+        <p>
+          [What this code does and why you built it this way.]
+        </p>
+      </div>
+
+    </div>
 
   </div>
 
