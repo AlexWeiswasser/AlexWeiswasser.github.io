@@ -3,6 +3,7 @@
 //   2. turns the pasted code blocks into formatted code boxes
 //   3. builds the row of tabs for each code selector
 //   4. builds the navigation bar at the top of the page
+//   5. fills each image slot with whichever file exists: a video, a GIF or a still image
 
 // ---------------------------------------------------------------------------
 // 1. Text. All the writing for the game pages lives in game-text.js. Each
@@ -192,4 +193,72 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
 
   document.body.insertBefore(nav, document.body.firstChild);
   document.body.classList.add('has-nav');
+})();
+
+// ---------------------------------------------------------------------------
+// 5. Image slots. Each slot is named after a file, for example
+//    media/fish-party-1. The slot shows whichever of these exists, trying them
+//    in this order, so a video or GIF with the right name replaces a still image:
+//        .mp4  .webm  .gif  .png  .jpg  .jpeg  .webp
+//    A slot is only loaded once it is close to being scrolled into view.
+// ---------------------------------------------------------------------------
+(function () {
+  var TYPES = ['mp4', 'webm', 'gif', 'png', 'jpg', 'jpeg', 'webp'];
+
+  function fill(slot) {
+    var file = slot.getAttribute('data-file');
+    if (!file) return;
+    var base = file.replace(/\.[a-z0-9]+$/i, '');
+
+    var existing = slot.querySelector('img');
+    if (existing) existing.onerror = null;          // this code takes over from the page's own fallback
+    var caption = slot.parentNode.querySelector('figcaption');
+    var alt = slot.getAttribute('data-alt') || (existing && existing.getAttribute('alt')) || (caption && caption.textContent) ||
+              (slot.classList.contains('hero-shot') ? 'Title screen' : '');
+
+    function show(element, url) {
+      slot.classList.remove('missing');
+      if (existing && existing.parentNode === slot && existing.getAttribute('src') === url) return;  // already showing it
+      slot.textContent = '';
+      slot.appendChild(element);
+      if (element.tagName === 'VIDEO') { var playing = element.play(); if (playing && playing.catch) playing.catch(function () {}); }
+    }
+
+    function attempt(i) {
+      if (i >= TYPES.length) {                       // nothing with this name exists yet
+        slot.textContent = '';
+        slot.classList.add('missing');
+        slot.setAttribute('data-file', base + '  (.png, .gif or .mp4)');
+        return;
+      }
+      var url = base + '.' + TYPES[i];
+      if (TYPES[i] === 'mp4' || TYPES[i] === 'webm') {
+        var video = document.createElement('video');
+        video.muted = true; video.loop = true; video.autoplay = true; video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('aria-label', alt);
+        video.onloadeddata = function () { show(video, url); };
+        video.onerror = function () { attempt(i + 1); };
+        video.src = url;
+      } else {
+        var image = new Image();
+        image.alt = alt;
+        image.onload = function () { show(image, url); };
+        image.onerror = function () { attempt(i + 1); };
+        image.src = url;
+      }
+    }
+    attempt(0);
+  }
+
+  var slots = document.querySelectorAll('.media[data-file]');
+  if (!('IntersectionObserver' in window)) { slots.forEach(fill); return; }
+  var watcher = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      watcher.unobserve(entry.target);
+      fill(entry.target);
+    });
+  }, { rootMargin: '800px' });
+  slots.forEach(function (slot) { watcher.observe(slot); });
 })();

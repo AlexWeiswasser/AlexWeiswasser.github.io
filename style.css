@@ -416,7 +416,7 @@ body:has(> .detail) .detail-title {
   display: flex;
   justify-content: center;
 }
-.hero-shot img {
+.hero-shot img, .hero-shot video {
   width: auto;
   height: auto;
   max-width: 100%;
@@ -482,7 +482,7 @@ body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 
   display: flex;
   justify-content: center;
 }
-.shot .media img {
+.shot .media img, .shot .media video {
   width: auto;
   height: auto;
   max-width: 100%;
