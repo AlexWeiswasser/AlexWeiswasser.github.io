@@ -200,7 +200,7 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
 //    media/fish-party-1. The slot shows whichever of these exists, trying them
 //    in this order, so a video or GIF with the right name replaces a still image:
 //        .mp4  .webm  .gif  .png  .jpg  .jpeg  .webp
-//    A slot is only loaded once it is close to being scrolled into view.
+//    Every slot starts loading as soon as the page opens.
 // ---------------------------------------------------------------------------
 (function () {
   var TYPES = ['mp4', 'webm', 'gif', 'png', 'jpg', 'jpeg', 'webp'];
@@ -212,6 +212,7 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
 
     var existing = slot.querySelector('img');
     if (existing) existing.onerror = null;          // this code takes over from the page's own fallback
+    if (existing) existing.loading = 'eager';       // load now, even if the page marked it to wait
     var caption = slot.parentNode.querySelector('figcaption');
     var alt = slot.getAttribute('data-alt') || (existing && existing.getAttribute('alt')) || (caption && caption.textContent) ||
               (slot.classList.contains('hero-shot') ? 'Title screen' : '');
@@ -251,14 +252,6 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
     attempt(0);
   }
 
-  var slots = document.querySelectorAll('.media[data-file]');
-  if (!('IntersectionObserver' in window)) { slots.forEach(fill); return; }
-  var watcher = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      watcher.unobserve(entry.target);
-      fill(entry.target);
-    });
-  }, { rootMargin: '800px' });
-  slots.forEach(function (slot) { watcher.observe(slot); });
+  // Every slot starts loading as soon as the page opens
+  document.querySelectorAll('.media[data-file]').forEach(fill);
 })();
