@@ -329,19 +329,49 @@ pre {
   max-height: 34rem;  /* long functions scroll inside the box, so the page stays short */
   overflow: auto;
 }
-.code-tabs .tab > p:last-child { margin-bottom: 0.75rem; }
+.code-tabs .tab > .copy { margin-bottom: 0.75rem; }
 
 /* ---------- Game page layout ---------- */
 body:has(> .detail) { padding: 0 var(--pad-x) var(--pad-y); }
 body:has(> .detail) .detail-top { padding: 1.5rem 0 0; }
-body:has(> .detail) .detail-title { padding: clamp(2rem, 5vw, 3.5rem) 0 0; max-width: 62rem; }
+/* Top of a game page: title and preface on the left, title screen on the right */
+body:has(> .detail) .detail-title {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  padding: clamp(2rem, 5vw, 3.5rem) 0 0;
+  max-width: none;
+}
+.hero-text .title-art { margin-bottom: 1.75rem; }
+.hero-shot {
+  aspect-ratio: auto;
+  background: none;
+  overflow: visible;
+  display: flex;
+  justify-content: center;
+}
+.hero-shot img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 26rem;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.hero-shot.missing { aspect-ratio: 16 / 9; background: #171c26; }
 body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 0 0; }
 
-/* The preface paragraph at the top of a game page */
-.detail .preface {
+/* Text filled in from game-text.js */
+.preface p {
   font-size: 1.15rem;
-  margin-bottom: 0;
+  max-width: 62ch;
+  margin: 0 0 1rem;
+  color: var(--text);
 }
+.copy > p:last-child { margin-bottom: 0; }
+.part-text .copy { margin-bottom: 0.25rem; }
+.missing-text { color: #ff8f85; font-family: ui-monospace, Consolas, monospace; font-size: 0.85rem; }
 
 /* One section: heading and description on top, then the code selector on the
    left with that section's image beside it */
@@ -394,6 +424,7 @@ body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 
 /* ---------- Phones and narrow windows ---------- */
 @media (max-width: 820px) {
   .intro, .game, .part { grid-template-columns: minmax(0, 1fr); }
+  body:has(> .detail) .detail-title { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; }
   .studio { align-items: flex-start; text-align: left; }
   .game .media { order: -1; } /* GIF above the text on small screens */
   .part > .code-tabs, .part > .shot,

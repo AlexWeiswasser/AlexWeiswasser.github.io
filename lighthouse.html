@@ -10,67 +10,61 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
-<body style="--game: #e2574c">
+<body style="--game: #e2574c" data-page="lighthouse">
 
 <!--
-  HOW TO EDIT THIS PAGE
-  - Everything you still need to write is marked [in square brackets]. Replace the
-    brackets and the text inside them with your own words.
+  HOW THIS PAGE WORKS
+  - The WRITING is not in this file. The preface, every description, every caption,
+    every section heading and every tab label are in game-text.js. Edit them there.
+  - This file holds the page's structure, its code samples and its images.
   - Each part of the page sits under a banner made of ===== lines.
-  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
-    The image sits beside the code, level with its middle.
-  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
-    a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
     you don't need to change any < or > characters.
-  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - To add an option, copy a whole OPTION block. To remove one, delete its block.
+  - To add an option, copy a whole OPTION block here, give it the next number in
+    both data-text attributes, and add a matching OPTION entry in game-text.js.
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button and title
+     TOP OF PAGE: back button, title, preface, title screen image
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#lighthouse">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
-  <h1><img class="title-art" width="648" src="media/lighthouse-title.png" alt="Lighthouse Time Machine"></h1>
+  <div class="hero-text">
+    <h1><img class="title-art" width="648" src="media/lighthouse-title.png" alt="Lighthouse Time Machine"></h1>
+    <!-- preface: game-text.js, PREFACE -->
+    <div class="preface copy" data-text="preface"></div>
+  </div>
+
+  <!-- TITLE SCREEN: put the file in the media folder as lighthouse-titlescreen.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="media hero-shot" data-file="media/lighthouse-titlescreen.png">
+    <img src="media/lighthouse-titlescreen.png" alt="Lighthouse Time Machine title screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+  </figure>
 </header>
 
 <main class="detail">
-  <!-- ==============================================================
-       PREFACE: your short intro to the project
-       ============================================================== -->
-    <p class="preface">
-      [Preface. What the game is and how the jam went, in a few sentences.]
-    </p>
 
   <!-- ==============================================================
        SECTION 1: The pivot
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>The pivot</h2>
-
-    <!-- Your description -->
-    <p>
-      [The big section. What the first idea was, why it was not working four hours in, how the team decided to drop it, and why the second idea was better scoped. Use as many paragraphs as you need.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 1 -->
+    <h2 data-text="s1.title">The pivot</h2>
+    <div class="copy" data-text="s1"></div>
   </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-3.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 1, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/lighthouse-3.png">
       <img src="media/lighthouse-3.png" alt="Lighthouse Time Machine: the pivot" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s1.caption"></figcaption>
   </figure>
   </section>
 
@@ -79,22 +73,16 @@
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Mouse-drag controls</h2>
-
-    <!-- Your description -->
-    <p>
-      [How a drag becomes ship movement, and the boost you added on each drag.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 2 -->
+    <h2 data-text="s2.title">Mouse-drag controls</h2>
+    <div class="copy" data-text="s2"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Reading the drag ---------- -->
-      <div class="tab" data-name="Reading the drag">
+      <div class="tab" data-name="Reading the drag" data-text-label="s2.o1.title">
         <p class="code-file">[File name].cs</p>
 <script type="text/plain" class="code">
 public void MousePress(InputAction.CallbackContext context)
@@ -116,13 +104,12 @@ public void MousePress(InputAction.CallbackContext context)
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 1 -->
+        <div class="copy" data-text="s2.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Directing ships ---------- -->
-      <div class="tab" data-name="Directing ships">
+      <div class="tab" data-name="Directing ships" data-text-label="s2.o2.title">
         <p class="code-file">[File name].cs</p>
 <script type="text/plain" class="code">
 private bool ObtainShips()
@@ -154,13 +141,12 @@ private void DirectShips()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 2 -->
+        <div class="copy" data-text="s2.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: The boost ---------- -->
-      <div class="tab" data-name="The boost">
+      <div class="tab" data-name="The boost" data-text-label="s2.o3.title">
         <p class="code-file">BoatScript.cs</p>
 <script type="text/plain" class="code">
 private void FixedUpdate()
@@ -183,22 +169,20 @@ public virtual IEnumerator BoostBoat()
     burstParticles.Play();
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 3 -->
+        <div class="copy" data-text="s2.o3"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-1.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 2, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/lighthouse-1.png">
       <img src="media/lighthouse-1.png" alt="Lighthouse Time Machine mouse-drag controls" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s2.caption"></figcaption>
   </figure>
   </section>
 
@@ -207,22 +191,16 @@ public virtual IEnumerator BoostBoat()
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Spawning the boats</h2>
-
-    <!-- Your description -->
-    <p>
-      [How the spawning system works.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 3 -->
+    <h2 data-text="s3.title">Spawning the boats</h2>
+    <div class="copy" data-text="s3"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Spawn zones ---------- -->
-      <div class="tab" data-name="Spawn zones">
+      <div class="tab" data-name="Spawn zones" data-text-label="s3.o1.title">
         <p class="code-file">BoatSpawner.cs</p>
 <script type="text/plain" class="code">
 class Spawn
@@ -280,13 +258,12 @@ private void Awake()
     spawns.Add(rightSpawn);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 1 -->
+        <div class="copy" data-text="s3.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Finding a free spot ---------- -->
-      <div class="tab" data-name="Finding a free spot">
+      <div class="tab" data-name="Finding a free spot" data-text-label="s3.o2.title">
         <p class="code-file">BoatSpawner.cs</p>
 <script type="text/plain" class="code">
 private void Update()
@@ -349,13 +326,12 @@ private bool TryGetSpawnPoint(out Vector2 spawnPos, out Quaternion spawnRot)
     return false;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 2 -->
+        <div class="copy" data-text="s3.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Speeding up ---------- -->
-      <div class="tab" data-name="Speeding up">
+      <div class="tab" data-name="Speeding up" data-text-label="s3.o3.title">
         <p class="code-file">BoatSpawner.cs</p>
 <script type="text/plain" class="code">
 void UpdatePoints(int pointsGained, Vector2Int range)
@@ -365,27 +341,26 @@ void UpdatePoints(int pointsGained, Vector2Int range)
     timeTilSpawn = Mathf.Clamp(tempTimeToSpawn, 3.5f, 10);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 3 -->
+        <div class="copy" data-text="s3.o3"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-2.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 3, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/lighthouse-2.png">
       <img src="media/lighthouse-2.png" alt="Lighthouse Time Machine boat spawning" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s3.caption"></figcaption>
   </figure>
   </section>
 
 </main>
 
+<script src="game-text.js"></script>
 <script src="code.js"></script>
 </body>
 </html>

@@ -10,63 +10,58 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
-<body style="--game: #2fa8ec">
+<body style="--game: #2fa8ec" data-page="fish-party">
 
 <!--
-  HOW TO EDIT THIS PAGE
-  - Everything you still need to write is marked [in square brackets]. Replace the
-    brackets and the text inside them with your own words.
+  HOW THIS PAGE WORKS
+  - The WRITING is not in this file. The preface, every description, every caption,
+    every section heading and every tab label are in game-text.js. Edit them there.
+  - This file holds the page's structure, its code samples and its images.
   - Each part of the page sits under a banner made of ===== lines.
-  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
-    The image sits beside the code, level with its middle.
-  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
-    a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
     you don't need to change any < or > characters.
-  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - To add an option, copy a whole OPTION block. To remove one, delete its block.
+  - To add an option, copy a whole OPTION block here, give it the next number in
+    both data-text attributes, and add a matching OPTION entry in game-text.js.
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button and title
+     TOP OF PAGE: back button, title, preface, title screen image
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#fish-party">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
-  <h1><img class="title-art" width="300" src="media/fish-party-title.png" alt="Fish Party"></h1>
+  <div class="hero-text">
+    <h1><img class="title-art" width="300" src="media/fish-party-title.png" alt="Fish Party"></h1>
+    <!-- preface: game-text.js, PREFACE -->
+    <div class="preface copy" data-text="preface"></div>
+  </div>
+
+  <!-- TITLE SCREEN: put the file in the media folder as fish-party-titlescreen.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="media hero-shot" data-file="media/fish-party-titlescreen.png">
+    <img src="media/fish-party-titlescreen.png" alt="Fish Party title screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+  </figure>
 </header>
 
 <main class="detail">
-  <!-- ==============================================================
-       PREFACE: your short intro to the project
-       ============================================================== -->
-    <p class="preface">
-      Fish Party is FunRug Studio's second game, slated to release in March. It's a large capacity, single button, local multiplayer game, with plans of online play as well. Our first game, MAGE, had a long development and learning process, and in comparison, Fish Party is a much more focused, better executed project.
-    </p>
 
   <!-- ==============================================================
        SECTION 1: Twelve separate inputs, bots included
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Twelve separate inputs, bots included</h2>
-
-    <!-- Your description -->
-    <p>
-      Each player gets one button. That button is how you move, how you dash, how you ready up, and change your name. An input system was required that could work for up to 12 players, be efficient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input management.
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 1 -->
+    <h2 data-text="s1.title">Twelve separate inputs, bots included</h2>
+    <div class="copy" data-text="s1"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Setting up players ---------- -->
-      <div class="tab" data-name="Setting up players">
+      <div class="tab" data-name="Setting up players" data-text-label="s1.o1.title">
         <p class="code-file">PlayerHandler.cs</p>
 <script type="text/plain" class="code">
 // Setting up players
@@ -106,13 +101,12 @@ private void Start()
     }
 }
 </script>
-        <p>
-          In the playerHandler, each local player creates a dictionary key on creation, comprised of their device ID and control path. This allows lookup times for all local inputs to be O(1), making sure that even with the maximum 12 players, efficiency is guaranteed.
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 1 -->
+        <div class="copy" data-text="s1.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Reading input ---------- -->
-      <div class="tab" data-name="Reading input">
+      <div class="tab" data-name="Reading input" data-text-label="s1.o2.title">
         <p class="code-file">PlayerHandler.cs</p>
 <script type="text/plain" class="code">
 // Activating player input 
@@ -124,13 +118,12 @@ private void HandleInput(InputControl control)
     EventBus<LocalButtonPressed>.Call(new LocalButtonPressed { playerIndex = playerIndex });
 }
 </script>
-        <p>
-          [What this function does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 2 -->
+        <div class="copy" data-text="s1.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Reaching the fish ---------- -->
-      <div class="tab" data-name="Reaching the fish">
+      <div class="tab" data-name="Reaching the fish" data-text-label="s1.o3.title">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
 private void OnEnable()
@@ -150,22 +143,20 @@ private void FlipRotation(LocalButtonPressed pressData)
 
 public void FlipRotation() { if(fishMovement.GetCanMove()) fishMovement.FlipRotation(); }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 3 -->
+        <div class="copy" data-text="s1.o3"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as fish-party-1.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 1, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/fish-party-1.png">
       <img src="media/fish-party-1.png" alt="Fish Party character joining screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: the character joining screen]
-    </figcaption>
+    <figcaption data-text="s1.caption"></figcaption>
   </figure>
   </section>
 
@@ -174,22 +165,16 @@ public void FlipRotation() { if(fishMovement.GetCanMove()) fishMovement.FlipRota
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>The bots</h2>
-
-    <!-- Your description -->
-    <p>
-      The bots in Fish Party have an array of 18 floats in a circle around them. They analyze the surrounding area around them, depending on their goals and fears, and score those directions. Each score spreads to the entire circle, diminishing along the way. Any spotted walls close enough will set that direction to negative 5. This setup automatically lets fish navigate around walls, as the leaking high point values will point the correct path around the wall.
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 2 -->
+    <h2 data-text="s2.title">The bots</h2>
+    <div class="copy" data-text="s2"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: The scoring loop ---------- -->
-      <div class="tab" data-name="The scoring loop">
+      <div class="tab" data-name="The scoring loop" data-text-label="s2.o1.title">
         <p class="code-file">BotScript.cs</p>
 <script type="text/plain" class="code">
 private void Update()
@@ -238,13 +223,12 @@ private void Update()
     DebugStats();
 }
 </script>
-        <p>
-          [What this function does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 1 -->
+        <div class="copy" data-text="s2.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Scoring a target ---------- -->
-      <div class="tab" data-name="Scoring a target">
+      <div class="tab" data-name="Scoring a target" data-text-label="s2.o2.title">
         <p class="code-file">BotScript.cs</p>
 <script type="text/plain" class="code">
 private void UpdateCircleByPrey(HashSet<FishController> goalControllers)
@@ -286,13 +270,12 @@ private void IncrementPointsWholeCircle(float angle, float pointAmount)
     circleScores[(positionInCircle + half) % circleArraySize] += pointAmount / (half + 1); 
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 2 -->
+        <div class="copy" data-text="s2.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Avoiding walls ---------- -->
-      <div class="tab" data-name="Avoiding walls">
+      <div class="tab" data-name="Avoiding walls" data-text-label="s2.o3.title">
         <p class="code-file">BotScript.cs</p>
 <script type="text/plain" class="code">
 private void SpotWalls()
@@ -312,13 +295,12 @@ private void SpotWalls()
     }
 }
 </script>
-        <p>
-          [What this function does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 3 -->
+        <div class="copy" data-text="s2.o3"></div>
       </div>
 
       <!-- ---------- OPTION 4: Picking a course ---------- -->
-      <div class="tab" data-name="Picking a course">
+      <div class="tab" data-name="Picking a course" data-text-label="s2.o4.title">
         <p class="code-file">BotScript.cs</p>
 <script type="text/plain" class="code">
 private int DetermineCourse()
@@ -399,13 +381,12 @@ private void Steer()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 4 -->
+        <div class="copy" data-text="s2.o4"></div>
       </div>
 
       <!-- ---------- OPTION 5: Dash decisions ---------- -->
-      <div class="tab" data-name="Dash decisions">
+      <div class="tab" data-name="Dash decisions" data-text-label="s2.o5.title">
         <p class="code-file">BotScript.cs</p>
 <script type="text/plain" class="code">
 private void GoalDetermineDash(Vector3 goalPos)
@@ -428,22 +409,20 @@ private void DangerDetermineDash(Vector3 dangerPos)
     if (distance < minDangerDashDistance && angle < 40f) Dash();
 }
 </script>
-        <p>
-          [What this function does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 5 -->
+        <div class="copy" data-text="s2.o5"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as fish-party-2.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 2, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/fish-party-2.png">
       <img src="media/fish-party-2.png" alt="Fish Party bot debug visuals" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: the bots' debug visuals]
-    </figcaption>
+    <figcaption data-text="s2.caption"></figcaption>
   </figure>
   </section>
 
@@ -452,22 +431,16 @@ private void DangerDetermineDash(Vector3 dangerPos)
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Game feel</h2>
-
-    <!-- Your description -->
-    <p>
-      [What you did to make a one-button fish feel good to control and to watch.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 3 -->
+    <h2 data-text="s3.title">Game feel</h2>
+    <div class="copy" data-text="s3"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: The dash ---------- -->
-      <div class="tab" data-name="The dash">
+      <div class="tab" data-name="The dash" data-text-label="s3.o1.title">
         <p class="code-file">FishMovement.cs</p>
 <script type="text/plain" class="code">
 private void Update()
@@ -521,13 +494,12 @@ private void PostDash()
     dashCooldownTimer = new Timer(dashCooldown);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 1 -->
+        <div class="copy" data-text="s3.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Wall collision ---------- -->
-      <div class="tab" data-name="Wall collision">
+      <div class="tab" data-name="Wall collision" data-text-label="s3.o2.title">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
 // Squish checking
@@ -592,13 +564,12 @@ private void OnCollisionExit2D(Collision2D collision)
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 2 -->
+        <div class="copy" data-text="s3.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Particles ---------- -->
-      <div class="tab" data-name="Particles">
+      <div class="tab" data-name="Particles" data-text-label="s3.o3.title">
         <p class="code-file">FishMovement.cs</p>
 <script type="text/plain" class="code">
 // Particle Related
@@ -644,13 +615,12 @@ public void FlipRotation()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 3 -->
+        <div class="copy" data-text="s3.o3"></div>
       </div>
 
       <!-- ---------- OPTION 4: Point tracers ---------- -->
-      <div class="tab" data-name="Point tracers">
+      <div class="tab" data-name="Point tracers" data-text-label="s3.o4.title">
         <p class="code-file">PointTracerScript.cs</p>
 <script type="text/plain" class="code">
 // Stats
@@ -689,13 +659,12 @@ private void FixedUpdate()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 4 -->
+        <div class="copy" data-text="s3.o4"></div>
       </div>
 
       <!-- ---------- OPTION 5: Hit stop ---------- -->
-      <div class="tab" data-name="Hit stop">
+      <div class="tab" data-name="Hit stop" data-text-label="s3.o5.title">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
 public void HitStop() { StartCoroutine(HitStopCo()); }
@@ -709,13 +678,12 @@ private IEnumerator HitStopCo()
     fishMovement.SetCanMove(true, isHitStop: true);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 5 -->
+        <div class="copy" data-text="s3.o5"></div>
       </div>
 
       <!-- ---------- OPTION 6: Background fish ---------- -->
-      <div class="tab" data-name="Background fish">
+      <div class="tab" data-name="Background fish" data-text-label="s3.o6.title">
         <p class="code-file">BackgroundFishHandler.cs</p>
 <script type="text/plain" class="code">
 private void TweenRotUp()
@@ -786,27 +754,26 @@ private void Update()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 6 -->
+        <div class="copy" data-text="s3.o6"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as fish-party-3.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 3, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/fish-party-3.png">
       <img src="media/fish-party-3.png" alt="Fish Party game feel" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s3.caption"></figcaption>
   </figure>
   </section>
 
 </main>
 
+<script src="game-text.js"></script>
 <script src="code.js"></script>
 </body>
 </html>

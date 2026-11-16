@@ -10,63 +10,58 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
-<body style="--game: #e558f0">
+<body style="--game: #e558f0" data-page="perfect-princess-plan">
 
 <!--
-  HOW TO EDIT THIS PAGE
-  - Everything you still need to write is marked [in square brackets]. Replace the
-    brackets and the text inside them with your own words.
+  HOW THIS PAGE WORKS
+  - The WRITING is not in this file. The preface, every description, every caption,
+    every section heading and every tab label are in game-text.js. Edit them there.
+  - This file holds the page's structure, its code samples and its images.
   - Each part of the page sits under a banner made of ===== lines.
-  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
-    The image sits beside the code, level with its middle.
-  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
-    a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
     you don't need to change any < or > characters.
-  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - To add an option, copy a whole OPTION block. To remove one, delete its block.
+  - To add an option, copy a whole OPTION block here, give it the next number in
+    both data-text attributes, and add a matching OPTION entry in game-text.js.
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button and title
+     TOP OF PAGE: back button, title, preface, title screen image
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#perfect-princess-plan">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
-  <h1><img class="title-art smooth" width="480" src="media/perfect-princess-plan-title.png" alt="Perfect Princess Plan"></h1>
+  <div class="hero-text">
+    <h1><img class="title-art smooth" width="480" src="media/perfect-princess-plan-title.png" alt="Perfect Princess Plan"></h1>
+    <!-- preface: game-text.js, PREFACE -->
+    <div class="preface copy" data-text="preface"></div>
+  </div>
+
+  <!-- TITLE SCREEN: put the file in the media folder as perfect-princess-plan-titlescreen.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="media hero-shot" data-file="media/perfect-princess-plan-titlescreen.png">
+    <img src="media/perfect-princess-plan-titlescreen.png" alt="Perfect Princess Plan title screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+  </figure>
 </header>
 
 <main class="detail">
-  <!-- ==============================================================
-       PREFACE: your short intro to the project
-       ============================================================== -->
-    <p class="preface">
-      [Preface. What the game is and what you were responsible for.]
-    </p>
 
   <!-- ==============================================================
        SECTION 1: Moving pieces with interfaces
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Moving pieces with interfaces</h2>
-
-    <!-- Your description -->
-    <p>
-      [How interfaces let different pieces move around the board through the same code, and how masks act in the order they were placed.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 1 -->
+    <h2 data-text="s1.title">Moving pieces with interfaces</h2>
+    <div class="copy" data-text="s1"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: The two interfaces ---------- -->
-      <div class="tab" data-name="The two interfaces">
+      <div class="tab" data-name="The two interfaces" data-text-label="s1.o1.title">
         <p class="code-file">IDummyFace.cs, IMoveableFace.cs</p>
 <script type="text/plain" class="code">
 public interface IDummyFace
@@ -86,13 +81,12 @@ public interface IMoveableFace
     public void SetPosition(Vector3 pos, bool finalMove = false);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 1 -->
+        <div class="copy" data-text="s1.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: The turn loop ---------- -->
-      <div class="tab" data-name="The turn loop">
+      <div class="tab" data-name="The turn loop" data-text-label="s1.o2.title">
         <p class="code-file">GameplayManager.cs</p>
 <script type="text/plain" class="code">
 private void StartNewTurn()
@@ -156,13 +150,12 @@ private void ActivateDummies(int currentAction)
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 2 -->
+        <div class="copy" data-text="s1.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: A mask in action ---------- -->
-      <div class="tab" data-name="A mask in action">
+      <div class="tab" data-name="A mask in action" data-text-label="s1.o3.title">
         <p class="code-file">FlipScript.cs</p>
 <script type="text/plain" class="code">
 public void DummyAction(int actionNum, GridManager grid)
@@ -236,13 +229,12 @@ private bool CanMoveObject(Vector2 spaceToCheck, GridManager grid)
     return (!grid.CheckForWall(spaceToCheck));
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 3 -->
+        <div class="copy" data-text="s1.o3"></div>
       </div>
 
       <!-- ---------- OPTION 4: Who moves first ---------- -->
-      <div class="tab" data-name="Who moves first">
+      <div class="tab" data-name="Who moves first" data-text-label="s1.o4.title">
         <p class="code-file">GridManager.cs</p>
 <script type="text/plain" class="code">
 public IMoveableFace CheckCross(Vector2 pos)
@@ -289,22 +281,20 @@ private IMoveableFace WhosOnFirst(GameObject[] possibleObjects)
     return moveableFace;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 4 -->
+        <div class="copy" data-text="s1.o4"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-1.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 1, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/perfect-princess-plan-1.png">
       <img src="media/perfect-princess-plan-1.png" alt="Perfect Princess Plan puzzle setup in the Unity inspector" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: the puzzle setup in the inspector]
-    </figcaption>
+    <figcaption data-text="s1.caption"></figcaption>
   </figure>
   </section>
 
@@ -313,22 +303,16 @@ private IMoveableFace WhosOnFirst(GameObject[] possibleObjects)
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>The puzzle setup system</h2>
-
-    <!-- Your description -->
-    <p>
-      [How designers build a puzzle in the inspector, and how that let the team make 33 levels.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 2 -->
+    <h2 data-text="s2.title">The puzzle setup system</h2>
+    <div class="copy" data-text="s2"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Inspector data ---------- -->
-      <div class="tab" data-name="Inspector data">
+      <div class="tab" data-name="Inspector data" data-text-label="s2.o1.title">
         <p class="code-file">GameplayManager.cs</p>
 <script type="text/plain" class="code">
 [Serializable]
@@ -363,13 +347,12 @@ public enum DummyTypes
     xFlip
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 1 -->
+        <div class="copy" data-text="s2.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Building the level ---------- -->
-      <div class="tab" data-name="Building the level">
+      <div class="tab" data-name="Building the level" data-text-label="s2.o2.title">
         <p class="code-file">GameplayManager.cs</p>
 <script type="text/plain" class="code">
 private void Start()
@@ -429,13 +412,12 @@ private void SpawnMasks()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 2 -->
+        <div class="copy" data-text="s2.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: The grid ---------- -->
-      <div class="tab" data-name="The grid">
+      <div class="tab" data-name="The grid" data-text-label="s2.o3.title">
         <p class="code-file">GridManager.cs</p>
 <script type="text/plain" class="code">
 private void Awake()
@@ -486,27 +468,26 @@ public void AddToGrid(GameObject addition)
     gridArray[(int)pos.x, (int)pos.y] = addition;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 3 -->
+        <div class="copy" data-text="s2.o3"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-2.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 2, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/perfect-princess-plan-2.png">
       <img src="media/perfect-princess-plan-2.png" alt="Perfect Princess Plan puzzle ready to play" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: a puzzle fully set up and ready to go]
-    </figcaption>
+    <figcaption data-text="s2.caption"></figcaption>
   </figure>
   </section>
 
 </main>
 
+<script src="game-text.js"></script>
 <script src="code.js"></script>
 </body>
 </html>

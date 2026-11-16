@@ -10,63 +10,58 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
-<body style="--game: #fdd835">
+<body style="--game: #fdd835" data-page="little-cowboy">
 
 <!--
-  HOW TO EDIT THIS PAGE
-  - Everything you still need to write is marked [in square brackets]. Replace the
-    brackets and the text inside them with your own words.
+  HOW THIS PAGE WORKS
+  - The WRITING is not in this file. The preface, every description, every caption,
+    every section heading and every tab label are in game-text.js. Edit them there.
+  - This file holds the page's structure, its code samples and its images.
   - Each part of the page sits under a banner made of ===== lines.
-  - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
-    The image sits beside the code, level with its middle.
-  - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
-    a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
     you don't need to change any < or > characters.
-  - To add a paragraph, copy a whole <p> ... </p> block and paste it underneath.
-  - To add an option, copy a whole OPTION block. To remove one, delete its block.
+  - To add an option, copy a whole OPTION block here, give it the next number in
+    both data-text attributes, and add a matching OPTION entry in game-text.js.
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button and title
+     TOP OF PAGE: back button, title, preface, title screen image
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#little-cowboy">&larr; Back to all games</a>
 </nav>
 
 <header class="detail-title">
-  <h1><img class="title-art" width="540" src="media/little-cowboy-title.png" alt="Little Cowboy"></h1>
+  <div class="hero-text">
+    <h1><img class="title-art" width="540" src="media/little-cowboy-title.png" alt="Little Cowboy"></h1>
+    <!-- preface: game-text.js, PREFACE -->
+    <div class="preface copy" data-text="preface"></div>
+  </div>
+
+  <!-- TITLE SCREEN: put the file in the media folder as little-cowboy-titlescreen.png
+       (if it isn't a .png, change the ending in both places below) -->
+  <figure class="media hero-shot" data-file="media/little-cowboy-titlescreen.png">
+    <img src="media/little-cowboy-titlescreen.png" alt="Little Cowboy title screen" onerror="this.parentNode.classList.add('missing'); this.remove()">
+  </figure>
 </header>
 
 <main class="detail">
-  <!-- ==============================================================
-       PREFACE: your short intro to the project
-       ============================================================== -->
-    <p class="preface">
-      [Preface. What the game is, and what working on it remotely was like.]
-    </p>
 
   <!-- ==============================================================
        SECTION 1: Game feel
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Game feel</h2>
-
-    <!-- Your description -->
-    <p>
-      [What makes moving and shooting feel good: the camera, the screen shake, the hop.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 1 -->
+    <h2 data-text="s1.title">Game feel</h2>
+    <div class="copy" data-text="s1"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Camera ---------- -->
-      <div class="tab" data-name="Camera">
+      <div class="tab" data-name="Camera" data-text-label="s1.o1.title">
         <p class="code-file">CameraScript.cs</p>
 <script type="text/plain" class="code">
 void CameraUpdate()
@@ -116,13 +111,12 @@ public static void ScreenShake(Transform cameraTransform, float strength, float 
         .SetUpdate(true);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 1 -->
+        <div class="copy" data-text="s1.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Movement ---------- -->
-      <div class="tab" data-name="Movement">
+      <div class="tab" data-name="Movement" data-text-label="s1.o2.title">
         <p class="code-file">MovementScript.cs</p>
 <script type="text/plain" class="code">
 public void Knockback(Vector2 direction, float strength)
@@ -184,13 +178,12 @@ private void FixedUpdate()
     rb.linearVelocity = movementVelocity + externalVelocity;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 2 -->
+        <div class="copy" data-text="s1.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Shooting ---------- -->
-      <div class="tab" data-name="Shooting">
+      <div class="tab" data-name="Shooting" data-text-label="s1.o3.title">
         <p class="code-file">ShootScript.cs</p>
 <script type="text/plain" class="code">
 public void Shoot(InputAction.CallbackContext context)
@@ -217,22 +210,20 @@ public void Shoot(InputAction.CallbackContext context)
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 1, OPTION 3 -->
+        <div class="copy" data-text="s1.o3"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-3.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 1, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-3.png">
       <img src="media/little-cowboy-3.png" alt="Little Cowboy game feel" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s1.caption"></figcaption>
   </figure>
   </section>
 
@@ -241,22 +232,16 @@ public void Shoot(InputAction.CallbackContext context)
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>The bullet system and its interactions</h2>
-
-    <!-- Your description -->
-    <p>
-      [How bullets and elemental effects share one system, and how interactions like fire with oil are resolved.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 2 -->
+    <h2 data-text="s2.title">The bullet system and its interactions</h2>
+    <div class="copy" data-text="s2"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Bullet hooks ---------- -->
-      <div class="tab" data-name="Bullet hooks">
+      <div class="tab" data-name="Bullet hooks" data-text-label="s2.o1.title">
         <p class="code-file">BulletScript.cs</p>
 <script type="text/plain" class="code">
 private void OnTriggerEnter2D(Collider2D collision)
@@ -299,13 +284,12 @@ protected virtual void OnEffectEnter(Collider2D collision) { }
 protected virtual void OnCharacterEnter(Collider2D collision) { }
 protected virtual void OnBulletDeath() { }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 1 -->
+        <div class="copy" data-text="s2.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Oil and fire ---------- -->
-      <div class="tab" data-name="Oil and fire">
+      <div class="tab" data-name="Oil and fire" data-text-label="s2.o2.title">
         <p class="code-file">BulletScript.cs</p>
 <script type="text/plain" class="code">
 public class OilBullet : BulletScript
@@ -362,13 +346,12 @@ public class FireBullet : BulletScript
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 2 -->
+        <div class="copy" data-text="s2.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: The character interface ---------- -->
-      <div class="tab" data-name="The character interface">
+      <div class="tab" data-name="The character interface" data-text-label="s2.o3.title">
         <p class="code-file">ICharInterface.cs</p>
 <script type="text/plain" class="code">
 public interface ICharInterface
@@ -385,13 +368,12 @@ public interface ICharInterface
     public bool GetMetalMarked();
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 3 -->
+        <div class="copy" data-text="s2.o3"></div>
       </div>
 
       <!-- ---------- OPTION 4: Status effects ---------- -->
-      <div class="tab" data-name="Status effects">
+      <div class="tab" data-name="Status effects" data-text-label="s2.o4.title">
         <p class="code-file">EnemyScript.cs</p>
 <script type="text/plain" class="code">
 public void SetOnFire()
@@ -436,13 +418,12 @@ public void SetMetalMarked()
     metalParticlesObject = Instantiate(metalParticles, transform).gameObject;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 4 -->
+        <div class="copy" data-text="s2.o4"></div>
       </div>
 
       <!-- ---------- OPTION 5: Chain lightning ---------- -->
-      <div class="tab" data-name="Chain lightning">
+      <div class="tab" data-name="Chain lightning" data-text-label="s2.o5.title">
         <p class="code-file">EnemyScript.cs</p>
 <script type="text/plain" class="code">
 public void SetStunned(HashSet<Collider2D> alreadyHit = null)
@@ -478,22 +459,20 @@ public void SetStunned(HashSet<Collider2D> alreadyHit = null)
         zapped.SetStunned(alreadyHit);
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 2, OPTION 5 -->
+        <div class="copy" data-text="s2.o5"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-1.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 2, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-1.png">
       <img src="media/little-cowboy-1.png" alt="Little Cowboy bullets and elements" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s2.caption"></figcaption>
   </figure>
   </section>
 
@@ -502,22 +481,16 @@ public void SetStunned(HashSet<Collider2D> alreadyHit = null)
        ============================================================== -->
   <section class="part">
   <div class="part-text">
-
-    <!-- Heading -->
-    <h2>Enemy AI</h2>
-
-    <!-- Your description -->
-    <p>
-      [How the AI for all 6 enemy types is structured.]
-    </p>
-
+    <!-- heading and description: game-text.js, SECTION 3 -->
+    <h2 data-text="s3.title">Enemy AI</h2>
+    <div class="copy" data-text="s3"></div>
   </div>
 
-    <!-- CODE SELECTOR: one OPTION per button -->
+    <!-- CODE SELECTOR: one OPTION per tab -->
     <div class="code-tabs">
 
       <!-- ---------- OPTION 1: Shared behavior ---------- -->
-      <div class="tab" data-name="Shared behavior">
+      <div class="tab" data-name="Shared behavior" data-text-label="s3.o1.title">
         <p class="code-file">BehaviorScript.cs</p>
 <script type="text/plain" class="code">
 protected virtual void FixedUpdate()
@@ -607,13 +580,12 @@ public float Lunge(Vector2 targetPos, float speed)
     return duration;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 1 -->
+        <div class="copy" data-text="s3.o1"></div>
       </div>
 
       <!-- ---------- OPTION 2: Snake ---------- -->
-      <div class="tab" data-name="Snake">
+      <div class="tab" data-name="Snake" data-text-label="s3.o2.title">
         <p class="code-file">SnakeScript.cs</p>
 <script type="text/plain" class="code">
 private void Update()
@@ -669,13 +641,12 @@ private void Update()
     }
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 2 -->
+        <div class="copy" data-text="s3.o2"></div>
       </div>
 
       <!-- ---------- OPTION 3: Shooter ---------- -->
-      <div class="tab" data-name="Shooter">
+      <div class="tab" data-name="Shooter" data-text-label="s3.o3.title">
         <p class="code-file">ShooterScript.cs</p>
 <script type="text/plain" class="code">
 private void Update()
@@ -757,13 +728,12 @@ private void Strafe()
     givenDirection = UnityEngine.Random.insideUnitCircle.normalized;
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 3 -->
+        <div class="copy" data-text="s3.o3"></div>
       </div>
 
       <!-- ---------- OPTION 4: Dynaman ---------- -->
-      <div class="tab" data-name="Dynaman">
+      <div class="tab" data-name="Dynaman" data-text-label="s3.o4.title">
         <p class="code-file">DynamanScript.cs</p>
 <script type="text/plain" class="code">
 private void OnCollisionEnter2D(Collision2D collision)
@@ -789,27 +759,26 @@ public void Explode()
     Instantiate(explosion, transform.position, Quaternion.identity); 
 }
 </script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
+        <!-- description: game-text.js, SECTION 3, OPTION 4 -->
+        <div class="copy" data-text="s3.o4"></div>
       </div>
 
     </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-2.png
-       (if it isn't a .png, change the ending in both places below) -->
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 3, CAPTION -->
   <figure class="shot">
     <div class="media" data-file="media/little-cowboy-2.png">
       <img src="media/little-cowboy-2.png" alt="Little Cowboy enemies" onerror="this.parentNode.classList.add('missing'); this.remove()">
     </div>
-    <figcaption>
-      [Caption: what this image shows]
-    </figcaption>
+    <figcaption data-text="s3.caption"></figcaption>
   </figure>
   </section>
 
 </main>
 
+<script src="game-text.js"></script>
 <script src="code.js"></script>
 </body>
 </html>
