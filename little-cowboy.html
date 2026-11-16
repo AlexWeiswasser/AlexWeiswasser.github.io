@@ -18,6 +18,7 @@
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
   - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+    The image sits beside the code, level with its middle.
   - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
     a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
@@ -27,7 +28,7 @@
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button, title, summary line, buttons
+     TOP OF PAGE: back button and title
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#little-cowboy">&larr; Back to all games</a>
@@ -35,11 +36,6 @@
 
 <header class="detail-title">
   <h1><img class="title-art" width="540" src="media/little-cowboy-title.png" alt="Little Cowboy"></h1>
-
-  <!-- One or two lines under the title -->
-  <p>
-    A revolver deck-building roguelike made for GMTK Game Jam 2026. Lead programmer on a team of 5. 48th most played of 10,500 games.
-  </p>
 
   <div class="links">
     <a class="button" href="https://funrug-studio.itch.io/little-cowboy" target="_blank" rel="noopener">Play on itch.io</a>
@@ -68,6 +64,8 @@
     <p>
       [What makes moving and shooting feel good: the camera, the screen shake, the hop.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -231,8 +229,6 @@ public void Shoot(InputAction.CallbackContext context)
 
     </div>
 
-  </div>
-
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-3.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
@@ -258,6 +254,8 @@ public void Shoot(InputAction.CallbackContext context)
     <p>
       [How bullets and elemental effects share one system, and how interactions like fire with oil are resolved.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -492,8 +490,6 @@ public void SetStunned(HashSet<Collider2D> alreadyHit = null)
 
     </div>
 
-  </div>
-
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-1.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
@@ -519,6 +515,8 @@ public void SetStunned(HashSet<Collider2D> alreadyHit = null)
     <p>
       [How the AI for all 6 enemy types is structured.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -802,8 +800,6 @@ public void Explode()
       </div>
 
     </div>
-
-  </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as little-cowboy-2.png
        (if it isn't a .png, change the ending in both places below) -->

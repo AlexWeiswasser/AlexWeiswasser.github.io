@@ -18,6 +18,7 @@
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
   - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+    The image sits beside the code, level with its middle.
   - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
     a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
@@ -27,7 +28,7 @@
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button, title, summary line, buttons
+     TOP OF PAGE: back button and title
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#lighthouse">&larr; Back to all games</a>
@@ -35,11 +36,6 @@
 
 <header class="detail-title">
   <h1><img class="title-art" width="648" src="media/lighthouse-title.png" alt="Lighthouse Time Machine"></h1>
-
-  <!-- One or two lines under the title -->
-  <p>
-    A real-time strategy action game made in under 24 hours for Wolfjam 2026. Lead programmer on a team of 5. Second place.
-  </p>
 
   <div class="links">
     <a class="button" href="https://funrug-studio.itch.io/lighthouse-game" target="_blank" rel="noopener">Play on itch.io</a>
@@ -96,6 +92,8 @@
     <p>
       [How a drag becomes ship movement, and the boost you added on each drag.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -197,8 +195,6 @@ public virtual IEnumerator BoostBoat()
 
     </div>
 
-  </div>
-
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-1.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
@@ -224,6 +220,8 @@ public virtual IEnumerator BoostBoat()
     <p>
       [How the spawning system works.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -378,8 +376,6 @@ void UpdatePoints(int pointsGained, Vector2Int range)
       </div>
 
     </div>
-
-  </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as lighthouse-2.png
        (if it isn't a .png, change the ending in both places below) -->

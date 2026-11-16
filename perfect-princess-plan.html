@@ -18,6 +18,7 @@
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
   - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+    The image sits beside the code, level with its middle.
   - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
     a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
@@ -27,7 +28,7 @@
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button, title, summary line, buttons
+     TOP OF PAGE: back button and title
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#perfect-princess-plan">&larr; Back to all games</a>
@@ -35,11 +36,6 @@
 
 <header class="detail-title">
   <h1><img class="title-art smooth" width="480" src="media/perfect-princess-plan-title.png" alt="Perfect Princess Plan"></h1>
-
-  <!-- One or two lines under the title -->
-  <p>
-    A masquerade ball puzzle game made in 48 hours for Global Game Jam 2026, on the theme of masks. Lead programmer on a team of 5.
-  </p>
 
   <div class="links">
     <a class="button" href="https://funrug-studio.itch.io/perfect-princess-plan" target="_blank" rel="noopener">Play on itch.io</a>
@@ -68,6 +64,8 @@
     <p>
       [How interfaces let different pieces move around the board through the same code, and how masks act in the order they were placed.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -303,8 +301,6 @@ private IMoveableFace WhosOnFirst(GameObject[] possibleObjects)
 
     </div>
 
-  </div>
-
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-1.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
@@ -330,6 +326,8 @@ private IMoveableFace WhosOnFirst(GameObject[] possibleObjects)
     <p>
       [How designers build a puzzle in the inspector, and how that let the team make 33 levels.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -499,8 +497,6 @@ public void AddToGrid(GameObject addition)
       </div>
 
     </div>
-
-  </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as perfect-princess-plan-2.png
        (if it isn't a .png, change the ending in both places below) -->

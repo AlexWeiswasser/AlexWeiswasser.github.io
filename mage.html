@@ -18,6 +18,7 @@
     brackets and the text inside them with your own words.
   - Each part of the page sits under a banner made of ===== lines.
   - Each SECTION has a heading, a description, a CODE SELECTOR and one image.
+    The image sits beside the code, level with its middle.
   - A CODE SELECTOR shows one OPTION at a time, picked with buttons. Each OPTION has
     a button label (data-name), a file name, its code, and its own description.
   - Code goes between the two "script" lines. Paste it exactly as it is in Unity;
@@ -27,7 +28,7 @@
 -->
 
 <!-- ==============================================================
-     TOP OF PAGE: back button, title, summary line, buttons
+     TOP OF PAGE: back button and title
      ============================================================== -->
 <nav class="detail-top">
   <a class="back" href="index.html#mage">&larr; Back to all games</a>
@@ -35,15 +36,6 @@
 
 <header class="detail-title">
   <h1><img class="title-art" width="480" src="media/mage-title.png" alt="MAGE: Mega Awesome Gregarious Encounters"></h1>
-
-  <!-- One or two lines under the title -->
-  <p>
-    Mega Awesome Gregarious Encounters. A 2D projectile party fighter for 2 to 4 players. Lead programmer and product owner on a team of 4, Sep 2024 to Jun 2026.
-  </p>
-
-  <div class="links">
-    <a class="button" href="https://store.steampowered.com/app/4459080/MAGE_Mega_Awesome_Gregarious_Encounters/" target="_blank" rel="noopener">View on Steam</a>
-  </div>
 </header>
 
 <main class="detail">
@@ -67,6 +59,8 @@
     <p>
       [How the scriptable-object character system works and what it let designers do.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -131,8 +125,6 @@ private void SetAbilities()
 
     </div>
 
-  </div>
-
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as mage-1.png
        (if it isn't a .png, change the ending in both places below) -->
   <figure class="shot">
@@ -158,6 +150,8 @@ private void SetAbilities()
     <p>
       [What felt wrong about counter timing, and how ghost projectiles fixed it.]
     </p>
+
+  </div>
 
     <!-- CODE SELECTOR: one OPTION per button -->
     <div class="code-tabs">
@@ -262,8 +256,6 @@ private IEnumerator Lifetime()
       </div>
 
     </div>
-
-  </div>
 
   <!-- THIS SECTION'S IMAGE: put the file in the media folder as mage-2.png
        (if it isn't a .png, change the ending in both places below) -->
