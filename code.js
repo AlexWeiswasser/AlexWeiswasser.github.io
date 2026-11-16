@@ -1,7 +1,8 @@
-// This file runs on every game page. It does three things, in order:
+// This file runs on every game page. It does four things, in order:
 //   1. fills in the page's text from game-text.js
 //   2. turns the pasted code blocks into formatted code boxes
 //   3. builds the row of tabs for each code selector
+//   4. builds the navigation bar at the top of the page
 
 // ---------------------------------------------------------------------------
 // 1. Text. All the writing for the game pages lives in game-text.js. Each
@@ -10,6 +11,14 @@
 (function () {
   var page = document.body.getAttribute('data-page');
   if (!page) return;
+
+  if (typeof window.GAME_TEXT !== 'string') {
+    var note = document.createElement('p');
+    note.className = 'missing-text';
+    note.textContent = '[game-text.js did not load. Check that it is in the same folder as this page, then press Ctrl+F5.]';
+    document.body.insertBefore(note, document.body.firstChild);
+    return;
+  }
 
   // Read game-text.js into { pageName: { key: [lines], 'key.title': 'label' } }
   var pages = {}, current = null, key = null, section = 0;
@@ -135,3 +144,52 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
   group.insertBefore(bar, tabs[0]);
   show(0);
 });
+
+// ---------------------------------------------------------------------------
+// 4. Navigation bar: main menu on the left, this page's sections in the
+//    middle, the next project on the right. It stays at the top while scrolling.
+// ---------------------------------------------------------------------------
+(function () {
+  var page = document.body.getAttribute('data-page');
+  if (!page) return;
+
+  // The game pages, in the same order as on the home page.
+  // "Next project" follows this list, and the last one leads back to the first.
+  var PROJECTS = [
+    ['fish-party', 'Fish Party'],
+    ['mage', 'MAGE'],
+    ['lighthouse', 'Lighthouse Time Machine'],
+    ['little-cowboy', 'Little Cowboy'],
+    ['perfect-princess-plan', 'Perfect Princess Plan']
+  ];
+  var here = 0;
+  PROJECTS.forEach(function (p, i) { if (p[0] === page) here = i; });
+  var next = PROJECTS[(here + 1) % PROJECTS.length];
+
+  function link(className, href, label) {
+    var a = document.createElement('a');
+    if (className) a.className = className;
+    a.href = href;
+    a.textContent = label;
+    return a;
+  }
+
+  var nav = document.createElement('nav');
+  nav.className = 'site-nav game-nav';
+  nav.appendChild(link('nav-home', 'index.html#' + page, '\u2190 Main Menu'));
+
+  var middle = document.createElement('div');
+  middle.className = 'nav-links';
+  document.querySelectorAll('.part').forEach(function (section, i) {
+    var heading = section.querySelector('h2');
+    if (!heading) return;
+    section.id = 'section-' + (i + 1);
+    middle.appendChild(link('', '#' + section.id, heading.textContent));
+  });
+  nav.appendChild(middle);
+
+  nav.appendChild(link('nav-next', next[0] + '.html', 'Next: ' + next[1] + ' \u2192'));
+
+  document.body.insertBefore(nav, document.body.firstChild);
+  document.body.classList.add('has-nav');
+})();
