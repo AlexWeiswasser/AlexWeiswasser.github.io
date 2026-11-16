@@ -93,6 +93,7 @@ body.has-nav .detail-top { display: none; }  /* the bar replaces the old back bu
 /* ---------- Home page: top, About Me ---------- */
 .hero {
   padding: clamp(3rem, 8vw, 6rem) var(--pad-x) clamp(2.5rem, 6vw, 4.5rem);
+  text-align: center;
 }
 .hero h1 {
   font-size: clamp(2.5rem, 5vw, 4.5rem);
@@ -110,43 +111,50 @@ body.has-nav .detail-top { display: none; }  /* the bar replaces the old back bu
   border-top: 1px solid var(--line);
 }
 .about h2, .band h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
-.about h2 { margin-bottom: 1.75rem; }
-.about-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
+
+/* About Me: one centered column */
+.about-col {
+  max-width: 58rem;   /* width of the About Me column */
+  margin: 0 auto;
 }
+.about-col h2 {
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+.about-col > p {
+  font-size: 1.2rem;
+  margin: 0 0 1rem;
+}
+/* The paragraph that should stand out */
+.about-col > .callout {
+  border-left: 4px solid var(--accent);
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  font-size: 1.3rem;
+  margin: 1.5rem 0 2.25rem;
+}
+/* FunRug Studio strip: logo, note, link */
+.studio-strip {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--bg-alt);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+.studio-strip img {
+  display: block;
+  width: 96px;
+  height: auto;
+  image-rendering: pixelated;
+}
+.studio-strip p { margin: 0 0 0.4rem; }
+.studio-strip p:last-child { margin-bottom: 0; }
+.studio-strip .button { flex: none; margin-left: auto; }
+
 /* The "Main Projects" heading above the games */
 .band {
   padding: clamp(2rem, 4vw, 3rem) var(--pad-x) clamp(1.25rem, 2.5vw, 1.75rem);
   border-top: 1px solid var(--line);
-}
-.intro-text p {
-  font-size: clamp(1.15rem, 1.5vw, 1.35rem);
-  max-width: 58ch;
-  margin: 0 0 1rem;
-}
-.intro-text .status { color: var(--muted); font-size: clamp(1.05rem, 1.3vw, 1.2rem); }
-
-/* FunRug Studio logo and note */
-.studio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 1.25rem;
-}
-.studio img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  image-rendering: pixelated;
-}
-.studio p {
-  margin: 0;
-  max-width: 40ch;
-  font-size: clamp(1.1rem, 1.4vw, 1.25rem);
 }
 
 /* Pixel-art game titles used as headings.
@@ -486,11 +494,12 @@ body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 
 
 /* ---------- Phones and narrow windows ---------- */
 @media (max-width: 820px) {
-  .about-grid, .game, .part { grid-template-columns: minmax(0, 1fr); }
+  .game, .part { grid-template-columns: minmax(0, 1fr); }
   .site-nav, .game-nav { display: flex; flex-wrap: wrap; }
   .nav-links { order: 3; width: 100%; overflow-x: auto; }
   body:has(> .detail) .detail-title { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; }
-  .studio { align-items: flex-start; text-align: left; }
+  .studio-strip { flex-wrap: wrap; }
+  .studio-strip .button { margin-left: 0; }
   .game .media { order: -1; } /* GIF above the text on small screens */
   .part > .code-tabs, .part > .shot,
   .part:not(:has(.code-tabs)) > .shot { grid-column: 1; grid-row: auto; }
