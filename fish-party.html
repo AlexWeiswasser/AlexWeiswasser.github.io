@@ -526,8 +526,8 @@ private void PostDash()
         </p>
       </div>
 
-      <!-- ---------- OPTION 2: Squish ---------- -->
-      <div class="tab" data-name="Squish">
+      <!-- ---------- OPTION 2: Wall collision ---------- -->
+      <div class="tab" data-name="Wall collision">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
 // Squish checking
@@ -570,16 +570,7 @@ private bool SquishCheck()
     Debug.DrawLine(mouthTransform.position, mouthTransform.position - transform.right * squishCheckDistance, Color.green);
     return hit;
 }
-</script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
-      </div>
 
-      <!-- ---------- OPTION 3: Wall dust ---------- -->
-      <div class="tab" data-name="Wall dust">
-        <p class="code-file">FishController.cs</p>
-<script type="text/plain" class="code">
 private bool IsDustLayer(int layer) => (dustLayer.value & (1 << layer)) != 0;
 
 private void OnCollisionStay2D(Collision2D collision)
@@ -606,8 +597,8 @@ private void OnCollisionExit2D(Collision2D collision)
         </p>
       </div>
 
-      <!-- ---------- OPTION 4: Speed and turn particles ---------- -->
-      <div class="tab" data-name="Speed and turn particles">
+      <!-- ---------- OPTION 3: Particles ---------- -->
+      <div class="tab" data-name="Particles">
         <p class="code-file">FishMovement.cs</p>
 <script type="text/plain" class="code">
 // Particle Related
@@ -658,7 +649,7 @@ public void FlipRotation()
         </p>
       </div>
 
-      <!-- ---------- OPTION 5: Point tracers ---------- -->
+      <!-- ---------- OPTION 4: Point tracers ---------- -->
       <div class="tab" data-name="Point tracers">
         <p class="code-file">PointTracerScript.cs</p>
 <script type="text/plain" class="code">
@@ -703,7 +694,7 @@ private void FixedUpdate()
         </p>
       </div>
 
-      <!-- ---------- OPTION 6: Hit stop ---------- -->
+      <!-- ---------- OPTION 5: Hit stop ---------- -->
       <div class="tab" data-name="Hit stop">
         <p class="code-file">FishController.cs</p>
 <script type="text/plain" class="code">
@@ -723,35 +714,7 @@ private IEnumerator HitStopCo()
         </p>
       </div>
 
-      <!-- ---------- OPTION 7: Spawn protection ---------- -->
-      <div class="tab" data-name="Spawn protection">
-        <p class="code-file">FishController.cs</p>
-<script type="text/plain" class="code">
-public void ActivateIframes(float length)
-{
-    iframesOn = true;
-
-    fishRenderer.DOKill();
-    fishOutline.DOKill();
-
-    fishRenderer.color = GetOpaque(fishRenderer.color);
-    fishOutline.color = GetOpaque(fishOutline.color);
-
-    Color fishTransparent = GetTransparent(fishRenderer.color);
-    Color outlineTransparent = GetTransparent(fishOutline.color);
-
-    fishRenderer.DOColor(fishTransparent, iframeLength / 16f).SetLoops(16, LoopType.Yoyo);
-    fishOutline.DOColor(outlineTransparent, iframeLength / 16f).SetLoops(16, LoopType.Yoyo);
-
-    iframeTimer = new Timer(iframeLength);
-}
-</script>
-        <p>
-          [What this code does and why you built it this way.]
-        </p>
-      </div>
-
-      <!-- ---------- OPTION 8: Background fish ---------- -->
+      <!-- ---------- OPTION 6: Background fish ---------- -->
       <div class="tab" data-name="Background fish">
         <p class="code-file">BackgroundFishHandler.cs</p>
 <script type="text/plain" class="code">
