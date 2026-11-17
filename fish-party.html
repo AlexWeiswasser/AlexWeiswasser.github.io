@@ -621,8 +621,10 @@ public void FlipRotation()
 
       <!-- ---------- OPTION 4: Point tracers ---------- -->
       <div class="tab" data-name="Point tracers" data-text-label="s3.o4.title">
-        <p class="code-file">FishController.cs</p>
+        <p class="code-file">FishController.cs, PointTracerScript.cs, PointTextScript.cs</p>
 <script type="text/plain" class="code">
+// ---------- FishController.cs ----------
+
 private void OnPointGain(PointGain pointData)
 {
     if (pointData.playerIndex != playerIndex || pointData.pointsGained < 1) return;
@@ -646,9 +648,9 @@ public void CreatePointVisual(int points)
 
     EventBus<PointSound>.Call(new PointSound { fishType = fishObject.fishType });
 }
-</script>
-        <p class="code-file">PointTracerScript.cs</p>
-<script type="text/plain" class="code">
+
+// ---------- PointTracerScript.cs ----------
+
 // Stats
 float speed = 25;
 float accel = 15;
@@ -684,9 +686,9 @@ private void FixedUpdate()
         receiver.CreatePointVisual(pointAmount);
     }
 }
-</script>
-        <p class="code-file">PointTextScript.cs</p>
-<script type="text/plain" class="code">
+
+// ---------- PointTextScript.cs ----------
+
 public void RunAnimation(Vector3 fishPos, int pointAmount, Color color)
 {
     text.SetText($"+{pointAmount}");

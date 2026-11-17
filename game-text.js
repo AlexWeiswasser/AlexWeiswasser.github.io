@@ -30,7 +30,7 @@ window.GAME_TEXT = String.raw`
 PREFACE
 Fish Party is FunRug Studio's second game, slated to release in March. It's a large capacity, single button, local multiplayer game, with plans of online play as well. Our first game, MAGE, had a long development and learning process, and in comparison, Fish Party is a much more focused, better executed project.
 
-SECTION 1: Twelve separate inputs, bots included
+SECTION 1: Twelve separate inputs
 Each player gets one button. That button is how you swap rotation direction, dash, ready up, and change your name. An input system was required that could work for up to 12 players, be efficient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input management.
 
     OPTION 1: Setting up players
@@ -85,10 +85,10 @@ The controls in this game are super simple, and at first, because of that, the g
     Point tracers were added to fish that got points abstractley, but that left out fish that gain points from direct contact. To fix that, hit-stop was added, to give contact fish more juice. 
 
     OPTION 6: Background fish
-    Even with all the above changes to the players, the overall map still felt empty. For a game that takes place in oceans, rivers, and lakes, that doesn't work. To fill out the empty space, small fish shadows were placed in background, to act as far away fish, making the enviroments more lived in.    
+    Even with all the other changes to the players, the overall map still felt empty. For a game that takes place in oceans, rivers, and lakes, that doesn't work. To fill out the empty space, small fish shadows were placed in background, to act as far away fish, making the enviroments more lived in.    
 
     CAPTION
-    4 frys showing how to gain points in the tutorial.  
+    4 fry showing how to gain points in the tutorial.  
 
 
 ==================== PAGE: mage ====================
