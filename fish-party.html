@@ -838,6 +838,223 @@ private void Update()
   </figure>
   </section>
 
+  <!-- ==============================================================
+       SECTION 4: Game architecture
+       ============================================================== -->
+  <section class="part">
+  <div class="part-text">
+    <!-- heading and description: game-text.js, SECTION 4 -->
+    <h2 data-text="s4.title">Game architecture</h2>
+    <div class="copy" data-text="s4"></div>
+  </div>
+
+    <!-- CODE SELECTOR: one OPTION per tab -->
+    <div class="code-tabs">
+
+      <!-- ---------- OPTION 1: Putting a fish together ---------- -->
+      <div class="tab" data-name="Putting a fish together" data-text-label="s4.o1.title">
+        <p class="code-file">FishController.cs</p>
+<script type="text/plain" class="code">
+[SerializeField] private FishBehavior fishBehavior;
+[SerializeField] private FishMovement fishMovement;
+
+public void Init(PlayerType pType, Fish fObject, int playerID, Color pColor, bool isSwapSpawn, Vector2[] possibleSpawns = null, bool dBot = false)
+{
+    // ...
+
+    // Behvaior setup
+    fishBehavior.Init(playerIndex, GetFoodChain(), GetFishType(), GetPlayerType(), this, fishMovement, dBot: dBot);
+    if (!SwapHandler.GameOver) fishBehavior.SetCanBehavior(isSwapSpawn);
+
+    // Movement setup
+    fishMovement.Init(playerIndex, fishObject, isSwapSpawn);
+    fishMovement.ClearSpeedBuffs();
+    if(!SwapHandler.GameOver) fishMovement.SetCanMove(isSwapSpawn);
+
+    // ...
+}
+</script>
+        <!-- description: game-text.js, SECTION 4, OPTION 1 -->
+        <div class="copy" data-text="s4.o1"></div>
+      </div>
+
+      <!-- ---------- OPTION 2: The base class ---------- -->
+      <div class="tab" data-name="The base class" data-text-label="s4.o2.title">
+        <p class="code-file">FishBehavior.cs</p>
+<script type="text/plain" class="code">
+public abstract class FishBehavior : MonoBehaviour
+{
+    // Data
+    protected int playerIndex;
+    protected int foodChainPos;
+    protected FishData.FishType fishType;
+    protected PlayerData.PlayerType playerType;
+
+    protected bool canBehavior = false;
+    protected bool filledFishLists = false;
+
+    protected float angleCap = 0;
+
+    // References
+    protected FishController fishController;
+    protected FishMovement fishMovement;
+    protected BotScript botScript = null;
+    protected bool demoBot = false;
+
+    // Setup functions
+    public void Init(int pIndex, int fChain, FishData.FishType fType, PlayerData.PlayerType pType, FishController fController, FishMovement fMovement, bool dBot = false)
+    {
+        playerIndex = pIndex;
+        foodChainPos = fChain;
+        fishType = fType;
+        playerType = pType;
+        fishController = fController;
+        fishMovement = fMovement;
+        demoBot = dBot;
+    }
+
+    public void GainPoints(int pointsGained, Vector2 pointPos = default)
+    {
+        if (playerIndex == -1 || playerIndex >= PlayerData.MAX_PLAYER_AND_DEMO_BOT_COUNT) return;
+
+        EventBus<PointGain>.Call(new PointGain
+        {
+            playerIndex = playerIndex,
+            fishType = fishType,
+            pointsGained = pointsGained,
+            pointPosition = pointPos
+        });
+    }
+
+    public virtual void OnAllFishSpawned() { }
+
+    public void SetCanBehavior(bool status)
+    {
+        canBehavior = status;
+        OnSetBehavior(canBehavior);
+    }
+
+    protected virtual void OnSetBehavior(bool status) { }
+
+    public bool GetCanBehavior() { return canBehavior; }
+    public int GetFoodChain() { return foodChainPos; }
+    public FishMovement GetFishMovement() { return fishMovement; }
+    public BotScript GetBotScript() { return botScript; }
+    public bool IsDemoBot() { return playerIndex >= PlayerData.MAX_PLAYER_COUNT; }
+}
+</script>
+        <!-- description: game-text.js, SECTION 4, OPTION 2 -->
+        <div class="copy" data-text="s4.o2"></div>
+      </div>
+
+      <!-- ---------- OPTION 3: A fish built on it ---------- -->
+      <div class="tab" data-name="A fish built on it" data-text-label="s4.o3.title">
+        <p class="code-file">FryBehavior.cs</p>
+<script type="text/plain" class="code">
+public class FryBehavior : FishBehavior
+{
+    // Stats
+    private float minDistanceRequired = 10f;
+    private float fryTimerLength = 3f;
+
+    // Friend fry data
+    public struct FriendFryData
+    {
+        public Timer cooldown;
+        public FishController fryController;
+    }
+    private HashSet<FriendFryData> fryData = new HashSet<FriendFryData>();
+
+    public override void OnAllFishSpawned()
+    {
+        FillUpFryList(FishHandler.GetAllFish(demoBot));
+
+        if (playerType == PlayerData.PlayerType.Bot)
+            SetupBotController();
+    }
+
+    private void Update()
+    {
+        if (!SwapHandler.roundStarted && !demoBot) return;
+        if (canBehavior) SearchForPals();
+    }
+
+    private void SearchForPals()
+    {
+        foreach (FriendFryData fry in fryData)
+        {
+            if(Vector3.Distance(fry.fryController.transform.position, transform.position) < minDistanceRequired)
+            {
+                if (!fry.fryController.GetAlive()) continue;
+
+                fry.cooldown.Tick(Time.deltaTime);
+                if (fry.cooldown.Finished)
+                {
+                    GainPoints(1, pointPos: fry.fryController.transform.position);
+                    fry.cooldown.Reset();
+                }
+            }
+        }
+    }
+
+    // ... FillUpFryList() and SetupBotController()
+}
+</script>
+        <!-- description: game-text.js, SECTION 4, OPTION 3 -->
+        <div class="copy" data-text="s4.o3"></div>
+      </div>
+
+      <!-- ---------- OPTION 4: Its bot ---------- -->
+      <div class="tab" data-name="Its bot" data-text-label="s4.o4.title">
+        <p class="code-file">FryBehavior.cs</p>
+<script type="text/plain" class="code">
+private void SetupBotController()
+{
+    HashSet<FishController> friends = new HashSet<FishController>();
+    HashSet<FishController> danger = new HashSet<FishController>();
+    HashSet<FishController> sideGoals = new HashSet<FishController>();
+
+    foreach (FishController fish in FishHandler.GetAllFish(demoBot))
+    {
+        if (fish.GetFishType() == fishType && fish.gameObject != gameObject)
+        {
+            friends.Add(fish);
+            continue;
+        }
+        if (fish.GetFoodChain() == -1)
+        {
+            if (fish.GetFishType() == FishData.FishType.Cleaner)
+                sideGoals.Add(fish);
+            continue;
+        }
+        else if (fish.GetFoodChain() > foodChainPos)
+        {
+            danger.Add(fish);
+            continue;
+        }
+    }
+
+    botScript = transform.AddComponent<BotScript>();
+    botScript.Init(this, friendC: friends, sideGoalC: sideGoals, dangerC: danger);
+}
+</script>
+        <!-- description: game-text.js, SECTION 4, OPTION 4 -->
+        <div class="copy" data-text="s4.o4"></div>
+      </div>
+
+    </div>
+
+  <!-- THIS SECTION'S IMAGE: put the file in the media folder as fish-party-4.png
+       (if it isn't a .png, change the ending in both places below).
+       Its caption: game-text.js, SECTION 4, CAPTION -->
+  <figure class="shot">
+    <div class="media" data-file="media/fish-party-4.png">
+      <img src="media/fish-party-4.png" alt="Fish Party fish architecture" onerror="this.parentNode.classList.add('missing'); this.remove()">
+    </div>
+    <figcaption data-text="s4.caption"></figcaption>
+  </figure>
+  </section>
+
 </main>
 
 <script src="game-text.js"></script>

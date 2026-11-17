@@ -91,34 +91,53 @@ The controls in this game are super simple, and at first, because of that, the g
     4 fry showing how to gain points in the tutorial.  
 
 
+SECTION 4: Game architecture
+[How a fish is put together: one controller, a movement script every fish shares, and a behavior script per species built on one base class. How this compares to MAGE's Ability class, and what you changed because of it.]
+
+    OPTION 1: Putting a fish together
+    [What this code does and why you built it this way.]
+
+    OPTION 2: The base class
+    [What this code does and why you built it this way.]
+
+    OPTION 3: A fish built on it
+    [What this code does and why you built it this way.]
+
+    OPTION 4: Its bot
+    [What this code does and why you built it this way.]
+
+    CAPTION
+    [Caption: what this image shows]
+
+
 ==================== PAGE: mage ====================
 
 PREFACE
-[Preface. MAGE is older work. What it taught you, and what you would do differently now.]
+MAGE is FunRug Studio's first work. It started as a side project we were making for fun, and after the addition of our fourth member, we started to work on it for an eventual commercial release. MAGE was clumsy, and full of spur of the moment decisions. I grew a huge amount throughout MAGE's 2 year journey and 2 reboots, learning how to code for stability, saftey, and efficency, how to work in a team, and how to utilize tools like github. I learned a great deal about what works, by learning what doesn't.         
 
 SECTION 1: Modular characters
 [How the scriptable-object character system works and what it let designers do.]
 
     OPTION 1: The Ability base class
-    [What this code does and why you built it this way.]
+    The ability class was created to be a parent to every single move a mage could use in the game. As you can see by the various activate functions, and water cooldown, this centralized approach was not done correctly. There was inheretence, but that too was done poorly, as you can see on the right side of the image.     
 
     OPTION 2: Loading a Mage's kit
-    [What this code does and why you built it this way.]
+    Later on in the project, a data scriptable object was placed in to attempt to remedy the organization problems of the mage character creation system, which helped a great deal with creating new mages.   
 
     CAPTION
-    [Caption: the modular characters]
+    Classic Wizard's setup, alongside their attack, Magic Missile's setup. 
 
 SECTION 2: Ghost projectiles
-[What felt wrong about counter timing, and how ghost projectiles fixed it.]
+Every mage in MAGE has a counterspell ability. This lets them absorb an incoming attack, and fire out a more powerful one. Without ghost/shrodinger projectiles, countering had to be done extremely early, which felt terrible to do as a player.  
 
     OPTION 1: Becoming a ghost
-    [What this code does and why you built it this way.]
+    When a projectile becomes a ghost projectile, it records its collision data, direction to the player, currently velocity, and knockback. Therefore, it if actually collides after the small wait, it can accuratley hit the enemy like a nomral projectile would.
 
     OPTION 2: Following the player
-    [What this code does and why you built it this way.]
+    To make sure players can counterspell a ghost projectile, the projectile essentially becomes a child of the player, following them, staying exactly on the player where it hit them, still allowed to be counterspelled by that player. 
 
     CAPTION
-    [Caption: ghost projectiles in action]
+    A demonstration of ghost projectiles, with an exagerated lifetime length, to showcase what they do. 
 
 
 ==================== PAGE: lighthouse ====================
