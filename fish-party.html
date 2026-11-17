@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <!-- The color after --game: is this page's accent color. Keep it the same as on the home page. -->
 <body style="--game: #2fa8ec" data-page="fish-party">
@@ -621,6 +621,32 @@ public void FlipRotation()
 
       <!-- ---------- OPTION 4: Point tracers ---------- -->
       <div class="tab" data-name="Point tracers" data-text-label="s3.o4.title">
+        <p class="code-file">FishController.cs</p>
+<script type="text/plain" class="code">
+private void OnPointGain(PointGain pointData)
+{
+    if (pointData.playerIndex != playerIndex || pointData.pointsGained < 1) return;
+
+    // Point tracer stuff
+    if (pointData.pointPosition != Vector2.zero)
+    {
+        PointTracerScript tracer = Instantiate(pointTracerPrefab, pointData.pointPosition, Quaternion.identity).GetComponent<PointTracerScript>();
+        tracer.Init(this, pointData.pointPosition, playerColor, pointData.pointsGained);
+        return;
+    }
+
+    // Point text stuff 
+    CreatePointVisual(pointData.pointsGained);
+}
+
+public void CreatePointVisual(int points)
+{
+    PointTextScript pointText = Instantiate(pointTextPrefab, gameObject.transform.position, Quaternion.identity).GetComponent<PointTextScript>();
+    pointText.RunAnimation(gameObject.transform.position, points, playerColor);
+
+    EventBus<PointSound>.Call(new PointSound { fishType = fishObject.fishType });
+}
+</script>
         <p class="code-file">PointTracerScript.cs</p>
 <script type="text/plain" class="code">
 // Stats
@@ -657,6 +683,45 @@ private void FixedUpdate()
         trailRend.DOTime(0, 0.5f).OnComplete(() => { DOTween.Kill(this); Destroy(gameObject);});
         receiver.CreatePointVisual(pointAmount);
     }
+}
+</script>
+        <p class="code-file">PointTextScript.cs</p>
+<script type="text/plain" class="code">
+public void RunAnimation(Vector3 fishPos, int pointAmount, Color color)
+{
+    text.SetText($"+{pointAmount}");
+    float animationLength = 1f;
+    text.SetColorWithFade(Color.Lerp(color, Color.white, 0.25f));
+    text.SetFontSize(12 + (2 * pointAmount));
+    text.transform.rotation = Quaternion.identity;
+
+    Sequence fade = text.DOFade(0, animationLength).SetEase(Ease.InExpo);
+
+    Sequence pop = DOTween.Sequence();
+    pop.Append(text.transform.DOScale(text.transform.localScale * 3.5f, animationLength / 3f).SetEase(Ease.OutBack))
+       .Append(text.transform.DOScale(text.transform.localScale * 2.5f, (animationLength / 3f) * 2).SetEase(Ease.OutBack));
+
+    Sequence shimmy = DOTween.Sequence();
+    shimmy.Append(text.transform.DORotate(new Vector3(0, 0, -14f), 0.07f).SetEase(Ease.OutQuad))
+          .Append(text.transform.DORotate(new Vector3(0, 0, 10f), 0.10f).SetEase(Ease.InOutQuad))
+          .Append(text.transform.DORotate(new Vector3(0, 0, -7f), 0.09f).SetEase(Ease.InOutQuad))
+          .Append(text.transform.DORotate(new Vector3(0, 0, 4f), 0.07f).SetEase(Ease.InOutQuad))
+          .Append(text.transform.DORotate(Vector3.zero, 0.12f).SetEase(Ease.OutBack));
+
+    Vector2 goalPos;
+    if (fishPos.y >= 18.5f)
+    {
+        text.transform.position = fishPos - new Vector3(0, 2);
+        goalPos = (Vector2)text.transform.position - new Vector2(0, 2f);
+    }
+    else
+    {
+        text.transform.position = fishPos + new Vector3(0, 2);
+        goalPos = (Vector2)text.transform.position + new Vector2(0, 2f);
+    }
+
+    text.transform.DOMove(goalPos, animationLength)
+        .OnComplete(() => Destroy(text.gameObject));
 }
 </script>
         <!-- description: game-text.js, SECTION 3, OPTION 4 -->
@@ -774,6 +839,6 @@ private void Update()
 </main>
 
 <script src="game-text.js"></script>
-<script src="code.js"></script>
+<script src="code.js?v=5"></script>
 </body>
 </html>
