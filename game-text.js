@@ -28,7 +28,7 @@ window.GAME_TEXT = String.raw`
 ==================== PAGE: fish-party ====================
 
 PREFACE
-Fish Party is FunRug Studio's second game, slated to release in March. It's a large capacity, single button, local multiplayer game, with plans of online play as well. Our first game, MAGE, had a long development and learning process, and in comparison, Fish Party is a much more focused, better executed project.
+Fish Party is FunRug Studio's second game, slated to release in March. It's a large capacity, single button, local multiplayer game, with plans of online play as well. Our first game, MAGE, had a long development and learning process, and in comparison, Fish Party is a much more focused, better executed project. I've done all the gameplay programming, and most of the systems. 
 
 SECTION 1: Twelve separate inputs
 Each player gets one button. That button is how you swap rotation direction, dash, ready up, and change your name. An input system was required that could work for up to 12 players, be efficient, and allow for the addition of bots, and eventual online players. I decided to decouple the player input from the overall list of all fish, allowing bots and online players to own the same type of slot, and not mess with local input management.
@@ -143,7 +143,7 @@ Every mage in MAGE has a counterspell ability. This lets them absorb an incoming
 ==================== PAGE: lighthouse ====================
 
 PREFACE
-Lighthouse Time Machine is a game made in under 24 hours for the Wolfjam 2026. We were a team of 5, and came in 2nd place. 
+Lighthouse Time Machine is a game made in under 24 hours for the Wolfjam 2026. We were a team of 5, and came in 2nd place. I did all the gameplay programming and system programming.
 
 SECTION 1: The pivot
 With the theme of visibiltiy, we decided to make a game with a lighthouse. Our first concept was that of a 2D side view, where there are multiple floors of the lighthouse, various lights to turn on and off on the different floors, a generation, and flying demons you have to destroy with light. Alongside that, you would also need to manage the big light, to guide ships in a top down enviroment. We discussed this idea for around 4-5 hours, and I even started immediatley on a prototype. Around the 5th hour mark, we decided that the idea we had wouldn't work, and we pivoted to go all in on guiding ships. The end result was a better scoped, more focused design that the whole team could agree on.
@@ -185,34 +185,34 @@ Boats spawn on the edges: the top left, bottom left, and middle right.
 ==================== PAGE: little-cowboy ====================
 
 PREFACE
-[Preface. What the game is, and what working on it remotely was like.]
+Little Cowboy is a game I made with 4 others for the GMTK game jam 2026. We were the 48th most played game out of the 10,500 entries. I did the gameplay programming, enemy programming, and most system programming.  
 
 SECTION 1: Game feel
-[What makes moving and shooting feel good: the camera, the screen shake, the hop.]
+The main action in this game is aiming and shooting, the player does this almost constantly. Therefore, this was the action that needed to feel the best. 
 
     OPTION 1: Camera
-    [What this code does and why you built it this way.]
+    The camera doesn't statically follow the player, instead, in tweens slightly from the player to the reticle, meaning what you see is based on where you aim, which gives a much better feeling of control to the player. 
 
     OPTION 2: Movement
-    [What this code does and why you built it this way.]
+    The movement is intentionally simple, lending the majority of the gameplay to the gun, the bullets, and the interactions caused by those bullets. 
 
     OPTION 3: Shooting
-    [What this code does and why you built it this way.]
+    Shooting is the core of this game, and so even minor things like screenshake on firing and slight recoil can massivley improve overall gamefeel. 
 
     CAPTION
-    [Caption: what this image shows]
+    Check out this gamefeel!
 
 SECTION 2: The bullet system and its interactions
-[How bullets and elemental effects share one system, and how interactions like fire with oil are resolved.]
+The bullet interactions are the main mechanic of this game, affecting whats in the world, be it the player, enemies, or previous effects still in play.
 
     OPTION 1: Bullet hooks
-    [What this code does and why you built it this way.]
+    When a bullet collides, it checks whether it is hitting a character or an effect, and calls respective functions on itself as well as its target. 
 
     OPTION 2: Oil and fire
-    [What this code does and why you built it this way.]
+    Oil and fire was the first interaction made, design wise and programming wise. Oil bullets spread oil around, and fire bullets light that oil up. 
 
     OPTION 3: The character interface
-    [What this code does and why you built it this way.]
+    To make sure enemies and the player could be affected by effects and bullets in the same way, an interface was made to be used by all enemies and the player, centralizing all possible status effects. 
 
     OPTION 4: Status effects
     [What this code does and why you built it this way.]
