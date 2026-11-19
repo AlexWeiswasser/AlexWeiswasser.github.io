@@ -176,7 +176,7 @@ Boats spawn on the edges: the top left, bottom left, and middle right.
     To keep boats from spawning too close to each other and crashing due to that, a loop is done to check various positions until a viable one is found. To prevent crashing, a for loop is done instead of a while loop, delaying the spawn a bit if the loop fails.
 
     OPTION 3: Speeding up
-    Spawning speeds up over time, increasing difficults, while granting the opportunity for more points.
+    Spawning speeds up the more points the player has, increasing difficulty, while granting the opportunity for even more points. A clamp is in place to prevent the game from spawning unplayably fast. 
 
     CAPTION
     A player attempting to navigate a cowboy boat to the top, around the two incoming skeleton ships that spawned from the right side. 
