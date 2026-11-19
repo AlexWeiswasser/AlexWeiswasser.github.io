@@ -46,56 +46,56 @@ Each player gets one button. That button is how you swap rotation direction, das
     Look at all the different buttons used!
 
 SECTION 2: The bots
-The bots in Fish Party have an array of 18 floats in a circle around them. They analyze the surrounding area around them, depending on their goals and fears, and score those directions, figuring out where to go and when to dash. The bots have varying intelligence which can be set by the player.  
+The bots in Fish Party have an array of 18 floats in a circle around them. They analyze the area around them, depending on their goals and fears, and score those directions, figuring out where to go and when to dash. The bots have varying intelligence which can be set by the player.  
 
     OPTION 1: The scoring loop
-    The scoring loop is what gives these bots a brain. It goes through, finds all the relavent info it can, be it prey, walls, positions, etc, and directs the fish on where to go. It also debugs the thought process, which is super helpful in making specific fish act how I want them to.   
+    The scoring loop is what gives these bots a brain. It goes through, finds all the relevant info it can, be it prey, walls, positions, etc, and directs the fish on where to go. It also debugs the thought process, which is super helpful in making specific fish act how I want them to.   
 
     OPTION 2: Scoring a target
     Update by prey is an example of a scoring function. If it finds prey in a direction it will, based on distance, grant points to that direction. When points are granted in one direction, they diminishingly spread out throughout the entire circle, to give the fish a map of the area around them.   
 
     OPTION 3: Avoiding walls
-    When a fish spots a wall close enough to them, that direction is immediatley set to -5. Since this function is called after all scoring functions, that direction is effectivley set inert. Due to the way points affect the whole circle, if a best direction is blocked, the areas right next to that direction will still be the highest score, naturally leading the fish around the wall.        
+    When a fish spots a wall close enough to them, that direction is immediately set to -5. Since this function is called after all scoring functions, that direction is effectively set inert. Due to the way points affect the whole circle, if a best direction is blocked, the areas right next to that direction will still be the highest score, naturally leading the fish around the wall.        
  
     OPTION 4: Picking a course
-    When picking a direction, fish at their best will always chose the top scoring direction. To create intelligence, each level below mastermind will deviate more and more, randomly chosing from everything between 1st and 3rd, or at the worst from everything between 1st and 9th.    
+    When picking a direction, fish at their best will always choose the top scoring direction. To create difficulty levels, each one below mastermind will deviate more and more, randomly choosing from everything between 1st and 3rd, or at the worst from everything between 1st and 9th.    
 
     OPTION 5: Dash decisions
-    To decide when to dash, every time a fish does a score function, they check that score's relavent dash function. For a goal dash, they have to be close, and facing towards the goal. For a danger dash, they need to be facing away. Danger dashes are more lenient on distance, as accuracy isn't needed to flee.     
+    To decide when to dash, every time a fish does a score function, they check that score's relevant dash function. For a goal dash, they have to be close, and facing towards the goal. For a danger dash, they need to be facing away. Danger dashes are more lenient on distance, as accuracy isn't needed to flee.     
 
     CAPTION
     The brains of the bots visualized. Green lines are positive scores. Red lines are negative. Directions with no lines either mean nothing is in that direction, or a wall has invalidated that direction. 
 
 SECTION 3: Game feel
-The controls in this game are super simple, and at first, because of that, the game was super boring. It was like being a robot, just looking at the game state and picking a direction. Along with that, reading the game state was a pain in itself, due to the usually huge amount of fish in an area. The following changes are to remedey those problems.      
+The controls in this game are super simple, and at first, because of that, the game was super boring. It was like being a robot, just looking at the game state and picking a direction. Along with that, reading the game state was a pain in itself, due to the usually huge amount of fish in an area. The following changes are to remedy those problems.      
 
     OPTION 1: The dash
-    The biggest change in gameplay, the dash directly made the game more fun by introducing a skill based action that could be taken, adding timing and cooldown managment into the gameplay experience. 
+    The biggest change in gameplay, the dash directly made the game more fun by introducing a skill based action that could be taken, adding timing and cooldown management into the gameplay experience. 
 
     OPTION 2: Wall collision
-    In a game where you are constantly moving, hitting a wall felt like crap. By adding dust that gets kicked up, as well as sprite squish(based on fish size), hitting walls felt cooler, more intentional, and shorter lasting, while also adding more immersion to the world.        
+    In a game where you are constantly moving, hitting a wall felt jarring. By adding dust that gets kicked up, as well as sprite squish (based on fish size), hitting walls felt cooler, more intentional, and shorter lasting, while also adding more immersion to the world.        
 
     OPTION 3: Particles
     Particles are everywhere in Fish Party. On respawn, on dash, on speed boost, on turn, on eating. By making all of these small moments emphasized, player enjoyment and game clarity are both improved.    
 
     OPTION 4: Point visuals 
-    Points are the most important part of the game, and making sure they are clear and cool was paramount. First was to make an animated pop-up for gaining points, to show how many you got, and to really emphasise the main goal of the game. Second was to increase the clarity for fish that gain points abstractly, through time and distance. To do that, point tracers were added. They look great, and clarify a ton.     
+    Points are the most important part of the game, and making sure they are clear and cool was paramount. First was to make an animated pop-up for gaining points, to show how many you got, and to really emphasize the main goal of the game. Second was to increase the clarity for fish that gain points abstractly, through time and distance. To do that, point tracers were added. They look great, and clarify a ton.     
 
     OPTION 5: Hit stop
-    Point tracers were added to fish that got points abstractley, but that left out fish that gain points from direct contact. To fix that, hit-stop was added, to give contact fish more juice. 
+    Point tracers were added to fish that got points abstractly, but that left out fish that gain points from direct contact. To fix that, hit-stop was added, to give contact fish more juice. 
 
     OPTION 6: Background fish
-    Even with all the other changes to the players, the overall map still felt empty. For a game that takes place in oceans, rivers, and lakes, that doesn't work. To fill out the empty space, small fish shadows were placed in background, to act as far away fish, making the enviroments more lived in.    
+    Even with all the other changes to the players, the overall map still felt empty. For a game that takes place in oceans, rivers, and lakes, that doesn't work. To fill out the empty space, small fish shadows were placed in the background, to act as far away fish, making the environments more lived in.    
 
     CAPTION
     4 fry showing how to gain points in the tutorial.  
 
 
 SECTION 4: Fish architecture
-Due to the large amount of fish in Fish Party, efficient archetcture is needed to best allow for easy creation and modification. 
+Due to the large number of fish in Fish Party, efficient architecture is needed to best allow for easy creation and modification. 
 
     OPTION 1: Putting a fish together
-    Every fish has a central FishController, which holds their FishMovement scipt, and their specific FishBehvaior, which differs based on fish type.
+    Every fish has a central FishController, which holds their FishMovement script, and their specific FishBehavior, which differs based on fish type.
 
     OPTION 2: Fish Behavior
     Fish Behavior is used to denote a fish's goals, position on the food chain, and bot behavior. 
@@ -104,7 +104,7 @@ Due to the large amount of fish in Fish Party, efficient archetcture is needed t
     This is FryBehavior, a subclass of FishBehavior for the fry, which denotes its ability to gain points when close to other fry.
 
     OPTION 4: Its bot
-    FryBehavior additionally creates its bot, initilizing the bot controller with all the nessesary goals and fears to run the bot brain correctly. 
+    FryBehavior additionally creates its bot, initializing the bot controller with all the necessary goals and fears to run the bot brain correctly. 
 
     CAPTION
     On the left, Fry's Fish scriptable object. On the right, Fish Data, a collection of all the different Fish scriptable objects. 
@@ -113,13 +113,13 @@ Due to the large amount of fish in Fish Party, efficient archetcture is needed t
 ==================== PAGE: mage ====================
 
 PREFACE
-MAGE is FunRug Studio's first work. It started as a side project we were making for fun, and after the addition of our fourth member, we started to work on it for an eventual commercial release. MAGE was clumsy, and full of spur of the moment decisions. I grew a huge amount throughout MAGE's 2 year journey and 2 reboots, learning how to code for stability, saftey, and efficency, how to work in a team, and how to utilize tools like github. I learned a great deal about what works, by learning what doesn't.         
+MAGE is FunRug Studio's first work. It started as a side project we were making for fun, and after the addition of our fourth member, we started to work on it for an eventual commercial release. MAGE was clumsy, and full of spur of the moment decisions. I grew a huge amount throughout MAGE's 2 year journey and 2 reboots, learning how to code for stability, safety, and efficiency, how to work in a team, and how to utilize tools like GitHub. I learned a great deal about what works, by learning what doesn't.         
 
 SECTION 1: Modular characters
-[How the scriptable-object character system works and what it let designers do.]
+MAGE is designed to have characters that match in movement style, with differences mainly in number, and attack. Therefore, a modular, decoupled system is best.
 
     OPTION 1: The Ability base class
-    The ability class was created to be a parent to every single move a mage could use in the game. As you can see by the various activate functions, and water cooldown, this centralized approach was not done correctly. There was inheretence, but that too was done poorly, as you can see on the right side of the image.     
+    The ability class was created to be a parent to every single move a mage could use in the game. As you can see by the various activate functions, and water cooldown, this centralized approach was not done correctly. There was inheritance, but that too was done poorly, as you can see on the right side of the image.     
 
     OPTION 2: Loading a Mage's kit
     Later on in the project, a data scriptable object was placed in to attempt to remedy the organization problems of the mage character creation system, which helped a great deal with creating new mages.   
@@ -128,16 +128,16 @@ SECTION 1: Modular characters
     Classic Wizard's setup, alongside their attack, Magic Missile's setup. 
 
 SECTION 2: Ghost projectiles
-Every mage in MAGE has a counterspell ability. This lets them absorb an incoming attack, and fire out a more powerful one. Without ghost/shrodinger projectiles, countering had to be done extremely early, which felt terrible to do as a player.  
+Every mage in MAGE has a counterspell ability. This lets them absorb an incoming attack, and fire out a more powerful one. Without ghost/Schrodinger projectiles, countering had to be done extremely early, which felt terrible to do as a player.  
 
     OPTION 1: Becoming a ghost
-    When a projectile becomes a ghost projectile, it records its collision data, direction to the player, currently velocity, and knockback. Therefore, it if actually collides after the small wait, it can accuratley hit the enemy like a nomral projectile would.
+    When a projectile becomes a ghost projectile, it records its collision data, direction to the player, current velocity, and knockback. Therefore, if it actually collides after the small wait, it can accurately hit the enemy like a normal projectile would.
 
     OPTION 2: Following the player
     To make sure players can counterspell a ghost projectile, the projectile essentially becomes a child of the player, following them, staying exactly on the player where it hit them, still allowed to be counterspelled by that player. 
 
     CAPTION
-    A demonstration of ghost projectiles, with an exagerated lifetime length, to showcase what they do. 
+    A demonstration of ghost projectiles, with an exaggerated lifetime length, to showcase what they do. 
 
 
 ==================== PAGE: lighthouse ====================
@@ -146,16 +146,16 @@ PREFACE
 Lighthouse Time Machine is a game made in under 24 hours for the Wolfjam 2026. We were a team of 5, and came in 2nd place. I did all the gameplay programming and system programming.
 
 SECTION 1: The pivot
-With the theme of visibiltiy, we decided to make a game with a lighthouse. Our first concept was that of a 2D side view, where there are multiple floors of the lighthouse, various lights to turn on and off on the different floors, a generation, and flying demons you have to destroy with light. Alongside that, you would also need to manage the big light, to guide ships in a top down enviroment. We discussed this idea for around 4-5 hours, and I even started immediatley on a prototype. Around the 5th hour mark, we decided that the idea we had wouldn't work, and we pivoted to go all in on guiding ships. The end result was a better scoped, more focused design that the whole team could agree on.
+With the theme of visibility, we decided to make a game with a lighthouse. Our first concept was that of a 2D side view, where there are multiple floors of the lighthouse, various lights to turn on and off on the different floors, a generator, and flying demons you have to destroy with light. Alongside that, you would also need to manage the big light, to guide ships in a top down environment. We discussed this idea for around 4 hours, and I even started immediately on a prototype. Around the 4 hour mark, we decided that the idea we had wouldn't work, and we pivoted to go all in on guiding ships. The end result was a better scoped, more focused design that the whole team could agree on.
 
     CAPTION
     An early drawing of our first idea. 
 
 SECTION 2: Mouse-drag controls
-To make sure the directing of ships felt fair and fun, a zone is created around the mouse to allow for more leiniency for the player, while illustrating effectivley where they affect.
+To make sure the directing of ships felt fair and fun, a zone is created around the mouse to allow for more leniency for the player, while illustrating effectively where they affect.
 
     OPTION 1: Reading the drag
-    Every single thing in this game is controlled by mouse clicks, and that alone, meaning the player's brain can spend time on strategizing and remembering where their ships are in the fog. 
+    Everything in this game is controlled with the mouse alone, so the player's brain can spend its time strategizing and remembering where their ships are in the fog. 
 
     OPTION 2: Directing ships
     The code for directing ships rotates the ships instantly. While this isn't realistic, it feels a lot more fair to the player, and puts all fault and success on their shoulders. 
@@ -164,7 +164,7 @@ To make sure the directing of ships felt fair and fun, a zone is created around 
     A boost takes place after the rotation finishes, pushing the ship in the direction you direct it. This makes the ships feel more reactive to the player, and means the player can quickly herd ships along with repeated dragging. 
 
     CAPTION
-    A player about to direct a skeleton boat to go below the middile island.
+    A player about to direct a skeleton boat to go below the middle island.
 
 SECTION 3: Spawning the boats
 Boats spawn on the edges: the top left, bottom left, and middle right.   
@@ -173,7 +173,7 @@ Boats spawn on the edges: the top left, bottom left, and middle right.
     Spawn zones have two empty gameObjects that represent the min and max angle and min and max position the boats can spawn in for that respective area. 
 
     OPTION 2: Finding a free spot
-    To keep boats from spawning too close to each other and crashing due to that, a loop is done to check various positions until a viable one is found. To prevent crashing, a for loop is done instead of a while loop, delaying the spawn a bit if the loop fails.
+    To keep boats from spawning too close to each other and crashing due to that, a loop is done to check various positions until a viable one is found. To avoid an infinite loop, a for loop is used instead of a while loop, delaying the spawn a bit if the loop fails.
 
     OPTION 3: Speeding up
     Spawning speeds up the more points the player has, increasing difficulty, while granting the opportunity for even more points. A clamp is in place to prevent the game from spawning unplayably fast. 
@@ -188,22 +188,22 @@ PREFACE
 Little Cowboy is a game I made with 4 others for the GMTK game jam 2026. We were the 48th most played game out of the 10,500 entries. I did the gameplay programming, enemy programming, and most system programming.  
 
 SECTION 1: Game feel
-The main action in this game is aiming and shooting, the player does this almost constantly. Therefore, this was the action that needed to feel the best. 
+The main action in this game is aiming and shooting; the player does this almost constantly. Therefore, this was the action that needed to feel the best. 
 
     OPTION 1: Camera
-    The camera doesn't statically follow the player, instead, in tweens slightly from the player to the reticle, meaning what you see is based on where you aim, which gives a much better feeling of control to the player. 
+    The camera doesn't statically follow the player, instead, it tweens slightly from the player to the reticle, meaning what you see is based on where you aim, which gives a much better feeling of control to the player. 
 
     OPTION 2: Movement
     The movement is intentionally simple, lending the majority of the gameplay to the gun, the bullets, and the interactions caused by those bullets. 
 
     OPTION 3: Shooting
-    Shooting is the core of this game, and so even minor things like screenshake on firing and slight recoil can massivley improve overall gamefeel. 
+    Shooting is the core of this game, and so even minor things like screenshake on firing and slight recoil can massively improve overall game feel. 
 
     CAPTION
-    Check out this gamefeel!
+    Check out this game feel!
 
 SECTION 2: The bullet system and its interactions
-The bullet interactions are the main mechanic of this game, affecting whats in the world, be it the player, enemies, or previous effects still in play.
+The bullet interactions are the main mechanic of this game, affecting what's in the world, be it the player, enemies, or previous effects still in play.
 
     OPTION 1: Bullet hooks
     When a bullet collides, it checks whether it is hitting a character or an effect, and calls respective functions on itself as well as its target. 
@@ -215,69 +215,69 @@ The bullet interactions are the main mechanic of this game, affecting whats in t
     To make sure enemies and the player could be affected by effects and bullets in the same way, an interface was made to be used by all enemies and the player, centralizing all possible status effects. 
 
     OPTION 4: Status effects
-    [What this code does and why you built it this way.]
+    The various status effects were written to behave the same on the player and any enemies, with occasional exceptions, such as the player not getting slowed as much, or the Dynamen blowing up when set on fire.
 
     OPTION 5: Chain lightning
-    [What this code does and why you built it this way.]
+    Chain lightning goes through all nearby character interfaces, and has all gathered interfaces also check all their nearby interfaces as well, making an already hit list to prevent overlap. 
 
     CAPTION
-    [Caption: what this image shows]
+    A player set their oil spill on fire with a fire bullet. 
 
 SECTION 3: Enemy AI
-[How the AI for all 6 enemy types is structured.]
+The enemy AI all have a base class they share, for the sake of effects, and then their own class, for their unique movement and behaviors. 
 
     OPTION 1: Shared behavior
-    [What this code does and why you built it this way.]
+    This houses basic things, such as looking at the player, and general movement towards the player. 
 
     OPTION 2: Snake
-    [What this code does and why you built it this way.]
+    The snake has the unique behavior of doing repeated lunging attacks if the player stays too close for too long. 
 
-    OPTION 3: Shooter
-    [What this code does and why you built it this way.]
+    OPTION 3: Gunman
+    The gunman walks around randomly, shooting at the player when they're close enough. This is used for both the easier Gunman variant, and the stronger variant, the Lost Cowboy.
 
     OPTION 4: Dynaman
-    [What this code does and why you built it this way.]
+    One of the most basic enemies, the Dynaman runs at the player, and when close enough, explodes. To interact with effects more, it can't explode when wet, and instantly explodes when set on fire by any means.
 
     CAPTION
-    [Caption: what this image shows]
+    A Dynamite Thrower, a Dynaman, a Lost Cowboy, and two Snakes surround the player. 
 
 
 ==================== PAGE: perfect-princess-plan ====================
 
 PREFACE
-[Preface. What the game is and what you were responsible for.]
+Perfect Princess Plan is a puzzle game made for the Global Game Jam in 2026, with 4 others. I was the lead programmer, and made all of the gameplay and puzzle systems. You place masquerade masks on dummies in an order of your choosing, changing their effects and turn order.
 
 SECTION 1: Moving pieces with interfaces
-[How interfaces let different pieces move around the board through the same code, and how masks act in the order they were placed.]
+Perfect Princess Plan consists of a large amount of moving pieces, varied by masks used, and placement order, and systems needed to be built around the variability.
 
     OPTION 1: The two interfaces
-    [What this code does and why you built it this way.]
+    The DummyFace interface is for enacting the actions of specific masks. The MoveableFace interface is for anything that can move: the various dummies, and the Princess. 
 
     OPTION 2: The turn loop
-    [What this code does and why you built it this way.]
+    The turn loop goes in order of mask placement, each dummy animating and doing their specific action in turn. 
 
     OPTION 3: A mask in action
-    [What this code does and why you built it this way.]
+    This is flipScript, the first mask put in the game. It first grabs any nearby mask, before checking whether or not it can act upon it, resetting if it can't.
 
     OPTION 4: Who moves first
-    [What this code does and why you built it this way.]
+    CheckCross is used by the flip type mask, checking all sides, before sending it off to WhosOnFirst to return the unit lowest in the turn order. 
 
     CAPTION
-    [Caption: the puzzle setup in the inspector]
+    A puzzle pre and post setup.
 
 SECTION 2: The puzzle setup system
-[How designers build a puzzle in the inspector, and how that let the team make 33 levels.]
+The puzzle setup had to be easy to do for the designers, to get as many high-quality levels as we could during the 48 hours we had.
 
     OPTION 1: Inspector data
-    [What this code does and why you built it this way.]
+    In the inspector, users can assign the position and dummy type of all dummies, as well as the allowed masks. Through this, they can choose the start and end through the Princess and Prince.
 
     OPTION 2: Building the level
-    [What this code does and why you built it this way.]
+    The GameplayManager sets up the level, spawning in the relevant dummies and masks for the player to use.
 
     OPTION 3: The grid
-    [What this code does and why you built it this way.]
+    The GridManager both sets up the grid, as well as having many utility functions for updating the grid, and gaining information about it.
 
     CAPTION
-    [Caption: a puzzle fully set up and ready to go]
+    A level set up in the inspector.
 
 `;

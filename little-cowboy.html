@@ -255,7 +255,7 @@ public void SetStunned(HashSet<Collider2D> alreadyHit = null)
     if (stunnedParticlesObject != null) Destroy(stunnedParticlesObject);
     stunnedParticlesObject = Instantiate(stunnedParticles, transform).gameObject;
 
-    // Sha-lightning 
+    // Lightning 
     alreadyHit ??= new HashSet<Collider2D>();
 
     foreach (Collider2D own in GetComponentsInChildren<Collider2D>())
