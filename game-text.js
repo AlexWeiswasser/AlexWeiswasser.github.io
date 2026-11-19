@@ -116,10 +116,10 @@ PREFACE
 MAGE is FunRug Studio's first work. It started as a side project we were making for fun, and after the addition of our fourth member, we started to work on it for an eventual commercial release. MAGE was clumsy, and full of spur of the moment decisions. I grew a huge amount throughout MAGE's 2 year journey and 2 reboots, learning how to code for stability, safety, and efficiency, how to work in a team, and how to utilize tools like GitHub. I learned a great deal about what works, by learning what doesn't.         
 
 SECTION 1: Modular characters
-MAGE is designed to have characters that match in movement style, with differences mainly in number, and attack. Therefore, a modular, decoupled system is best.
+MAGE is designed to have characters that can differ in movement style and attack, some sharing the same moves, but with different stats. Therefore, a modular, decoupled system is best.
 
     OPTION 1: The Ability base class
-    The ability class was created to be a parent to every single move a mage could use in the game. As you can see by the various activate functions, and water cooldown, this centralized approach was not done correctly. There was inheritance, but that too was done poorly, as you can see on the right side of the image.     
+    The ability class was created to be a parent to every single move a mage could use in the game. As you can see by the various activate functions, and water cooldown, this centralized approach was not done correctly. There was inheritance, but that too was done poorly, as you can see on the connected image of magic missile.     
 
     OPTION 2: Loading a Mage's kit
     Later on in the project, a data scriptable object was placed in to attempt to remedy the organization problems of the mage character creation system, which helped a great deal with creating new mages.   

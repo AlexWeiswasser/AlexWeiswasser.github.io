@@ -10,8 +10,8 @@
   --accent-ink: #1e2430;
   --game: var(--accent); /* each game section overrides this with its own color */
 
-  --display: "Bricolage Grotesque", "Atkinson Hyperlegible", system-ui, sans-serif;
-  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
 
   --pad-x: clamp(1.25rem, 5vw, 5rem);
   --pad-y: clamp(3rem, 7vw, 5.5rem);
@@ -43,7 +43,7 @@ h1, h2, h3 {
   font-family: var(--display);
   line-height: 1.1;
   margin: 0;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
 }
 
 /* ---------- Navigation bar (home page and game pages) ---------- */
