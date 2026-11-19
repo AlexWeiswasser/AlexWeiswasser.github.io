@@ -92,7 +92,7 @@ The controls in this game are super simple, and at first, because of that, the g
 
 
 SECTION 4: Fish architecture
-Due to the large amount of fish in Fish Party, efficient archetcture is needed to best allow for easy creation and modification. Every fish has a central FishController, which holds a FishMovement, and that fish type's FishBehvaior.
+Due to the large amount of fish in Fish Party, efficient archetcture is needed to best allow for easy creation and modification. 
 
     OPTION 1: Putting a fish together
     Every fish has a central FishController, which holds their FishMovement scipt, and their specific FishBehvaior, which differs based on fish type.
@@ -143,43 +143,43 @@ Every mage in MAGE has a counterspell ability. This lets them absorb an incoming
 ==================== PAGE: lighthouse ====================
 
 PREFACE
-[Preface. What the game is and how the jam went, in a few sentences.]
+Lighthouse Time Machine is a game made in under 24 hours for the Wolfjam 2026. We were a team of 5, and came in 2nd place. 
 
 SECTION 1: The pivot
-[The big section. What the first idea was, why it was not working four hours in, how the team decided to drop it, and why the second idea was better scoped. Use as many paragraphs as you need.]
+With the theme of visibiltiy, we decided to make a game with a lighthouse. Our first concept was that of a 2D side view, where there are multiple floors of the lighthouse, various lights to turn on and off on the different floors, a generation, and flying demons you have to destroy with light. Alongside that, you would also need to manage the big light, to guide ships in a top down enviroment. We discussed this idea for around 4-5 hours, and I even started immediatley on a prototype. Around the 5th hour mark, we decided that the idea we had wouldn't work, and we pivoted to go all in on guiding ships. The end result was a better scoped, more focused design that the whole team could agree on.
 
     CAPTION
-    [Caption: what this image shows]
+    An early drawing of our first idea. 
 
 SECTION 2: Mouse-drag controls
-[How a drag becomes ship movement, and the boost you added on each drag.]
+To make sure the directing of ships felt fair and fun, a zone is created around the mouse to allow for more leiniency for the player, while illustrating effectivley where they affect.
 
     OPTION 1: Reading the drag
-    [What this code does and why you built it this way.]
+    Every single thing in this game is controlled by mouse clicks, and that alone, meaning the player's brain can spend time on strategizing and remembering where their ships are in the fog. 
 
     OPTION 2: Directing ships
-    [What this code does and why you built it this way.]
+    The code for directing ships rotates the ships instantly. While this isn't realistic, it feels a lot more fair to the player, and puts all fault and success on their shoulders. 
 
     OPTION 3: The boost
-    [What this code does and why you built it this way.]
+    A boost takes place after the rotation finishes, pushing the ship in the direction you direct it. This makes the ships feel more reactive to the player, and means the player can quickly herd ships along with repeated dragging. 
 
     CAPTION
-    [Caption: what this image shows]
+    A player about to direct a skeleton boat to go below the middile island.
 
 SECTION 3: Spawning the boats
-[How the spawning system works.]
+Boats spawn on the edges: the top left, bottom left, and middle right.   
 
     OPTION 1: Spawn zones
-    [What this code does and why you built it this way.]
+    Spawn zones have two empty gameObjects that represent the min and max angle and min and max position the boats can spawn in for that respective area. 
 
     OPTION 2: Finding a free spot
-    [What this code does and why you built it this way.]
+    To keep boats from spawning too close to each other and crashing due to that, a loop is done to check various positions until a viable one is found. To prevent crashing, a for loop is done instead of a while loop, delaying the spawn a bit if the loop fails.
 
     OPTION 3: Speeding up
-    [What this code does and why you built it this way.]
+    Spawning speeds up over time, increasing difficults, while granting the opportunity for more points.
 
     CAPTION
-    [Caption: what this image shows]
+    A player attempting to navigate a cowboy boat to the top, around the two incoming skeleton ships that spawned from the right side. 
 
 
 ==================== PAGE: little-cowboy ====================
