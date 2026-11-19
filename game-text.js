@@ -91,23 +91,23 @@ The controls in this game are super simple, and at first, because of that, the g
     4 fry showing how to gain points in the tutorial.  
 
 
-SECTION 4: Game architecture
-[How a fish is put together: one controller, a movement script every fish shares, and a behavior script per species built on one base class. How this compares to MAGE's Ability class, and what you changed because of it.]
+SECTION 4: Fish architecture
+Due to the large amount of fish in Fish Party, efficient archetcture is needed to best allow for easy creation and modification. Every fish has a central FishController, which holds a FishMovement, and that fish type's FishBehvaior.
 
     OPTION 1: Putting a fish together
-    [What this code does and why you built it this way.]
+    Every fish has a central FishController, which holds their FishMovement scipt, and their specific FishBehvaior, which differs based on fish type.
 
-    OPTION 2: The base class
-    [What this code does and why you built it this way.]
+    OPTION 2: Fish Behavior
+    Fish Behavior is used to denote a fish's goals, position on the food chain, and bot behavior. 
 
     OPTION 3: A fish built on it
-    [What this code does and why you built it this way.]
+    This is FryBehavior, a subclass of FishBehavior for the fry, which denotes its ability to gain points when close to other fry.
 
     OPTION 4: Its bot
-    [What this code does and why you built it this way.]
+    FryBehavior additionally creates its bot, initilizing the bot controller with all the nessesary goals and fears to run the bot brain correctly. 
 
     CAPTION
-    [Caption: what this image shows]
+    On the left, Fry's Fish scriptable object. On the right, Fish Data, a collection of all the different Fish scriptable objects. 
 
 
 ==================== PAGE: mage ====================
