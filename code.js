@@ -159,8 +159,8 @@ document.querySelectorAll('.code-tabs').forEach(function (group) {
   var PROJECTS = [
     ['fish-party', 'Fish Party'],
     ['mage', 'MAGE'],
-    ['lighthouse', 'Lighthouse Time Machine'],
     ['little-cowboy', 'Little Cowboy'],
+    ['lighthouse', 'Lighthouse Time Machine'],
     ['perfect-princess-plan', 'Perfect Princess Plan']
   ];
   var here = 0;
