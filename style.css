@@ -465,7 +465,10 @@ body:has(> .detail) .detail { display: block; padding: clamp(2rem, 5vw, 3.5rem) 
   margin: 0;
 }
 /* A section with no code (text only): the image sits beside the text */
-.part:not(:has(.code-tabs)) > .shot { grid-row: 1; align-self: start; }
+.part:not(:has(.code-tabs)) > .shot { grid-row: 1; align-self: center; }
+/* ...and is shorter, so it doesn't leave a gap under the text. Change max-height to resize it. */
+.part:not(:has(.code-tabs)) > .shot .media img,
+.part:not(:has(.code-tabs)) > .shot .media video { max-height: 20rem; }
 
 .shot figcaption {
   text-align: center;
