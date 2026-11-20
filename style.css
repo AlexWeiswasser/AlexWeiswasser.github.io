@@ -269,7 +269,7 @@ body.has-nav .detail-top { display: none; }  /* the bar replaces the old back bu
 .more h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 1.5rem; }
 .more-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));  /* two per row */
   gap: 2rem clamp(2rem, 5vw, 4.5rem);
   max-width: 62rem;
 }
