@@ -114,7 +114,7 @@ body.has-nav .detail-top { display: none; }  /* the bar replaces the old back bu
 
 /* About Me: one centered column */
 .about-col {
-  max-width: 58rem;   /* width of the About Me column */
+  max-width: 66rem;   /* width of the About Me column */
   margin: 0 auto;
 }
 .about-col h2 {
